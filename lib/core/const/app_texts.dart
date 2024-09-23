@@ -17,6 +17,8 @@ class AppTexts {
   static const String continueWithApple = 'Continue with Apple';
   static const String les = 'Let\'s get started by filling out the form below.';
   static const String getStarted = 'Get Started';
+  static const String accept = 'Accept';
+  static const String decline = 'Decline';
 
 
 }
