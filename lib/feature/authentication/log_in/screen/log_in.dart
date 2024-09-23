@@ -12,7 +12,7 @@ import '../../../../core/global_widegts/authentication/custom_text_field.dart';
 import '../../../terms_and_condition/screen/terms_and_condition.dart';
 
 class LogIn extends StatefulWidget {
-  LogIn({super.key});
+  const LogIn({super.key});
 
   @override
   State<LogIn> createState() => _LogInState();
