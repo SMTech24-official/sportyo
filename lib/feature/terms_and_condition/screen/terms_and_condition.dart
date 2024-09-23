@@ -21,8 +21,7 @@ class TermsAndCondition extends StatelessWidget {
             ),
             Center(
               child: SizedBox(
-                height: 36.h,
-                width: 290.w,
+                // height: 36.h,
                 child: Text(
                   'Terms and Conditions',
                   textAlign: TextAlign.center,
@@ -101,7 +100,7 @@ class TermsAndCondition extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 32.w,
+              height: 32.h,
             ),
           ],
         ),

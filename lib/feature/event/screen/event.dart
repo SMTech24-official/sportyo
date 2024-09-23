@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +7,7 @@ import 'package:sportyo/core/global_widegts/customTextField.dart';
 
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/image_path.dart';
-import '../../../core/global_widegts/authentication/custom_text_field.dart';
+import '../widgets/filter_dialog.dart';
 
 class Event extends StatelessWidget {
   Event({super.key});
@@ -37,23 +36,28 @@ class Event extends StatelessWidget {
               SizedBox(
                 width: 14.w,
               ),
-              Image.asset(
-                IconsPath.filter,
-                height: 16.h,
-                width: 16.w,
+              GestureDetector(
+                onTap: (){
+                  showFilterDialog(context);
+                },
+                child: Image.asset(
+                  IconsPath.filter,
+                  height: 16.h,
+                  width: 16.w,
+                ),
               )
             ],
           ),
           // Event list
           Expanded(
             child: Padding(
-              padding:  EdgeInsets.only(right: 8.w),
+              padding: EdgeInsets.only(right: 8.w),
               child: ListView.separated(
                 itemCount: 5,
-                itemBuilder: (context, index) =>  eventSizeBox(ImagePath.running, 'Event XX', 'City', 'DD/MM/YY'), separatorBuilder: (BuildContext context, int index) {
+                itemBuilder: (context, index) => eventSizeBox(onTap: () {}),
+                separatorBuilder: (BuildContext context, int index) {
                   return Divider();
-              },
-
+                },
               ),
             ),
           ),
@@ -62,16 +66,15 @@ class Event extends StatelessWidget {
     );
   }
 
-  Widget eventSizeBox(
-      String iconPath, String eventName, String city, String date) {
+  Widget eventSizeBox({required VoidCallback onTap}) {
     return SizedBox(
-      height: 87.h,
       width: double.infinity,
       child: ListTile(
-        leading: Image.asset(iconPath, width: 50.h, height: 50.w),
+        onTap: onTap,
+        leading: Image.asset(ImagePath.running, width: 50.w, height: 50.h),
         title: RichText(
           text: TextSpan(
-            text: '$eventName, ',
+            text: 'Event XX',
             style: GoogleFonts.sourceSans3(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.w600,
@@ -79,7 +82,7 @@ class Event extends StatelessWidget {
                 color: AppColors.blackColor),
             children: [
               TextSpan(
-                text: city,
+                text: 'City',
                 style: GoogleFonts.sourceSans3(
                     fontSize: 20.sp,
                     fontStyle: FontStyle.italic,
@@ -91,24 +94,22 @@ class Event extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          'Date $date',
+          'Date DD/MM/YY',
           style: GoogleFonts.sourceSans3(
               fontSize: 10.sp,
               fontWeight: FontWeight.w600,
               height: 15.h / 10.h,
               color: const Color(0xff555151)),
         ),
-        trailing :SizedBox(
+        trailing: SizedBox(
           height: 28.h,
           width: 78.w,
           child: GestureDetector(
-            onTap: () {
-
-            },
+            onTap: () {},
             child: Container(
               decoration: BoxDecoration(
                 color: AppColors.primaryColor,
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(10.0.r),
               ),
               alignment: Alignment.center,
               child: Text(
@@ -123,8 +124,7 @@ class Event extends StatelessWidget {
               ),
             ),
           ),
-        )
-        ,
+        ),
       ),
     );
   }
