@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileController extends GetxController {
+  final formKey = GlobalKey<FormState>();
   final List<String> languages = [
     "Chinese",
     "Mandarin",
@@ -131,24 +132,35 @@ class ProfileController extends GetxController {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController dateofbirthController = TextEditingController();
   final TextEditingController languageController = TextEditingController();
+  final TextEditingController bioController = TextEditingController();
   RxBool incognito = false.obs;
+  RxBool genderRestriction = false.obs;
+  RxString selectedSport = ''.obs;
+  RxString selectedLevel = ''.obs;
+  RxList<Map<String, String>> savedSports = <Map<String, String>>[].obs;
+  RxInt editingIndex = (-1).obs; // -1 means no editing
 
+  List<String> sports = [
+    "Running",
+    "Cycling",
+    "Swimming",
+    "Strength Training",
+    "Hiking"
+  ];
+  List<String> levels = ["Beginner", "Intermediate", "Advanced", "Elite"];
   @override
   void onInit() {
     super.onInit();
-    // Initially, don't show any suggestions
     filteredLanguages.clear();
 
-    // Listen for changes in the languageController to automatically filter languages
     languageController.addListener(() {
       filterLanguages(languageController.text);
     });
   }
 
-  // Filter languages based on the user's input
   void filterLanguages(String query) {
     if (query.isEmpty) {
-      filteredLanguages.clear(); // No input, no suggestions
+      filteredLanguages.clear();
     } else {
       filteredLanguages.assignAll(
         languages
@@ -163,8 +175,8 @@ class ProfileController extends GetxController {
   void addLanguage(String language) {
     if (!selectedLanguages.contains(language)) {
       selectedLanguages.add(language);
-      languageController.clear(); // Clear input after adding a language
-      filteredLanguages.clear(); // Clear suggestions
+      languageController.clear();
+      filteredLanguages.clear();
     }
   }
 
@@ -173,7 +185,43 @@ class ProfileController extends GetxController {
     selectedLanguages.remove(language);
   }
 
-  void toggle() {
+  //incognito
+  void incognitotoggle() {
     incognito.value = !incognito.value;
+  }
+
+  //genderRestriction
+  void genderRestrictiontoggle() {
+    genderRestriction.value = !genderRestriction.value;
+  }
+
+  void saveSport() {
+    if (selectedSport.isNotEmpty && selectedLevel.isNotEmpty) {
+      if (editingIndex.value == -1) {
+        // Add new sport
+        savedSports
+            .add({'sport': selectedSport.value, 'level': selectedLevel.value});
+      } else {
+        // Edit existing sport
+        savedSports[editingIndex.value] = {
+          'sport': selectedSport.value,
+          'level': selectedLevel.value
+        };
+        editingIndex.value = -1; // Reset the editing index
+      }
+      clearSelections();
+    }
+  }
+
+  void editSport(int index) {
+    editingIndex.value = index;
+    selectedSport.value = savedSports[index]['sport']!;
+    selectedLevel.value = savedSports[index]['level']!;
+  }
+
+  void clearSelections() {
+    selectedSport.value = '';
+    selectedLevel.value = '';
+    editingIndex.value = -1; // Reset the editing index
   }
 }
