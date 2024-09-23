@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sportyo/core/const/app_colors.dart';
 import 'package:sportyo/core/const/app_texts.dart';
 import 'package:sportyo/core/const/icons_path.dart';
+import 'package:sportyo/feature/event/screen/event.dart';
 
 import '../../profile/screen/profile_page.dart';
 import '../controller/home_controller.dart';
@@ -16,7 +17,7 @@ class Home extends StatelessWidget {
   final List<Widget> navBody = [
     ProfileScreen(),
     const SearchScreen(),
-    const EventsScreen(),
+    const Event(),
     const ChatsScreen(),
   ];
 
@@ -122,21 +123,7 @@ class SearchScreen extends StatelessWidget {
   }
 }
 
-class EventsScreen extends StatelessWidget {
-  const EventsScreen({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          'Events Screen',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
 
 class ChatsScreen extends StatelessWidget {
   const ChatsScreen({super.key});
