@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sportyo/feature/terms_and_condition/screen/terms_and_condition.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/image_path.dart';
 import '../controller/profile_controller.dart';
 import '../widget/add_sports.dart';
 import '../widget/confirm_logout.dart';
 import '../widget/global_text_style.dart';
+import '../widget/language_filed.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -84,7 +86,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 28.w, right: 49.w),
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: TextFormField(
                     controller: controller.nameController,
                     decoration: InputDecoration(
@@ -124,7 +126,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 28.w, right: 49.w),
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: TextFormField(
                     controller: controller.dateofbirthController,
                     decoration: InputDecoration(
@@ -178,7 +180,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 28.w, right: 49.w),
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: DropdownButtonFormField<String>(
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
@@ -235,14 +237,14 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 28.w, right: 49.w),
-                  child: _buildLanguageField(controller),
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: buildLanguageField(controller),
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 28.w, right: 49.w),
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
                     height: 50,
                     decoration: BoxDecoration(
@@ -326,10 +328,10 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 83.h,
+                  height: 30.h,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 28.w, right: 49.w),
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
                     height: 50,
                     decoration: BoxDecoration(
@@ -403,7 +405,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 5.h),
                 Padding(
-                  padding: EdgeInsets.only(left: 28.w, right: 49.w),
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Text(
                     "Make your profile visible only to people of your gender.",
                     style: globalTextStyle(
@@ -414,7 +416,7 @@ class ProfileScreen extends StatelessWidget {
                   height: 15.h,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 37.w, right: 49.w),
+                  padding: EdgeInsets.only(left: 37.w, right: 28.w),
                   child: Text(
                     "Bio",
                     style: globalTextStyle(
@@ -422,7 +424,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 28.w, right: 49.w),
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: TextFormField(
                     controller: controller.bioController,
                     decoration: InputDecoration(
@@ -454,7 +456,7 @@ class ProfileScreen extends StatelessWidget {
                   height: 8.h,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 37.w, right: 49.w),
+                  padding: EdgeInsets.only(left: 37.w, right: 28.w),
                   child: Text(
                     "My Sports",
                     style: globalTextStyle(
@@ -464,7 +466,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 37.w, right: 49.w),
+                  padding: EdgeInsets.only(left: 37.w, right: 28.w),
                   child: Text(
                     "Add sports that you’re interested in along with your level.",
                     style: globalTextStyle(
@@ -475,7 +477,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 10.h),
                 Padding(
-                  padding: EdgeInsets.only(left: 37.w, right: 49.w),
+                  padding: EdgeInsets.only(left: 37.w, right: 28.w),
                   child: Obx(() {
                     return controller.savedSports.isEmpty
                         ? const SizedBox.shrink()
@@ -556,7 +558,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 103.h),
+                SizedBox(height: 50.h),
                 Align(
                   alignment: Alignment.center,
                   child: SizedBox(
@@ -577,7 +579,9 @@ class ProfileScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.center,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(() => const TermsAndCondition());
+                    },
                     child: Text(
                       "Privacy Policy",
                       style: globalTextStyle(
@@ -605,71 +609,6 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLanguageField(ProfileController controller) {
-    return Obx(
-      () => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        decoration: BoxDecoration(
-          border: Border.all(color: AppColors.blackColor, width: 1.0),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Wrap(
-              spacing: 8.0,
-              runSpacing: 5.0,
-              children: controller.selectedLanguages.map((language) {
-                return Chip(
-                  label: Text(language),
-                  deleteIcon: const Icon(Icons.close),
-                  onDeleted: () {
-                    controller.removeLanguage(language);
-                  },
-                );
-              }).toList(),
-            ),
-            TextField(
-              controller: controller.languageController,
-              onChanged: (value) {
-                controller.filterLanguages(value);
-              },
-              decoration: const InputDecoration(
-                hintText: "Type a language",
-                border: InputBorder.none,
-              ),
-            ),
-            controller.filteredLanguages.isNotEmpty
-                ? Container(
-                    constraints: const BoxConstraints(maxHeight: 100),
-                    margin: const EdgeInsets.only(top: 5),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black.withOpacity(0.5)),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Obx(
-                      () => ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: controller.filteredLanguages.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(controller.filteredLanguages[index]),
-                            onTap: () {
-                              controller.addLanguage(
-                                  controller.filteredLanguages[index]);
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  )
-                : Container(),
-          ],
         ),
       ),
     );

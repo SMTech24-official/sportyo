@@ -6,6 +6,7 @@ import 'package:sportyo/core/const/app_texts.dart';
 import 'package:sportyo/core/const/icons_path.dart';
 import 'package:sportyo/feature/event/screen/event.dart';
 
+import '../../chat/screen/chat_screen.dart';
 import '../../profile/screen/profile_page.dart';
 import '../controller/home_controller.dart';
 
@@ -18,7 +19,7 @@ class Home extends StatelessWidget {
     const ProfileScreen(),
     const SearchScreen(),
     Event(),
-    const ChatsScreen(),
+    const ChatScreen(),
   ];
 
   @override
@@ -124,22 +125,6 @@ class SearchScreen extends StatelessWidget {
       body: Center(
         child: Text(
           'Search Screen',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
-
-class ChatsScreen extends StatelessWidget {
-  const ChatsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          'Chats Screen',
           style: TextStyle(fontSize: 24),
         ),
       ),
