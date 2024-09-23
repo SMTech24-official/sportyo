@@ -58,19 +58,19 @@ class CreateAccount extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20.h),
-            CustomTextField(
+            CustomTextFieldForAuth(
               labelText: AppTexts.email,
               isPasswordField: false,
               controller: controller.emailController,
             ),
             SizedBox(height: 20.h),
-            CustomTextField(
+            CustomTextFieldForAuth(
               labelText: AppTexts.password,
               isPasswordField: true,
               controller: controller.passwordController,
             ),
             SizedBox(height: 20.h),
-            CustomTextField(
+            CustomTextFieldForAuth(
               labelText: AppTexts.password,
               isPasswordField: true,
               controller: controller.confirmPasswordController,

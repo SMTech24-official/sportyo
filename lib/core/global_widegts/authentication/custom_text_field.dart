@@ -4,12 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../const/app_colors.dart';
 
-class CustomTextField extends StatefulWidget {
+class CustomTextFieldForAuth extends StatefulWidget {
   final String labelText;
   final bool isPasswordField;
   final TextEditingController controller;
 
-  const CustomTextField({
+  const CustomTextFieldForAuth({
     super.key,
     required this.labelText,
     this.isPasswordField = false,
@@ -17,10 +17,10 @@ class CustomTextField extends StatefulWidget {
   });
 
   @override
-  _CustomTextFieldState createState() => _CustomTextFieldState();
+  _CustomTextFieldForAuthState createState() => _CustomTextFieldForAuthState();
 }
 
-class _CustomTextFieldState extends State<CustomTextField> {
+class _CustomTextFieldForAuthState extends State<CustomTextFieldForAuth> {
   bool _isObscure = true;
 
   @override

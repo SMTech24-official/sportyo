@@ -5,6 +5,7 @@ class IconsPath {
   static const String search = "assets/icons/search.png";
   static const String events = "assets/icons/events.png";
   static const String chats = "assets/icons/chats.png";
+  static const String filter = "assets/icons/filter.png";
 
 
 }
