@@ -1,473 +1,362 @@
+// profile_screen.dart
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/image_path.dart';
+import '../controller/profile_controller.dart';
 import '../widget/global_text_style.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  final List<String> _languages = [
-    "Chinese",
-    "Mandarin",
-    "Spanish",
-    "English",
-    "Arabic",
-    "Hindi",
-    "Portuguese",
-    "Bengali",
-    "Brazilian Portuguese",
-    "Russian",
-    "Japanese",
-    "Punjabi",
-    "German",
-    "Javanese",
-    "Wu",
-    "Malay",
-    "Korean",
-    "Vietnamese",
-    "Telugu",
-    "French",
-    "Marathi",
-    "Turkish",
-    "Urdu",
-    "Tamil",
-    "Italian",
-    "Cantonese",
-    "Persian",
-    "Gujarati",
-    "Indonesian",
-    "Bhojpuri",
-    "Polish",
-    "Kurdish Languages",
-    "Pashto",
-    "Kannada",
-    "Sundanese",
-    "Malayalam",
-    "Maithili",
-    "Hausa",
-    "Odia",
-    "Burmese",
-    "Ukrainian",
-    "Yoruba",
-    "Tagalog",
-    "Uzbek",
-    "Fula",
-    "Amharic",
-    "Sindhi",
-    "Igbo",
-    "Romanian",
-    "Oromo",
-    "Azerbaijani",
-    "Dutch",
-    "Cebuano",
-    "Thai",
-    "Lao",
-    "Serbo-Croatian",
-    "Malagasy",
-    "Nepalese",
-    "Sinhala",
-    "Khmer",
-    "Taiwanese",
-    "Swahili",
-    "Madurese",
-    "Somali",
-    "Assamese",
-    "Hungarian",
-    "Greek",
-    "Kazakh",
-    "Zulu",
-    "Afrikaans",
-    "Haitian Creole",
-    "Czech",
-    "Ilokano",
-    "Dari",
-    "Swedish",
-    "Quechua",
-    "Kirundi",
-    "Serbian",
-    "Uyghur",
-    "Hiligaynon",
-    "Xhosa",
-    "Albanian",
-    "Catalan",
-    "Belarusian",
-    "Bulgarian",
-    "Armenian",
-    "Flemish",
-    "Mongolian",
-    "Danish",
-    "Croatian",
-    "Tatar",
-    "Hebrew",
-    "Slovak",
-    "Finnish",
-    "Norwegian",
-    "Georgian",
-    "Kyrgyz",
-    "Wolof",
-    "Lithuanian",
-    "Hmong",
-    "Bosnian",
-    "Slovenian",
-    "Macedonian",
-    "Galician",
-    "Latvian",
-    "Yiddish",
-    "Chechen",
-    "Estonian",
-    "Dinka",
-    "Pangasinense",
-    "Tibetan",
-    "Sardinian",
-    "Basque",
-    "Maltese",
-    "Welsh",
-    "Luxembourgish",
-    "Icelandic",
-    "Tahitian",
-    "Irish"
-  ];
-  List<String> _filteredLanguages = [];
-  List<String> _selectedLanguages = [];
-  TextEditingController _textController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _filteredLanguages = _languages;
-  }
-
-  void _filterLanguages(String query) {
-    setState(() {
-      if (query.isEmpty) {
-        _filteredLanguages = [];
-      } else {
-        _filteredLanguages = _languages
-            .where((language) =>
-                language.toLowerCase().contains(query.toLowerCase()))
-            .toList();
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final ProfileController controller = Get.put(ProfileController());
+
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 12,
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Text(
-                "Edit profile",
-                style: globalTextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  lineHeight: 1.5,
-                  textAlign: TextAlign.center,
-                  color: AppColors.blackColor,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                height: 120,
-                width: 120,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(60),
-                  image: const DecorationImage(
-                    image: AssetImage(ImagePath.profile),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 12),
+              Align(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  "Edit profile",
+                  style: globalTextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    lineHeight: 1.5,
+                    textAlign: TextAlign.center,
+                    color: AppColors.blackColor,
                   ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                height: 32,
-                width: 134,
-                decoration: BoxDecoration(
-                  color: AppColors.purplecolor.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Center(
-                  child: Text(
-                    "Update Photo",
-                    style: globalTextStyle(
-                      fontSize: 14,
-                      color: AppColors.purplecolor,
+              const SizedBox(height: 12),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  height: 120,
+                  width: 120,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(60),
+                    image: const DecorationImage(
+                      image: AssetImage(ImagePath.profile),
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 29,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 35),
-              child: Text(
-                "First Name",
-                style: globalTextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+              const SizedBox(height: 16),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  height: 32,
+                  width: 134,
+                  decoration: BoxDecoration(
+                    color: AppColors.purplecolor.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Update Photo",
+                      style: globalTextStyle(
+                        fontSize: 14,
+                        color: AppColors.purplecolor,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 15.0),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.blackColor, width: 1.0),
+              const SizedBox(height: 29),
+              Padding(
+                padding: const EdgeInsets.only(left: 35),
+                child: Text(
+                  "First Name",
+                  style: globalTextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.blackColor, width: 1.0),
-                  ),
-                ),
-                style: TextStyle(color: AppColors.blackColor),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'This field cannot be empty';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 35),
-              child: Text(
-                "Date of Birth",
-                style: globalTextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 15.0),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.blackColor, width: 1.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 28),
+                child: TextFormField(
+                  controller: controller.nameController,
+                  decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColors.blackColor, width: 1.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColors.blackColor, width: 1.0),
+                    ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.blackColor, width: 1.0),
+                  style: const TextStyle(color: AppColors.blackColor),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field cannot be empty';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 35),
+                child: Text(
+                  "Date of Birth",
+                  style: globalTextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                style: TextStyle(color: AppColors.blackColor),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'This field is required';
-                  }
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 28),
+                child: TextFormField(
+                  controller: controller.dateofbirthController,
+                  decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColors.blackColor, width: 1.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColors.blackColor, width: 1.0),
+                    ),
+                  ),
+                  style: const TextStyle(color: AppColors.blackColor),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field is required';
+                    }
 
-                  // Regular expression to validate date format dd/MM/yyyy
-                  RegExp dateFormat = RegExp(
-                      r'^([0-2][0-9]|(3)[0-1])\/([0]?[1-9]|1[0-2])\/\d{4}$');
+                    // Regular expression to validate date format dd/MM/yyyy
+                    RegExp dateFormat = RegExp(
+                        r'^([0-2][0-9]|(3)[0-1])\/([0]?[1-9]|1[0-2])\/\d{4}$');
 
-                  if (!dateFormat.hasMatch(value)) {
-                    return 'Please enter a valid date (dd/MM/yyyy)';
-                  }
+                    if (!dateFormat.hasMatch(value)) {
+                      return 'Please enter a valid date (dd/MM/yyyy)';
+                    }
 
-                  return null;
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 35),
-              child: Text(
-                "Gender",
-                style: globalTextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+                    return null;
+                  },
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 15.0),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.blackColor, width: 1.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.blackColor, width: 1.0),
+              const SizedBox(
+                height: 8,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 35),
+                child: Text(
+                  "Gender",
+                  style: globalTextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                value: null,
-                hint: Text(
-                  "Select Gender",
-                  style: TextStyle(color: AppColors.blackColor),
-                ),
-                style: TextStyle(color: AppColors.blackColor),
-                items: ['Man', 'Woman']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {},
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select a gender';
-                  }
-                  return null;
-                },
               ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 35),
-              child: Text(
-                "Languages",
-                style: globalTextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 28),
+                child: DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColors.blackColor, width: 1.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColors.blackColor, width: 1.0),
+                    ),
+                  ),
+                  value: null,
+                  hint: const Text(
+                    "Select Gender",
+                    style: TextStyle(color: AppColors.blackColor),
+                  ),
+                  style: const TextStyle(color: AppColors.blackColor),
+                  items: ['Man', 'Woman']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    controller.selectedGender.value = newValue.toString();
+                  },
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select a gender';
+                    }
+                    return null;
+                  },
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue, width: 1.0),
-                  borderRadius: BorderRadius.circular(10.0),
+              const SizedBox(
+                height: 8,
+              ),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.only(left: 35),
+                child: Text(
+                  "Languages",
+                  style: globalTextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Display selected languages as chips
-                    Wrap(
-                      spacing: 8.0, // Space between language containers
-                      runSpacing: 5.0, // Space between rows of containers
-                      children: _selectedLanguages
-                          .map((language) => Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 5),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.black, width: 1.0),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                height:
-                                    30.0, // Adjust the height to match the design
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      language,
-                                      style: const TextStyle(
-                                          fontSize: 14, color: Colors.black),
-                                    ),
-                                    const SizedBox(width: 5),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _selectedLanguages.remove(language);
-                                        });
-                                      },
-                                      child: const Icon(
-                                        Icons.close,
-                                        size: 16,
-                                        color: Colors.black,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 28),
+                child: _buildLanguageField(controller),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 28),
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.blackColor),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Incognito",
+                          style: globalTextStyle(),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            controller
+                                .toggle(); // Toggles between active and inactive states
+                          },
+                          child: Obx(
+                            () => AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              width: 50, // Adjust based on your design
+                              height: 25, // Adjust based on your design
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Color(0xffE6E6E6),
+                                border: Border.all(color: Colors.grey),
+                              ),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  AnimatedPositioned(
+                                    duration: const Duration(milliseconds: 200),
+                                    left: controller.incognito.value ? 25 : 0,
+                                    child: Container(
+                                      width: 20,
+                                      height: 20,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color(0xff404040),
+                                      ),
+                                      child: Center(
+                                        child: Icon(
+                                          controller.incognito.value
+                                              ? Icons.check
+                                              : Icons.close,
+                                          size: 14,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ))
-                          .toList(),
-                    ),
-
-                    // The input field to type and search for languages
-                    TextField(
-                      controller: _textController,
-                      onChanged: (value) {
-                        setState(() {
-                          _filterLanguages(
-                              value); // Filter languages based on input
-                        });
-                      },
-                      decoration: const InputDecoration(
-                        hintText: "Type a language",
-                        hintStyle: TextStyle(color: Colors.black),
-                        border: InputBorder.none,
-                      ),
-                      style: const TextStyle(color: Colors.black),
-                    ),
-
-                    // Only show suggestions when the user types something
-                    if (_textController.text.isNotEmpty &&
-                        _filteredLanguages.isNotEmpty)
-                      Container(
-                        constraints: const BoxConstraints(
-                            maxHeight: 100), // Limit the height of dropdown
-                        margin: const EdgeInsets.only(top: 5),
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Colors.black.withOpacity(0.5)),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: _filteredLanguages.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(
-                                _filteredLanguages[index],
-                                style: const TextStyle(color: Colors.black),
+                                  ),
+                                ],
                               ),
-                              onTap: () {
-                                setState(() {
-                                  _selectedLanguages
-                                      .add(_filteredLanguages[index]);
-                                  _textController
-                                      .clear(); // Clear input after selection
-                                  _filterLanguages(
-                                      ''); // Reset filter to show full list
-                                });
-                              },
-                            );
-                          },
+                            ),
+                          ),
                         ),
-                      ),
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLanguageField(ProfileController controller) {
+    return Obx(
+      () => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.blackColor, width: 1.0),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Wrap(
+              spacing: 8.0,
+              runSpacing: 5.0,
+              children: controller.selectedLanguages.map((language) {
+                return Chip(
+                  label: Text(language),
+                  deleteIcon: const Icon(Icons.close),
+                  onDeleted: () {
+                    controller.removeLanguage(language);
+                  },
+                );
+              }).toList(),
+            ),
+            TextField(
+              controller: controller.languageController,
+              onChanged: (value) {
+                controller.filterLanguages(value);
+              },
+              decoration: const InputDecoration(
+                hintText: "Type a language",
+                border: InputBorder.none,
               ),
             ),
+            controller.filteredLanguages.isNotEmpty
+                ? Container(
+                    constraints: const BoxConstraints(maxHeight: 100),
+                    margin: const EdgeInsets.only(top: 5),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black.withOpacity(0.5)),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Obx(
+                      () => ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: controller.filteredLanguages.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(controller.filteredLanguages[index]),
+                            onTap: () {
+                              controller.addLanguage(
+                                  controller.filteredLanguages[index]);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),
