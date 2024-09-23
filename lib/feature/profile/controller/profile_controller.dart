@@ -138,7 +138,7 @@ class ProfileController extends GetxController {
   RxString selectedSport = ''.obs;
   RxString selectedLevel = ''.obs;
   RxList<Map<String, String>> savedSports = <Map<String, String>>[].obs;
-  RxInt editingIndex = (-1).obs; // -1 means no editing
+  RxInt editingIndex = (-1).obs;
 
   List<String> sports = [
     "Running",

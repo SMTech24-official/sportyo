@@ -17,7 +17,7 @@ class Home extends StatelessWidget {
   final List<Widget> navBody = [
     const ProfileScreen(),
     const SearchScreen(),
-     Event(),
+    Event(),
     const ChatsScreen(),
   ];
 
@@ -45,7 +45,9 @@ class Home extends StatelessWidget {
               icon: Padding(
                 padding: const EdgeInsets.only(bottom: 4.0),
                 child: Image.asset(
-                  IconsPath.profile,
+                  homeController.currentNavIndex.value == 0
+                      ? IconsPath.sprofile
+                      : IconsPath.profile,
                   width: 16,
                   height: 16,
                   color: homeController.currentNavIndex.value == 0
@@ -59,7 +61,9 @@ class Home extends StatelessWidget {
               icon: Padding(
                 padding: const EdgeInsets.only(bottom: 4.0),
                 child: Image.asset(
-                  IconsPath.search,
+                  homeController.currentNavIndex.value == 1
+                      ? IconsPath.ssearch
+                      : IconsPath.search,
                   width: 16,
                   height: 16,
                   color: homeController.currentNavIndex.value == 1
@@ -73,7 +77,9 @@ class Home extends StatelessWidget {
               icon: Padding(
                 padding: const EdgeInsets.only(bottom: 4.0),
                 child: Image.asset(
-                  IconsPath.events,
+                  homeController.currentNavIndex.value == 2
+                      ? IconsPath.sevents
+                      : IconsPath.events,
                   width: 16,
                   height: 16,
                   color: homeController.currentNavIndex.value == 2
@@ -87,7 +93,9 @@ class Home extends StatelessWidget {
               icon: Padding(
                 padding: const EdgeInsets.only(bottom: 4.0),
                 child: Image.asset(
-                  IconsPath.chats,
+                  homeController.currentNavIndex.value == 3
+                      ? IconsPath.schats
+                      : IconsPath.chats,
                   width: 16,
                   height: 16,
                   color: homeController.currentNavIndex.value == 3
@@ -122,8 +130,6 @@ class SearchScreen extends StatelessWidget {
     );
   }
 }
-
-
 
 class ChatsScreen extends StatelessWidget {
   const ChatsScreen({super.key});
