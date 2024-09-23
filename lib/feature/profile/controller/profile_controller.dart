@@ -1,49 +1,179 @@
-import 'package:get/get.dart';
+// profile_controller.dart
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProfileController extends GetxController {
-  // Reactive variables
-  var selectedLanguages = <String>[].obs;
+  final List<String> languages = [
+    "Chinese",
+    "Mandarin",
+    "Spanish",
+    "English",
+    "Arabic",
+    "Hindi",
+    "Portuguese",
+    "Bengali",
+    "Brazilian Portuguese",
+    "Russian",
+    "Japanese",
+    "Punjabi",
+    "German",
+    "Javanese",
+    "Wu",
+    "Malay",
+    "Korean",
+    "Vietnamese",
+    "Telugu",
+    "French",
+    "Marathi",
+    "Turkish",
+    "Urdu",
+    "Tamil",
+    "Italian",
+    "Cantonese",
+    "Persian",
+    "Gujarati",
+    "Indonesian",
+    "Bhojpuri",
+    "Polish",
+    "Kurdish Languages",
+    "Pashto",
+    "Kannada",
+    "Sundanese",
+    "Malayalam",
+    "Maithili",
+    "Hausa",
+    "Odia",
+    "Burmese",
+    "Ukrainian",
+    "Yoruba",
+    "Tagalog",
+    "Uzbek",
+    "Fula",
+    "Amharic",
+    "Sindhi",
+    "Igbo",
+    "Romanian",
+    "Oromo",
+    "Azerbaijani",
+    "Dutch",
+    "Cebuano",
+    "Thai",
+    "Lao",
+    "Serbo-Croatian",
+    "Malagasy",
+    "Nepalese",
+    "Sinhala",
+    "Khmer",
+    "Taiwanese",
+    "Swahili",
+    "Madurese",
+    "Somali",
+    "Assamese",
+    "Hungarian",
+    "Greek",
+    "Kazakh",
+    "Zulu",
+    "Afrikaans",
+    "Haitian Creole",
+    "Czech",
+    "Ilokano",
+    "Dari",
+    "Swedish",
+    "Quechua",
+    "Kirundi",
+    "Serbian",
+    "Uyghur",
+    "Hiligaynon",
+    "Xhosa",
+    "Albanian",
+    "Catalan",
+    "Belarusian",
+    "Bulgarian",
+    "Armenian",
+    "Flemish",
+    "Mongolian",
+    "Danish",
+    "Croatian",
+    "Tatar",
+    "Hebrew",
+    "Slovak",
+    "Finnish",
+    "Norwegian",
+    "Georgian",
+    "Kyrgyz",
+    "Wolof",
+    "Lithuanian",
+    "Hmong",
+    "Bosnian",
+    "Slovenian",
+    "Macedonian",
+    "Galician",
+    "Latvian",
+    "Yiddish",
+    "Chechen",
+    "Estonian",
+    "Dinka",
+    "Pangasinense",
+    "Tibetan",
+    "Sardinian",
+    "Basque",
+    "Maltese",
+    "Welsh",
+    "Luxembourgish",
+    "Icelandic",
+    "Tahitian",
+    "Irish",
+  ];
+
   var filteredLanguages = <String>[].obs;
+  var selectedLanguages = <String>[].obs;
+  var selectedGender = ''.obs;
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController dateofbirthController = TextEditingController();
+  final TextEditingController languageController = TextEditingController();
+  RxBool incognito = false.obs;
 
-  // TextEditingController for the language input
-  TextEditingController textController = TextEditingController();
+  @override
+  void onInit() {
+    super.onInit();
+    // Initially, don't show any suggestions
+    filteredLanguages.clear();
 
-  // Method to add language to selected list
-  void addLanguage(String language) {
-    if (!selectedLanguages.contains(language)) {
-      selectedLanguages.add(language);
-      textController.clear(); // Clear the input after adding a language
-      filteredLanguages.clear(); // Clear the dropdown list after selecting
+    // Listen for changes in the languageController to automatically filter languages
+    languageController.addListener(() {
+      filterLanguages(languageController.text);
+    });
+  }
+
+  // Filter languages based on the user's input
+  void filterLanguages(String query) {
+    if (query.isEmpty) {
+      filteredLanguages.clear(); // No input, no suggestions
+    } else {
+      filteredLanguages.assignAll(
+        languages
+            .where((language) =>
+                language.toLowerCase().contains(query.toLowerCase()))
+            .toList(),
+      );
     }
   }
 
-  // Method to remove language from selected list
+  // Add language to the selected list and clear input
+  void addLanguage(String language) {
+    if (!selectedLanguages.contains(language)) {
+      selectedLanguages.add(language);
+      languageController.clear(); // Clear input after adding a language
+      filteredLanguages.clear(); // Clear suggestions
+    }
+  }
+
+  // Remove a selected language
   void removeLanguage(String language) {
     selectedLanguages.remove(language);
   }
 
-  // Filter languages based on input
-  void filterLanguages(String query) {
-    List<String> allLanguages = [
-      // Add the complete list of languages here
-      'English', 'Spanish', 'French', 'German', 'Chinese', 'Hindi', 'Arabic'
-    ];
-
-    if (query.isNotEmpty) {
-      filteredLanguages.value = allLanguages
-          .where((language) =>
-              language.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    } else {
-      filteredLanguages.clear(); // Clear the list if query is empty
-    }
-  }
-
-  @override
-  void onClose() {
-    textController
-        .dispose(); // Dispose the controller when the screen is closed
-    super.onClose();
+  void toggle() {
+    incognito.value = !incognito.value;
   }
 }

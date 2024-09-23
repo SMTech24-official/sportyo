@@ -15,7 +15,7 @@ class Home extends StatelessWidget {
   Home({super.key});
 
   final List<Widget> navBody = [
-    ProfileScreen(),
+    const ProfileScreen(),
     const SearchScreen(),
     const Event(),
     const ChatsScreen(),
