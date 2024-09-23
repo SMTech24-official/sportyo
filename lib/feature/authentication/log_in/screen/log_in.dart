@@ -68,13 +68,13 @@ class LogIn extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: 20.h),
-                              CustomTextField(
+                              CustomTextFieldForAuth(
                                 labelText: AppTexts.email,
                                 isPasswordField: false,
                                 controller: loginController.emailController,
                               ),
                               SizedBox(height: 20.h),
-                              CustomTextField(
+                              CustomTextFieldForAuth(
                                 labelText: AppTexts.password,
                                 isPasswordField: true,
                                 controller: loginController.passwordController,
