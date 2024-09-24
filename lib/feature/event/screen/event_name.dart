@@ -6,9 +6,11 @@ import 'package:sportyo/core/const/app_colors.dart';
 import 'package:sportyo/core/const/app_texts.dart';
 import 'package:sportyo/core/const/image_path.dart';
 import 'package:sportyo/feature/event/controller/event_name_controller.dart';
+import 'package:sportyo/feature/event/screen/find_partners_for_event.dart';
 import '../../../core/global_widegts/customTextField.dart';
 import '../../home/screen/home.dart';
 import '../../profile/widget/global_text_style.dart';
+import '../../search/screen/search_screen.dart';
 import '../widgets/show_finish_time_dialog.dart';
 
 class EventName extends StatelessWidget {
@@ -275,7 +277,7 @@ class EventName extends StatelessWidget {
                         SizedBox(height: 20.h),
                         GestureDetector(
                           onTap: () {
-                            Get.to(()=> const SearchScreen());
+                            Get.to(()=> const FindPartnersForEvent());
                           },
                           child: Container(
                             alignment: Alignment.center,
