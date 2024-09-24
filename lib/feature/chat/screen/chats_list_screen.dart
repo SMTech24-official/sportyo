@@ -90,29 +90,39 @@ class ChatsListScreen extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return ListView.builder(
+                  return ListView.separated(
                     itemCount: chatsController.chats.length,
+                    separatorBuilder: (context, index) => const Divider(
+                      color: Color(0xffe8e8e8),
+                      thickness: 1.0,
+                      indent: 16,
+                      endIndent: 16,
+                    ),
                     itemBuilder: (context, index) {
                       final chat = chatsController.chats[index];
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: NetworkImage(chat.imageUrl),
+                      return SizedBox(
+                        height: 70,
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            radius: 35,
+                            backgroundImage: NetworkImage(chat.imageUrl),
+                          ),
+                          title: Text(chat.name),
+                          subtitle: Text(
+                            chat.lastMessage.length > 30
+                                ? '${chat.lastMessage.substring(0, 30)}...'
+                                : chat.lastMessage,
+                          ),
+                          onTap: () {
+                            Get.to(
+                              () => ChatScreen(
+                                name: chat.name,
+                                image: chat.imageUrl,
+                                chatId: "5454151511",
+                              ),
+                            );
+                          },
                         ),
-                        title: Text(chat.name),
-                        subtitle: Text(
-                          chat.lastMessage.length > 30
-                              ? '${chat.lastMessage.substring(0, 30)}...'
-                              : chat.lastMessage,
-                        ),
-                        onTap: () {
-                          Get.to(
-                            () => ChatScreen(
-                              name: chat.name,
-                              image: chat.imageUrl,
-                              chatId: "5454151511",
-                            ),
-                          );
-                        },
                       );
                     },
                   );
