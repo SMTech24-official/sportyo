@@ -19,6 +19,12 @@ class AppTexts {
   static const String getStarted = 'Get Started';
   static const String accept = 'Accept';
   static const String decline = 'Decline';
-
+  static const String viewEvent =' View Event';
+  static const String filterEvents ="Filter Events";
+  static const String country ="Country";
+  static const String sport ="Sport";
+  static const String event = "Event";
+  static const String save =  'Save';
+  static const String cancel = "Cancel";
 
 }

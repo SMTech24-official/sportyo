@@ -1,22 +1,26 @@
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sportyo/core/const/app_texts.dart';
 import 'package:sportyo/core/const/icons_path.dart';
-import 'package:sportyo/core/global_widegts/customTextField.dart';
-
+import 'package:sportyo/feature/event/screen/event_name.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/image_path.dart';
+import '../../../core/global_widegts/customTextField.dart';
+import '../controller/event_controller.dart';
 import '../widgets/filter_dialog.dart';
 
 class Event extends StatelessWidget {
   Event({super.key});
-  final TextEditingController search = TextEditingController();
+
+  final EventController eventController = Get.find<EventController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Events'),
+        title: const Text(AppTexts.events),
         automaticallyImplyLeading: false,
       ),
       body: Column(
@@ -27,17 +31,15 @@ class Event extends StatelessWidget {
           Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(
-                  left: 58.w,
-                ),
+                padding: EdgeInsets.only(left: 58.w),
                 child: CustomTextField(
-                    hitText: 'Aa', textEditingController: search),
+                  hitText: 'Aa',
+                  textEditingController: eventController.searchController, // Bind to controller
+                ),
               ),
-              SizedBox(
-                width: 14.w,
-              ),
+              SizedBox(width: 14.w),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   showFilterDialog(context);
                 },
                 child: Image.asset(
@@ -45,7 +47,7 @@ class Event extends StatelessWidget {
                   height: 16.h,
                   width: 16.w,
                 ),
-              )
+              ),
             ],
           ),
           // Event list
@@ -54,9 +56,11 @@ class Event extends StatelessWidget {
               padding: EdgeInsets.only(right: 8.w),
               child: ListView.separated(
                 itemCount: 5,
-                itemBuilder: (context, index) => eventSizeBox(onTap: () {}),
+                itemBuilder: (context, index) => eventSizeBox(onTap: () {
+                  Get.to(()=>EventName());
+                }),
                 separatorBuilder: (BuildContext context, int index) {
-                  return Divider();
+                  return const Divider();
                 },
               ),
             ),
@@ -113,7 +117,7 @@ class Event extends StatelessWidget {
               ),
               alignment: Alignment.center,
               child: Text(
-                'View Event',
+                AppTexts.viewEvent,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.sourceSans3(
                   fontSize: 12.sp,
