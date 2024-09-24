@@ -31,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
                   child: Text(
                     "Edit profile",
                     style: globalTextStyle(
-                      fontSize: 16.sp,
+                      fontSize: 28.sp,
                       fontWeight: FontWeight.w600,
                       lineHeight: 1.5.h,
                       textAlign: TextAlign.center,
