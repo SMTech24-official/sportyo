@@ -27,14 +27,14 @@ void showDeleteAccountDialog(BuildContext context) {
                 "Are you sure that you would like to",
                 style: globalTextStyle(fontSize: 16),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Text(
                 "delete your account?",
                 style: globalTextStyle(fontSize: 16),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 35,
               ),
               Padding(
