@@ -156,17 +156,14 @@ class EventName extends StatelessWidget {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10.r)),
                               ),
-                              child: Padding(
-                                padding: EdgeInsets.all(10.h),
-                                child: Text(
-                                  'I would like to participate in this event with someone',
-                                  style: globalTextStyle(
-                                      lineHeight: 23.sp / 16.sp,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16.sp,
-                                      color: const Color(0xffFFFAFA)),
-                                  textAlign: TextAlign.center,
-                                ),
+                              child: Text(
+                                'I would like to participate in this event with someone',
+                                style: globalTextStyle(
+                                    lineHeight: 23.sp / 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16.sp,
+                                    color: const Color(0xffFFFAFA)),
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
@@ -337,7 +334,7 @@ class EventName extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(
-                                width: 35.w,
+                                width: 30.w,
                               ),
                               GestureDetector(
                                 onTap: () {
