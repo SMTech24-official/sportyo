@@ -28,12 +28,14 @@ class CustomTextField extends StatelessWidget {
       child: TextField(
         controller: textEditingController,
         style: GoogleFonts.sourceSans3(
+
             fontSize:fontSize?? 16.sp,
             fontWeight: fontWeight??FontWeight.w400,
             height:lineHeight?? 24.h / 16.h,
             color: AppColors.blackColor),
         decoration: InputDecoration(
           hintText: hitText,
+
           hintStyle: GoogleFonts.sourceSans3(
               fontSize:fontSize?? 16.sp,
               fontWeight: fontWeight??FontWeight.w400,
@@ -51,6 +53,7 @@ class CustomTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.r),
             borderSide: const BorderSide(color: Color(0xff010101), width: 1),
           ),
+
         ),
       ),
     );
