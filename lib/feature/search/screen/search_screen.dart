@@ -130,7 +130,14 @@ class SearchScreen extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(width: 10),
-                                Text("Age ${user['age']}"),
+                                Text(
+                                  "Age ${user['age']}",
+                                  style: globalTextStyle(
+                                    color: const Color(0xff94939A),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
                                 const SizedBox(width: 10),
                                 GestureDetector(
                                   onTap: () {

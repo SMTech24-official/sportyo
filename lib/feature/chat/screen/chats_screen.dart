@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sportyo/core/const/app_colors.dart';
 import 'package:sportyo/core/const/icons_path.dart';
@@ -88,6 +89,7 @@ class ChatScreen extends StatelessWidget {
                         ? Alignment.centerRight
                         : Alignment.centerLeft,
                     child: Container(
+                      width: 224.h,
                       padding: const EdgeInsets.all(10),
                       margin: const EdgeInsets.symmetric(
                         vertical: 12,
@@ -95,18 +97,15 @@ class ChatScreen extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: message.isMe
-                            ? const Color(0xFF6151F0)
-                            : Colors.transparent,
-                        border: Border.all(
-                          color:
-                              message.isMe ? Colors.transparent : Colors.black,
-                        ),
+                            ? AppColors.primaryColor
+                            : const Color(0xfff8f7f7),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         message.message,
-                        style: TextStyle(
+                        style: globalTextStyle(
                           color: message.isMe ? Colors.white : Colors.black,
+                          fontSize: 16,
                         ),
                       ),
                     ),
