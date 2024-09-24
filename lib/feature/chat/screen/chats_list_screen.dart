@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sportyo/core/const/app_colors.dart';
-import 'package:sportyo/feature/chat/controller/chat_controller.dart';
+import 'package:sportyo/feature/chat/controller/chat_list_controller.dart';
 import 'package:sportyo/feature/profile/widget/global_text_style.dart';
 
-class ChatScreen extends StatelessWidget {
-  const ChatScreen({super.key});
+import 'chats_screen.dart';
+
+class ChatsListScreen extends StatelessWidget {
+  const ChatsListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    ChatsController chatsController = Get.put(ChatsController());
+    ChatsListController chatsController = Get.put(ChatsListController());
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -103,7 +105,13 @@ class ChatScreen extends StatelessWidget {
                               : chat.lastMessage,
                         ),
                         onTap: () {
-                          // Handle tap on chat
+                          Get.to(
+                            () => ChatScreen(
+                              name: chat.name,
+                              image: chat.imageUrl,
+                              chatId: "5454151511",
+                            ),
+                          );
                         },
                       );
                     },
