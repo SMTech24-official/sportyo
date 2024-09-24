@@ -10,4 +10,5 @@ class IconsPath {
   static const String chats = "assets/icons/chat.png";
   static const String schats = "assets/icons/chats.png";
   static const String filter = "assets/icons/filter.png";
+  static const String sendButton = "assets/icons/send_button.png";
 }

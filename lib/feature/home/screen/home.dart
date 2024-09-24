@@ -6,7 +6,7 @@ import 'package:sportyo/core/const/app_texts.dart';
 import 'package:sportyo/core/const/icons_path.dart';
 import 'package:sportyo/feature/event/screen/event.dart';
 
-import '../../chat/screen/chat_screen.dart';
+import '../../chat/screen/chats_list_screen.dart';
 import '../../profile/screen/profile_page.dart';
 import '../controller/home_controller.dart';
 
@@ -19,7 +19,7 @@ class Home extends StatelessWidget {
     const ProfileScreen(),
     const SearchScreen(),
     Event(),
-    const ChatScreen(),
+    const ChatsListScreen(),
   ];
 
   @override
