@@ -40,9 +40,9 @@ class ChatScreen extends StatelessWidget {
               radius: 20,
             ),
             const SizedBox(width: 10),
-            const Flexible(
+            Flexible(
               child: Text(
-                "habjds juashdfkja jkhasdf  jahsdf",
+                name,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 softWrap: false,
