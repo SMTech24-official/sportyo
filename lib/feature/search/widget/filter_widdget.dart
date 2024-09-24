@@ -90,27 +90,46 @@ void showSearchFilterDialog(BuildContext context) {
               ),
               SizedBox(height: 10.h),
               Obx(
-                () => Text(
-                  'Age Range: ${controller.minAge.value.toInt()} - ${controller.maxAge.value.toInt()}',
-                  style: globalTextStyle(fontSize: 14),
+                () => Row(
+                  children: [
+                    Text(
+                      'Age Range ',
+                      style: globalTextStyle(fontSize: 14),
+                    ),
+                    Text(
+                      "(${controller.minAge.value.toInt()} - ${controller.maxAge.value.toInt()})",
+                      style: globalTextStyle(
+                        color: const Color(0xff827E7E),
+                      ),
+                    )
+                  ],
                 ),
               ),
               Obx(
                 () {
-                  return RangeSlider(
-                    values: RangeValues(controller.minAge.value.toDouble(),
-                        controller.maxAge.value.toDouble()),
-                    min: 18,
-                    max: 60,
-                    divisions: 42,
-                    labels: RangeLabels(
-                      '${controller.minAge.value.round()}',
-                      '${controller.maxAge.value.round()}',
+                  return SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      trackHeight: 1.0,
                     ),
-                    onChanged: (values) {
-                      controller.minAge.value = values.start.toInt();
-                      controller.maxAge.value = values.end.toInt();
-                    },
+                    child: RangeSlider(
+                      values: RangeValues(
+                        controller.minAge.value.toDouble(),
+                        controller.maxAge.value.toDouble(),
+                      ),
+                      min: 18,
+                      max: 99,
+                      divisions: 81,
+                      inactiveColor: const Color(0xff000000),
+                      activeColor: const Color(0xff0D0C0C),
+                      labels: RangeLabels(
+                        '${controller.minAge.value.round()}',
+                        '${controller.maxAge.value.round()}',
+                      ),
+                      onChanged: (values) {
+                        controller.minAge.value = values.start.toInt();
+                        controller.maxAge.value = values.end.toInt();
+                      },
+                    ),
                   );
                 },
               ),
