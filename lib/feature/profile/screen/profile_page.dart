@@ -478,63 +478,66 @@ class ProfileScreen extends StatelessWidget {
                 SizedBox(height: 10.h),
                 Padding(
                   padding: EdgeInsets.only(left: 37.w, right: 28.w),
-                  child: Obx(() {
-                    return controller.savedSports.isEmpty
-                        ? const SizedBox.shrink()
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: controller.savedSports.length,
-                            itemBuilder: (context, index) {
-                              final sport = controller.savedSports[index];
-                              return InkWell(
-                                onTap: () {
-                                  controller.editSport(index);
-                                  showAddSportDialog(context);
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.only(bottom: 13),
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      color: const Color(0xff010101),
+                  child: Obx(
+                    () {
+                      return controller.savedSports.isEmpty
+                          ? const SizedBox.shrink()
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: controller.savedSports.length,
+                              itemBuilder: (context, index) {
+                                final sport = controller.savedSports[index];
+                                return InkWell(
+                                  onTap: () {
+                                    controller.editSport(index);
+                                    showAddSportDialog(context);
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.only(bottom: 13),
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        color: const Color(0xff010101),
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 13),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("${sport['sport']}"),
+                                          Container(
+                                            height: 25,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: const Color(0xff010101),
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10),
+                                                child:
+                                                    Text("${sport['level']}"),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 13),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("${sport['sport']}"),
-                                        Container(
-                                          height: 25,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: const Color(0xff010101),
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: Center(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10),
-                                              child: Text("${sport['level']}"),
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                  }),
+                                );
+                              },
+                            );
+                    },
+                  ),
                 ),
                 SizedBox(height: 10.h),
                 Align(
@@ -565,7 +568,9 @@ class ProfileScreen extends StatelessWidget {
                     height: 37,
                     width: 107,
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDeleteAccountDialog(context);
+                        },
                         child: Text(
                           "Log out",
                           style: globalTextStyle(
