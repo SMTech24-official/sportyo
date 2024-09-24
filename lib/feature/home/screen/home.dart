@@ -8,6 +8,7 @@ import 'package:sportyo/feature/event/screen/event.dart';
 
 import '../../chat/screen/chats_list_screen.dart';
 import '../../profile/screen/profile_page.dart';
+import '../../search/screen/search_screen.dart';
 import '../controller/home_controller.dart';
 
 class Home extends StatelessWidget {
@@ -108,24 +109,6 @@ class Home extends StatelessWidget {
             ),
           ],
           onTap: homeController.changeNavIndex,
-        ),
-      ),
-    );
-  }
-}
-
-//sample pages
-
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          'Search Screen',
-          style: TextStyle(fontSize: 24),
         ),
       ),
     );
