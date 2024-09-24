@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:sportyo/feature/terms_and_condition/screen/terms_and_condition.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/image_path.dart';
+import '../../privacy_policy/privacy_policy.dart';
 import '../controller/profile_controller.dart';
 import '../widget/add_sports.dart';
 import '../widget/confirm_logout.dart';
@@ -580,7 +580,7 @@ class ProfileScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   child: TextButton(
                     onPressed: () {
-                      Get.to(() => const TermsAndCondition());
+                      Get.to(() => const PrivacyPolicy());
                     },
                     child: Text(
                       "Privacy Policy",
