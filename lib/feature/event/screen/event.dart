@@ -74,7 +74,7 @@ class Event extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ListTile(
-        onTap: onTap,
+
         leading: Image.asset(ImagePath.running, width: 50.w, height: 50.h),
         title: RichText(
           text: TextSpan(
@@ -109,7 +109,7 @@ class Event extends StatelessWidget {
           height: 28.h,
           width: 78.w,
           child: GestureDetector(
-            onTap: () {},
+            onTap: onTap,
             child: Container(
               decoration: BoxDecoration(
                 color: AppColors.primaryColor,
