@@ -55,8 +55,8 @@ class Event extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.only(right: 8.w),
               child: ListView.separated(
-                itemCount: 5,
-                itemBuilder: (context, index) => eventSizeBox(onTap: () {
+                itemCount: 12,
+                itemBuilder: (context, index) => eventListTile(onTap: () {
                   Get.to(()=>EventName());
                 }),
                 separatorBuilder: (BuildContext context, int index) {
@@ -70,61 +70,57 @@ class Event extends StatelessWidget {
     );
   }
 
-  Widget eventSizeBox({required VoidCallback onTap}) {
-    return SizedBox(
-      width: double.infinity,
-      child: ListTile(
-
-        leading: Image.asset(ImagePath.running, width: 50.w, height: 50.h),
-        title: RichText(
-          text: TextSpan(
-            text: 'Event XX',
-            style: GoogleFonts.sourceSans3(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w600,
-                height: 30.h / 20.h,
-                color: AppColors.blackColor),
-            children: [
-              TextSpan(
-                text: 'City',
-                style: GoogleFonts.sourceSans3(
-                    fontSize: 20.sp,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w600,
-                    height: 30.h / 20.h,
-                    color: AppColors.blackColor),
-              ),
-            ],
-          ),
-        ),
-        subtitle: Text(
-          'Date DD/MM/YY',
+  Widget eventListTile({required VoidCallback onTap}) {
+    return ListTile(
+      leading: Image.asset(ImagePath.running, width: 50.w, height: 50.h),
+      title: RichText(
+        text: TextSpan(
+          text: 'Event XX, ',
           style: GoogleFonts.sourceSans3(
-              fontSize: 10.sp,
+              fontSize: 20.sp,
               fontWeight: FontWeight.w600,
-              height: 15.h / 10.h,
-              color: const Color(0xff555151)),
-        ),
-        trailing: SizedBox(
-          height: 28.h,
-          width: 78.w,
-          child: GestureDetector(
-            onTap: onTap,
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.primaryColor,
-                borderRadius: BorderRadius.circular(10.0.r),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                AppTexts.viewEvent,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.sourceSans3(
-                  fontSize: 12.sp,
+              height: 30.h / 20.h,
+              color: AppColors.blackColor),
+          children: [
+            TextSpan(
+              text: 'City',
+              style: GoogleFonts.sourceSans3(
+                  fontSize: 20.sp,
+                  fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.w600,
-                  height: 17.h / 12.h,
-                  color: const Color(0xffFFFAFA),
-                ),
+                  height: 30.h / 20.h,
+                  color: AppColors.blackColor),
+            ),
+          ],
+        ),
+      ),
+      subtitle: Text(
+        'Date DD/MM/YY',
+        style: GoogleFonts.sourceSans3(
+            fontSize: 10.sp,
+            fontWeight: FontWeight.w600,
+            height: 15.h / 10.h,
+            color: const Color(0xff555151)),
+      ),
+      trailing: SizedBox(
+        height: 28.h,
+        width: 78.w,
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(10.0.r),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              AppTexts.viewEvent,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.sourceSans3(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600,
+                height: 17.h / 12.h,
+                color: const Color(0xffFFFAFA),
               ),
             ),
           ),

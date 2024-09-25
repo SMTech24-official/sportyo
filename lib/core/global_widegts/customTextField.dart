@@ -27,15 +27,16 @@ class CustomTextField extends StatelessWidget {
       width: 273.w,
       child: TextField(
         controller: textEditingController,
-        style: GoogleFonts.sourceSans3(
 
+        style: GoogleFonts.sourceSans3(
             fontSize:fontSize?? 16.sp,
             fontWeight: fontWeight??FontWeight.w400,
             height:lineHeight?? 24.h / 16.h,
             color: AppColors.blackColor),
         decoration: InputDecoration(
+          contentPadding:  EdgeInsets.symmetric(
+              vertical: 5.h, horizontal: 10.w),
           hintText: hitText,
-
           hintStyle: GoogleFonts.sourceSans3(
               fontSize:fontSize?? 16.sp,
               fontWeight: fontWeight??FontWeight.w400,
