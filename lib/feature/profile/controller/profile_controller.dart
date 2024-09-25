@@ -152,7 +152,6 @@ class ProfileController extends GetxController {
   void onInit() {
     super.onInit();
     filteredLanguages.clear();
-
     languageController.addListener(() {
       filterLanguages(languageController.text);
     });
@@ -207,7 +206,7 @@ class ProfileController extends GetxController {
           'sport': selectedSport.value,
           'level': selectedLevel.value
         };
-        editingIndex.value = -1; // Reset the editing index
+        editingIndex.value = -1;
       }
       clearSelections();
     }
@@ -222,6 +221,6 @@ class ProfileController extends GetxController {
   void clearSelections() {
     selectedSport.value = '';
     selectedLevel.value = '';
-    editingIndex.value = -1; // Reset the editing index
+    editingIndex.value = -1;
   }
 }
