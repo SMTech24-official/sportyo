@@ -7,9 +7,8 @@ import '../../../core/global_widegts/customTextField.dart';
 import '../../profile/widget/global_text_style.dart';
 import '../controller/event_name_controller.dart';
 
-void showFinishTImeDialog(BuildContext context) {
-final TextEditingController predictedTimeController=TextEditingController();
-final EventNameController eventNameController=Get.find<EventNameController>();
+void showFinishTimeDialog(BuildContext context) {
+  final EventNameController eventNameController = Get.find<EventNameController>();
 
   showDialog(
     context: context,
@@ -28,23 +27,20 @@ final EventNameController eventNameController=Get.find<EventNameController>();
                 child: Text(
                   'My Expected Finish Time',
                   style: globalTextStyle(
-                      fontSize: 20.sp, lineHeight: 30.sp / 20.sp),
+                    fontSize: 20.sp,
+                    lineHeight: 30.sp / 20.sp,
+                  ),
                 ),
               ),
-              SizedBox(
-                height: 20.h,
-              ),
+              SizedBox(height: 20.h),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Predicted Time',
-                    style: globalTextStyle(
-                        ),
+                    style: globalTextStyle(),
                   ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
+                  SizedBox(height: 5.h),
                   SizedBox(
                     height: 35.h,
                     width: double.infinity,
@@ -53,20 +49,22 @@ final EventNameController eventNameController=Get.find<EventNameController>();
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       lineHeight: 21.sp / 14.sp,
-                      textEditingController:predictedTimeController,
+                      textEditingController: eventNameController.predictedTimeController,
                     ),
                   ),
                 ],
               ),
-              SizedBox(
-                height: 50.h,
-
-              ),
+              SizedBox(height: 50.h),
               // Save and Cancel buttons
-              CustomButtonContainer(text:'Validate',save: () {
-                eventNameController.isValidate.value=true;
-                Get.back();
-              }, cancel: () {  },)
+              CustomButtonContainer(
+                text: 'Validate',
+                save: () {
+                  eventNameController.validateInput(); // Call validateInput here
+                },
+                cancel: () {
+                  Get.back();
+                },
+              ),
             ],
           ),
         ),

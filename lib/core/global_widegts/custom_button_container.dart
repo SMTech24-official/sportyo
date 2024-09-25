@@ -6,13 +6,14 @@ import '../const/app_colors.dart';
 import '../const/app_texts.dart';
 
 class CustomButtonContainer extends StatelessWidget {
-  const CustomButtonContainer({super.key, this.text, required this.save, required this.cancel});
- final String? text;
- final VoidCallback save;
- final VoidCallback cancel;
+  const CustomButtonContainer(
+      {super.key, this.text, required this.save, required this.cancel});
+  final String? text;
+  final VoidCallback save;
+  final VoidCallback cancel;
   @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -25,10 +26,10 @@ class CustomButtonContainer extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: AppColors.purplecolor,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.r),
               ),
               child: Text(
-                text ??AppTexts.save,
+                text ?? AppTexts.save,
                 style: globalTextStyle(
                   textAlign: TextAlign.center,
                   fontSize: 20.sp,
@@ -47,7 +48,7 @@ class CustomButtonContainer extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.whiteColor,
                 border: Border.all(color: AppColors.purplecolor),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.r),
               ),
               child: Text(
                 AppTexts.cancel,
