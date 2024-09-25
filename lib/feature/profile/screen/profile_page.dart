@@ -181,45 +181,50 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                        vertical: 10.0,
-                        horizontal: 15.0,
+                  child: Obx(
+                    () => DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10.0,
+                          horizontal: 15.0,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: AppColors.blackColor, width: 1.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: AppColors.blackColor, width: 1.0),
+                        ),
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: AppColors.blackColor, width: 1.0),
+                      value: controller.selectedGender.value.isEmpty
+                          ? null
+                          : controller.selectedGender
+                              .value, // Set the selected value if available
+                      hint: const Text(
+                        "Select Gender",
+                        style: TextStyle(color: AppColors.blackColor),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: AppColors.blackColor, width: 1.0),
-                      ),
+                      style: const TextStyle(color: AppColors.blackColor),
+                      items: ['Man', 'Woman']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        controller.selectedGender.value = newValue!;
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select a gender';
+                        }
+                        return null;
+                      },
                     ),
-                    value: null,
-                    hint: const Text(
-                      "Select Gender",
-                      style: TextStyle(color: AppColors.blackColor),
-                    ),
-                    style: const TextStyle(color: AppColors.blackColor),
-                    items: ['Man', 'Woman']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      controller.selectedGender.value = newValue.toString();
-                    },
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Please select a gender';
-                      }
-                      return null;
-                    },
                   ),
                 ),
                 const SizedBox(
@@ -568,17 +573,39 @@ class ProfileScreen extends StatelessWidget {
                     height: 37,
                     width: 107,
                     child: ElevatedButton(
-                        onPressed: () {
-                          // showDeleteAccountDialog(context);
-                        },
-                        child: Text(
-                          "Log out",
-                          style: globalTextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.whiteColor,
-                          ),
-                        )),
+                      onPressed: () {},
+                      child: Text(
+                        "Update",
+                        style: globalTextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.whiteColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    height: 37,
+                    width: 107,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        showDeleteAccountDialog(context);
+                      },
+                      child: Text(
+                        "Log out",
+                        style: globalTextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.whiteColor,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 Align(
