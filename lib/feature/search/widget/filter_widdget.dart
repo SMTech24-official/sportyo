@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:sportyo/core/const/app_colors.dart';
 import 'package:sportyo/core/global_widegts/custom_button_container.dart';
 import 'package:sportyo/feature/profile/widget/global_text_style.dart';
 import 'package:sportyo/feature/search/controller/search_controllerr.dart';
@@ -16,11 +15,12 @@ void showSearchFilterDialog(BuildContext context) {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
         ),
-        content: SingleChildScrollView(  // Ensures scroll if content overflows
+        content: SingleChildScrollView(
+          // Ensures scroll if content overflows
           child: SizedBox(
-            width: 284.w,  // Responsiveness for width
+            width: 284.w, // Responsiveness for width
             child: Column(
-              mainAxisSize: MainAxisSize.min,  // Content-driven size
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10.h),
@@ -43,8 +43,8 @@ void showSearchFilterDialog(BuildContext context) {
                         ? null
                         : controller.selectedSport.value,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 5.h, horizontal: 10.w),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.r),
                       ),
@@ -72,8 +72,8 @@ void showSearchFilterDialog(BuildContext context) {
                         ? null
                         : controller.selectedLevel.value,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 5.h, horizontal: 10.w),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.r),
                       ),
@@ -91,7 +91,7 @@ void showSearchFilterDialog(BuildContext context) {
                 ),
                 SizedBox(height: 10.h),
                 Obx(
-                      () => Row(
+                  () => Row(
                     children: [
                       Text(
                         'Age Range ',
@@ -107,7 +107,7 @@ void showSearchFilterDialog(BuildContext context) {
                   ),
                 ),
                 Obx(
-                      () {
+                  () {
                     return SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                         trackHeight: 1.0,
@@ -137,7 +137,8 @@ void showSearchFilterDialog(BuildContext context) {
                 SizedBox(height: 20.h),
                 CustomButtonContainer(
                   save: () {
-                    // Add save logic
+                    controller.filterUsers();
+                    Get.back();
                   },
                   cancel: () {
                     Get.back();
