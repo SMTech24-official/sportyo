@@ -569,7 +569,7 @@ class ProfileScreen extends StatelessWidget {
                     width: 107,
                     child: ElevatedButton(
                         onPressed: () {
-                          showDeleteAccountDialog(context);
+                          // showDeleteAccountDialog(context);
                         },
                         child: Text(
                           "Log out",

@@ -86,7 +86,7 @@ void showFilterParticipants(BuildContext context) {
                 ],
               ),
               SizedBox(
-                height: 50.h,
+                height: 40.h,
               ),
               // Save and Cancel buttons
               CustomButtonContainer(save: () {

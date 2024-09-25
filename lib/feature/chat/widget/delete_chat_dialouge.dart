@@ -11,40 +11,32 @@ void deleteChatDialog(BuildContext context) {
     builder: (BuildContext context) {
       return AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(10.r),
         ),
-        content: SizedBox(
-          width: 284,
-          height: 166,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 20.h,
-              ),
-              Text(
-                "Are you sure that you would like to ",
-                style: globalTextStyle(fontSize: 16),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(
-                "delete this chat?",
-                style: globalTextStyle(fontSize: 16),
-              ),
-              const SizedBox(
-                height: 35,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
+        content: SingleChildScrollView(  // Added SingleChildScrollView to prevent overflow
+          child: SizedBox(
+            // Remove hardcoded height to let the dialog adjust its height dynamically
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,  // Use min to allow the Column to shrink based on content
+              children: [
+                SizedBox(
+                  height: 20.h,
+                ),
+                Text(
+                  "Are you sure that you would like to delete this chat? ",
+                  style: globalTextStyle(fontSize: 16),
+                  textAlign: TextAlign.center,  // Added text alignment to center the text
+                ),
+                const SizedBox(
+                  height: 35,
+                ),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
                       height: 46.h,
-                      width: 120.w,
+                      width: 100.w, // Add width to keep the buttons aligned
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.purplecolor,
@@ -64,7 +56,7 @@ void deleteChatDialog(BuildContext context) {
                     ),
                     SizedBox(
                       height: 46.h,
-                      width: 120.w,
+                      width: 100.w, // Add width to keep the buttons aligned
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.whiteColor,
@@ -85,8 +77,8 @@ void deleteChatDialog(BuildContext context) {
                     ),
                   ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
