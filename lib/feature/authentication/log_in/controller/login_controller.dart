@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Add this import
 import 'package:sportyo/core/const/app_colors.dart';
+
 import '../../../../core/service_class/network_caller/repository/network_caller.dart';
 import '../../../../core/service_class/network_caller/utility/usrls.dart';
 import '../../../terms_and_condition/screen/terms_and_condition.dart';
@@ -15,7 +18,7 @@ class LogInController extends GetxController {
 
   // Observable boolean for login state
   var isLoginSelected = true.obs;
-  var isLoading = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -28,18 +31,29 @@ class LogInController extends GetxController {
   void toggleLogin(bool value) {
     isLoginSelected.value = value;
   }
-
+  Future<void> saveTokenAndID(String token, String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+    await prefs.setString('user_id', id);
+    // Print token and ID to the console
+    print("Token: $token");
+    print("User ID: $id");
+  }
   Future<void> login() async {
     if (formKey.currentState!.validate()) {
-      isLoading.value = true;
+      EasyLoading.show(status: 'Loading...');
       final Map<String, String> requestBody = {
         'email': emailController.text.trim(),
         'password': passwordController.text.trim(),
       };
+
       try {
         final response =
-            await NetworkCaller().postRequest(Urls.login, body: requestBody);
+        await NetworkCaller().postRequest(Urls.login, body: requestBody);
         if (response.isSuccess) {
+          final token = response.responseData['data']['token'];
+          final userId = response.responseData['data']['id'];
+          await saveTokenAndID(token, userId);
           Get.to(() => const TermsAndCondition());
         } else {
           Get.snackbar(
@@ -59,7 +73,7 @@ class LogInController extends GetxController {
           colorText: Colors.white,
         );
       } finally {
-        isLoading.value = false;
+        EasyLoading.dismiss();
       }
     } else {
       Get.snackbar(
@@ -71,11 +85,11 @@ class LogInController extends GetxController {
       );
     }
   }
-@override
+
+  @override
   void dispose() {
-  emailController.dispose();
-  passwordController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
-
 }
