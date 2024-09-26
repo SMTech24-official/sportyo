@@ -38,14 +38,12 @@ class Event extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 14.w),
-              GestureDetector(
-                onTap: () {
-                  showFilterDialog(context);
-                },
+              InkWell(
+                onTap: () => showFilterDialog(context),
                 child: Image.asset(
                   IconsPath.filter,
-                  height: 16.h,
-                  width: 16.w,
+                  height: 18.h,
+                  width: 18.w,
                 ),
               ),
             ],

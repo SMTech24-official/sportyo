@@ -24,11 +24,11 @@ class EventController extends GetxController {
     eventController.clear();
     dateFromController.clear();
     dateToController.clear();
-    country.value = '';
-    sport.value = '';
-    event.value = '';
-    dateFrom.value = '';
-    dateTo.value = '';
+    // country.value = '';
+    // sport.value = '';
+    // event.value = '';
+    // dateFrom.value = '';
+    // dateTo.value = '';
   }
 
   // Method to apply the filters and close the dialog
@@ -239,13 +239,13 @@ class EventController extends GetxController {
     'Zimbabwe',
   ];
   @override
-  void onClose() {
+  void dispose() {
     searchController.dispose();
     countryController.dispose();
     sportController.dispose();
     eventController.dispose();
     dateFromController.dispose();
     dateToController.dispose();
-    super.onClose();
+    super.dispose();
   }
 }

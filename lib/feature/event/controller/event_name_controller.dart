@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sportyo/feature/event/screen/find_partners_for_event.dart';
 
+import '../../../core/const/app_colors.dart';
+
 class EventNameController extends GetxController {
   final TextEditingController dateTEController = TextEditingController();
   final TextEditingController distanceTEController = TextEditingController();
@@ -10,7 +12,7 @@ class EventNameController extends GetxController {
 
   // Method to handle navigation logic
   void findPartner() {
-    Get.to(()=> const FindPartnersForEvent());
+    Get.to(()=>  FindPartnersForEvent());
   }
   // Method to validate the predicted time input
   bool validatePredictedTime(String time) {
@@ -31,7 +33,7 @@ class EventNameController extends GetxController {
         'Invalid Input',
         'Please enter a valid time in HH:MM format.',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent,
+        backgroundColor:  AppColors.primaryColor,
         colorText: Colors.white,
       );
     }
@@ -46,7 +48,6 @@ class EventNameController extends GetxController {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     dateTEController.dispose();
     distanceTEController.dispose();
