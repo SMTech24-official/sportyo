@@ -102,7 +102,7 @@ void showAddSportDialog(BuildContext context) {
                       width: 120.w,
                       child: ElevatedButton(
                         onPressed: () {
-                          controller.saveSport();
+                          //controller.saveSport();
                           Get.back();
                         },
                         child: Text(

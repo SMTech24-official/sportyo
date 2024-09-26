@@ -512,7 +512,7 @@ class ProfileScreen extends StatelessWidget {
                                   final sport = controller.savedSports[index];
                                   return InkWell(
                                     onTap: () {
-                                      controller.editSport(index);
+                                      //controller.editSport(index);
                                       showAddSportDialog(context);
                                     },
                                     child: Container(
@@ -531,7 +531,7 @@ class ProfileScreen extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text("${sport['sport']}"),
+                                            Text("${sport.sportsName}"),
                                             Container(
                                               height: 25,
                                               decoration: BoxDecoration(
@@ -547,8 +547,7 @@ class ProfileScreen extends StatelessWidget {
                                                   padding: const EdgeInsets
                                                       .symmetric(
                                                       horizontal: 10),
-                                                  child:
-                                                      Text("${sport['level']}"),
+                                                  child: Text("${sport.level}"),
                                                 ),
                                               ),
                                             )
