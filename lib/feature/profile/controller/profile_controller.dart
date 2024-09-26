@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
+import '../model/sports_model.dart';
+
 class ProfileController extends GetxController {
   final formKey = GlobalKey<FormState>();
   var imageFile = Rx<File?>(null);
@@ -26,7 +28,7 @@ class ProfileController extends GetxController {
   RxBool genderRestriction = false.obs;
   RxString selectedSport = ''.obs;
   RxString selectedLevel = ''.obs;
-  RxList<Map<String, String>> savedSports = <Map<String, String>>[].obs;
+  RxList<SportsDetail> savedSports = <SportsDetail>[].obs;
   RxInt editingIndex = (-1).obs;
 
   List<String> sports = [
@@ -74,13 +76,13 @@ class ProfileController extends GetxController {
       EasyLoading.show(status: 'Loading...');
 
       final url = Uri.parse(
-          'https://sports-app-alpha.vercel.app/api/v1/users/66f537e7857b7a52a58718ab');
+          'https://sports-app-alpha.vercel.app/api/v1/users/66f54110233a442a7afdc80d');
 
       final response = await http.get(
         url,
         headers: {
           'Authorization':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjNmNjc3ZGE5ZWJlMDkyOTFiYTI1YiIsIm5hbWUiOiJyYWhhdCIsImVtYWlsIjoicmFoYXRAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3MjcyNjQ0MzcsImV4cCI6MTcyOTg1NjQzN30.so5QOC6zUq3mGHhAt5zjAlaAz-ycbnSL2EMJ5QNpGdA',
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjU0MTEwMjMzYTQ0MmE3YWZkYzgwZCIsImVtYWlsIjoicmFoYXQxQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI3MzQ5MDU3LCJleHAiOjE3Mjk5NDEwNTd9.2tXFzIN2dl8uilA18xBMHkrZOjY1S9wmO-9tYPajOgg',
         },
       );
       if (kDebugMode) {
@@ -120,6 +122,18 @@ class ProfileController extends GetxController {
               userData['profileImage'].isNotEmpty) {
             userProfileImage.value = userData['profileImage'];
           }
+          if (userData['SportsDetails'] != null &&
+              (userData['SportsDetails'] as List).isNotEmpty) {
+            // Map the fetched sports data to the SportsDetail model
+            savedSports.assignAll(
+              (userData['SportsDetails'] as List)
+                  .map((sportJson) => SportsDetail.fromJson(sportJson))
+                  .toList(),
+            );
+          } else {
+            savedSports
+                .clear(); // Ensure the list is cleared if no sports data is available
+          }
         } else {
           EasyLoading.showError(jsonData['message']);
         }
@@ -130,6 +144,7 @@ class ProfileController extends GetxController {
       EasyLoading.showError('Failed to fetch user profile');
     } finally {
       EasyLoading.dismiss();
+      print("Saved Sports: ${savedSports.toString()}");
     }
   }
 
@@ -178,29 +193,29 @@ class ProfileController extends GetxController {
     genderRestriction.value = !genderRestriction.value;
   }
 
-  void saveSport() {
-    if (selectedSport.isNotEmpty && selectedLevel.isNotEmpty) {
-      if (editingIndex.value == -1) {
-        // Add new sport
-        savedSports
-            .add({'sport': selectedSport.value, 'level': selectedLevel.value});
-      } else {
-        // Edit existing sport
-        savedSports[editingIndex.value] = {
-          'sport': selectedSport.value,
-          'level': selectedLevel.value
-        };
-        editingIndex.value = -1;
-      }
-      clearSelections();
-    }
-  }
+  // void saveSport() {
+  //   if (selectedSport.isNotEmpty && selectedLevel.isNotEmpty) {
+  //     if (editingIndex.value == -1) {
+  //       // Add new sport
+  //       savedSports
+  //           .add({'sport': selectedSport.value, 'level': selectedLevel.value});
+  //     } else {
+  //       // Edit existing sport
+  //       savedSports[editingIndex.value] = {
+  //         'sport': selectedSport.value,
+  //         'level': selectedLevel.value
+  //       };
+  //       editingIndex.value = -1;
+  //     }
+  //     clearSelections();
+  //   }
+  // }
 
-  void editSport(int index) {
-    editingIndex.value = index;
-    selectedSport.value = savedSports[index]['sport']!;
-    selectedLevel.value = savedSports[index]['level']!;
-  }
+  // void editSport(int index) {
+  //   editingIndex.value = index;
+  //   selectedSport.value = savedSports[index]['sport']!;
+  //   selectedLevel.value = savedSports[index]['level']!;
+  // }
 
   void clearSelections() {
     selectedSport.value = '';
