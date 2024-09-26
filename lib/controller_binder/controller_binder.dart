@@ -4,6 +4,7 @@ import 'package:sportyo/feature/authentication/sing_in/controller/create_account
 import 'package:sportyo/feature/event/controller/event_controller.dart';
 
 import '../feature/event/controller/event_name_controller.dart';
+import '../feature/event/controller/find_partners_for_event_controller.dart';
 
 class ControllerBinder extends Bindings {
   @override
@@ -23,6 +24,10 @@ class ControllerBinder extends Bindings {
 
     Get.lazyPut<EventNameController>(
       () => EventNameController(),
+      fenix: true,
+    );
+    Get.lazyPut<FindPartnersForEventController>(
+      () => FindPartnersForEventController(),
       fenix: true,
     );
   }

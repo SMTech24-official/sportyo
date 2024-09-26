@@ -209,6 +209,7 @@ void showFilterDialog(BuildContext context) {
               // Save and Cancel buttons
               CustomButtonContainer(
                 save: () {
+                  eventController.clearFilters();
                   Get.back();
                 },
                 cancel: () {

@@ -10,13 +10,12 @@ import '../widgets/show_finish_time_dialog.dart';
 import '../../../core/global_widegts/customTextField.dart';
 
 class EventName extends StatelessWidget {
-  EventName({super.key});
-
-  // Initialize the controller
+   EventName({super.key});
+  final EventNameController eventNameController = Get.find<EventNameController>();
 
   @override
   Widget build(BuildContext context) {
-    final EventNameController eventNameController = Get.find();
+
     return WillPopScope(
       onWillPop: () async {
         eventNameController.resetValidation();
