@@ -52,7 +52,7 @@ class NetworkCaller {
     final decodedResponse = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      if (decodedResponse['status'] == 'success') {
+      if (decodedResponse['success'] == true) { // Change this to boolean check
         return ResponseData(
           isSuccess: true,
           statusCode: response.statusCode,
@@ -63,7 +63,7 @@ class NetworkCaller {
           isSuccess: false,
           statusCode: response.statusCode,
           responseData: decodedResponse,
-          errorMessage: decodedResponse['data'] ?? 'Something went wrong',
+          errorMessage: decodedResponse['data']?.toString() ?? 'Something went wrong', // Ensure it is a string
         );
       }
     } else if (response.statusCode == 401) {
@@ -78,10 +78,11 @@ class NetworkCaller {
         isSuccess: false,
         statusCode: response.statusCode,
         responseData: decodedResponse,
-        errorMessage: decodedResponse['data'] ?? 'Something went wrong',
+        errorMessage: decodedResponse['data']?.toString() ?? 'Something went wrong', // Ensure it is a string
       );
     }
   }
+
 
   ResponseData _handleError(dynamic error) {
     log('Request Error: $error');
