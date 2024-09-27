@@ -119,6 +119,16 @@ class ProfileScreen extends StatelessWidget {
                           borderSide: const BorderSide(
                               color: AppColors.blackColor, width: 1.0),
                         ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1.0),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1.0),
+                        ),
                       ),
                       style: const TextStyle(color: AppColors.blackColor),
                       validator: (value) {
@@ -164,6 +174,16 @@ class ProfileScreen extends StatelessWidget {
                             color: AppColors.blackColor,
                             width: 1.0,
                           ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1.0),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1.0),
                         ),
                       ),
                       style: const TextStyle(color: AppColors.blackColor),
@@ -214,6 +234,16 @@ class ProfileScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                             borderSide: const BorderSide(
                                 color: AppColors.blackColor, width: 1.0),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                const BorderSide(color: Colors.red, width: 1.0),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                const BorderSide(color: Colors.red, width: 1.0),
                           ),
                         ),
                         value: controller.selectedGender.value.isEmpty
@@ -462,6 +492,16 @@ class ProfileScreen extends StatelessWidget {
                           borderSide: const BorderSide(
                               color: AppColors.blackColor, width: 1.0),
                         ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1.0),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1.0),
+                        ),
                       ),
                       style: const TextStyle(color: AppColors.blackColor),
                       validator: (value) {
@@ -512,8 +552,7 @@ class ProfileScreen extends StatelessWidget {
                                   final sport = controller.savedSports[index];
                                   return InkWell(
                                     onTap: () {
-                                      //controller.editSport(index);
-                                      showAddSportDialog(context);
+                                      showAddSportDialog(context, sport: sport);
                                     },
                                     child: Container(
                                       margin: const EdgeInsets.only(bottom: 13),
@@ -590,7 +629,9 @@ class ProfileScreen extends StatelessWidget {
                       height: 37,
                       width: 107,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          controller.updateUserProfile();
+                        },
                         child: Text(
                           "Update",
                           style: globalTextStyle(

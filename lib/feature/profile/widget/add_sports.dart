@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:sportyo/core/const/app_colors.dart';
-import 'package:sportyo/feature/profile/widget/global_text_style.dart';
 
+import '../../../core/const/app_colors.dart';
 import '../controller/profile_controller.dart';
+import '../model/sports_model.dart';
+import 'global_text_style.dart';
 
-void showAddSportDialog(BuildContext context) {
+void showAddSportDialog(BuildContext context, {SportsDetail? sport}) {
   final ProfileController controller = Get.find();
+
+  // If a sport is passed, set it for editing
+  if (sport != null) {
+    controller.selectedSport.value = sport.sportsName ?? '';
+    controller.selectedLevel.value = sport.level ?? '';
+    controller.editingIndex.value = controller.savedSports.indexOf(sport);
+  } else {
+    // Clear previous selections for adding new sport
+    controller.clearSelections();
+  }
 
   showDialog(
     context: context,
@@ -102,8 +113,7 @@ void showAddSportDialog(BuildContext context) {
                       width: 120.w,
                       child: ElevatedButton(
                         onPressed: () {
-                          //controller.saveSport();
-                          Get.back();
+                          controller.addOrUpdateSport(context);
                         },
                         child: Text(
                           'Save',
@@ -120,8 +130,9 @@ void showAddSportDialog(BuildContext context) {
                       width: 120.w,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.whiteColor,
-                            side: BorderSide(color: AppColors.purplecolor)),
+                          backgroundColor: AppColors.whiteColor,
+                          side: BorderSide(color: AppColors.purplecolor),
+                        ),
                         onPressed: () {
                           controller.clearSelections();
                           Get.back();

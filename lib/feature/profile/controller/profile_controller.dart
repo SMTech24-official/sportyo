@@ -6,6 +6,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sportyo/core/service_class/network_caller/utility/usrls.dart';
+import 'package:sportyo/feature/authentication/log_in/screen/log_in.dart';
 
 import '../model/sports_model.dart';
 
@@ -14,7 +17,125 @@ class ProfileController extends GetxController {
   var imageFile = Rx<File?>(null);
   var userProfileImage = ''.obs;
   final List<String> languages = [
-    // List of languages here...
+    "Chinese",
+    "Mandarin",
+    "Spanish",
+    "English",
+    "Arabic",
+    "Hindi",
+    "Portuguese",
+    "Bengali",
+    "Brazilian Portuguese",
+    "Russian",
+    "Japanese",
+    "Punjabi",
+    "German",
+    "Javanese",
+    "Wu",
+    "Malay",
+    "Korean",
+    "Vietnamese",
+    "Telugu",
+    "French",
+    "Marathi",
+    "Turkish",
+    "Urdu",
+    "Tamil",
+    "Italian",
+    "Cantonese",
+    "Persian",
+    "Gujarati",
+    "Indonesian",
+    "Bhojpuri",
+    "Polish",
+    "Kurdish Languages",
+    "Pashto",
+    "Kannada",
+    "Sundanese",
+    "Malayalam",
+    "Maithili",
+    "Hausa",
+    "Odia",
+    "Burmese",
+    "Ukrainian",
+    "Yoruba",
+    "Tagalog",
+    "Uzbek",
+    "Fula",
+    "Amharic",
+    "Sindhi",
+    "Igbo",
+    "Romanian",
+    "Oromo",
+    "Azerbaijani",
+    "Dutch",
+    "Cebuano",
+    "Thai",
+    "Lao",
+    "Serbo-Croatian",
+    "Malagasy",
+    "Nepalese",
+    "Sinhala",
+    "Khmer",
+    "Taiwanese",
+    "Swahili",
+    "Madurese",
+    "Somali",
+    "Assamese",
+    "Hungarian",
+    "Greek",
+    "Kazakh",
+    "Zulu",
+    "Afrikaans",
+    "Haitian Creole",
+    "Czech",
+    "Ilokano",
+    "Dari",
+    "Swedish",
+    "Quechua",
+    "Kirundi",
+    "Serbian",
+    "Uyghur",
+    "Hiligaynon",
+    "Xhosa",
+    "Albanian",
+    "Catalan",
+    "Belarusian",
+    "Bulgarian",
+    "Armenian",
+    "Flemish",
+    "Mongolian",
+    "Danish",
+    "Croatian",
+    "Tatar",
+    "Hebrew",
+    "Slovak",
+    "Finnish",
+    "Norwegian",
+    "Georgian",
+    "Kyrgyz",
+    "Wolof",
+    "Lithuanian",
+    "Hmong",
+    "Bosnian",
+    "Slovenian",
+    "Macedonian",
+    "Galician",
+    "Latvian",
+    "Yiddish",
+    "Chechen",
+    "Estonian",
+    "Dinka",
+    "Pangasinense",
+    "Tibetan",
+    "Sardinian",
+    "Basque",
+    "Maltese",
+    "Welsh",
+    "Luxembourgish",
+    "Icelandic",
+    "Tahitian",
+    "Irish",
   ];
 
   var filteredLanguages = <String>[].obs;
@@ -73,78 +194,87 @@ class ProfileController extends GetxController {
 
   Future<void> fetchUserProfile() async {
     try {
-      EasyLoading.show(status: 'Loading...');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      var userId = prefs.getString("user_id");
+      if (token!.isNotEmpty) {
+        EasyLoading.show(status: 'Loading...');
 
-      final url = Uri.parse(
-          'https://sports-app-alpha.vercel.app/api/v1/users/66f54110233a442a7afdc80d');
+        final url = Uri.parse('${Urls.baseUrl}/users/$userId');
 
-      final response = await http.get(
-        url,
-        headers: {
-          'Authorization':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjU0MTEwMjMzYTQ0MmE3YWZkYzgwZCIsImVtYWlsIjoicmFoYXQxQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI3MzQ5MDU3LCJleHAiOjE3Mjk5NDEwNTd9.2tXFzIN2dl8uilA18xBMHkrZOjY1S9wmO-9tYPajOgg',
-        },
-      );
-      if (kDebugMode) {
-        print(response.body);
-      }
-      if (response.statusCode == 200) {
-        var jsonData = jsonDecode(response.body);
+        final response = await http.get(
+          url,
+          headers: {'Authorization': token},
+        );
+        if (kDebugMode) {
+          print(response.body);
+        }
+        if (response.statusCode == 200) {
+          var jsonData = jsonDecode(response.body);
 
-        if (jsonData['success'] == true) {
-          var userData = jsonData['data'];
+          if (jsonData['success'] == true) {
+            var userData = jsonData['data'];
 
-          // Update name if available
-          if (userData['firstName'] != null &&
-              userData['firstName'].isNotEmpty) {
-            nameController.text = userData['firstName'];
-          }
+            // Update name if available
+            if (userData['firstName'] != null &&
+                userData['firstName'].isNotEmpty) {
+              nameController.text = userData['firstName'];
+            }
+            if (userData['dateOfBirth'] != null &&
+                userData['dateOfBirth'].isNotEmpty) {
+              dateofbirthController.text = userData['dateOfBirth'];
+            }
 
-          // Update selected gender
-          selectedGender.value = userData['gender'] ?? '';
+            // Update selected gender
+            selectedGender.value = userData['gender'] ?? '';
 
-          // Convert language string to list and assign
-          if (userData['language'] != null && userData['language'].isNotEmpty) {
-            selectedLanguages.assignAll(userData['language'].split(','));
-          }
+            // Convert language string to list and assign
+            if (userData['language'] != null &&
+                userData['language'].isNotEmpty) {
+              selectedLanguages.assignAll(userData['language'].split(','));
+            }
 
-          // Update incognito and gender restriction status
-          incognito.value = userData['incognito'] ?? false;
-          genderRestriction.value = userData['genderRestriction'] ?? false;
+            // Update incognito and gender restriction status
+            incognito.value = userData['incognito'] ?? false;
+            genderRestriction.value = userData['genderRestriction'] ?? false;
 
-          // Update bio if available
-          if (userData['bio'] != null && userData['bio'].isNotEmpty) {
-            bioController.text = userData['bio'];
-          }
+            // Update bio if available
+            if (userData['bio'] != null && userData['bio'].isNotEmpty) {
+              bioController.text = userData['bio'];
+            }
 
-          // Update userProfileImage if not null or empty
-          if (userData['profileImage'] != null &&
-              userData['profileImage'].isNotEmpty) {
-            userProfileImage.value = userData['profileImage'];
-          }
-          if (userData['SportsDetails'] != null &&
-              (userData['SportsDetails'] as List).isNotEmpty) {
-            // Map the fetched sports data to the SportsDetail model
-            savedSports.assignAll(
-              (userData['SportsDetails'] as List)
-                  .map((sportJson) => SportsDetail.fromJson(sportJson))
-                  .toList(),
-            );
+            // Update userProfileImage if not null or empty
+            if (userData['userProfileImage'] != null &&
+                userData['userProfileImage'].isNotEmpty) {
+              userProfileImage.value = userData['userProfileImage'];
+            }
+            if (userData['SportsDetails'] != null &&
+                (userData['SportsDetails'] as List).isNotEmpty) {
+              // Map the fetched sports data to the SportsDetail model
+              savedSports.assignAll(
+                (userData['SportsDetails'] as List)
+                    .map((sportJson) => SportsDetail.fromJson(sportJson))
+                    .toList(),
+              );
+            } else {
+              savedSports.clear();
+            }
           } else {
-            savedSports
-                .clear(); // Ensure the list is cleared if no sports data is available
+            EasyLoading.showError(jsonData['message']);
           }
         } else {
-          EasyLoading.showError(jsonData['message']);
+          EasyLoading.showError('Failed to load profile data');
         }
       } else {
-        EasyLoading.showError('Failed to load profile data');
+        Get.offAll(() => const LogIn());
       }
     } catch (e) {
       EasyLoading.showError('Failed to fetch user profile');
     } finally {
       EasyLoading.dismiss();
-      print("Saved Sports: ${savedSports.toString()}");
+      if (kDebugMode) {
+        print("Saved Sports: ${savedSports.toString()}");
+      }
     }
   }
 
@@ -193,33 +323,221 @@ class ProfileController extends GetxController {
     genderRestriction.value = !genderRestriction.value;
   }
 
-  // void saveSport() {
-  //   if (selectedSport.isNotEmpty && selectedLevel.isNotEmpty) {
-  //     if (editingIndex.value == -1) {
-  //       // Add new sport
-  //       savedSports
-  //           .add({'sport': selectedSport.value, 'level': selectedLevel.value});
-  //     } else {
-  //       // Edit existing sport
-  //       savedSports[editingIndex.value] = {
-  //         'sport': selectedSport.value,
-  //         'level': selectedLevel.value
-  //       };
-  //       editingIndex.value = -1;
-  //     }
-  //     clearSelections();
-  //   }
-  // }
+  void addOrUpdateSport(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("token");
+    var userId = prefs.getString("user_id");
 
-  // void editSport(int index) {
-  //   editingIndex.value = index;
-  //   selectedSport.value = savedSports[index]['sport']!;
-  //   selectedLevel.value = savedSports[index]['level']!;
-  // }
+    if (selectedSport.isNotEmpty && selectedLevel.isNotEmpty) {
+      // Show loading indicator
+      EasyLoading.show(status: 'Loading...');
 
+      // Prepare the request data
+      String apiUrl = "${Urls.baseUrl}/sports";
+      Map<String, dynamic> requestData = {
+        "userId": userId,
+        "sportsName": selectedSport.toString(),
+        "level": selectedLevel.toString()
+      };
+
+      try {
+        var response;
+
+        // If editingIndex is -1, add new sport, otherwise update
+        if (editingIndex.value == -1) {
+          print("post");
+          // Add new sport (POST request)
+
+          response = await http.post(
+            Uri.parse(apiUrl),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token.toString(),
+            },
+            body: jsonEncode(requestData),
+          );
+        } else {
+          print("put");
+          // Update existing sport (PUT request)
+          String sportId = savedSports[editingIndex.value].id!;
+          String updateUrl = "$apiUrl/$sportId";
+
+          response = await http.put(
+            Uri.parse(updateUrl),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token.toString(),
+            },
+            body: jsonEncode(requestData),
+          );
+        }
+
+        if (kDebugMode) {
+          print(response.body);
+        }
+
+        // Check if the response status is 200
+        if (response.statusCode == 200) {
+          var responseData = jsonDecode(response.body);
+
+          if (responseData['success'] == true) {
+            selectedSport.value = '';
+            selectedLevel.value = '';
+
+            // If updating, update the existing sport in savedSports
+            if (editingIndex.value != -1) {
+              savedSports[editingIndex.value] =
+                  SportsDetail.fromJson(responseData['data']);
+            } else {
+              // Add the new sport to savedSports
+              savedSports.add(SportsDetail.fromJson(responseData['data']));
+            }
+
+            // Clear the form and reset editing index
+            updateProfile();
+            EasyLoading.showSuccess(responseData['message']);
+            Get.back();
+          } else {
+            EasyLoading.showError('Failed: ${responseData['message']}');
+          }
+        } else {
+          var responseData = jsonDecode(response.body);
+          EasyLoading.showError('Failed: ${responseData['message']}');
+        }
+      } catch (e) {
+        EasyLoading.showError('Something went wrong');
+        if (kDebugMode) {
+          print('Exception: $e');
+        }
+      } finally {
+        EasyLoading.dismiss();
+      }
+    } else {
+      EasyLoading.showError('Please select a sport and level');
+    }
+  }
+
+  // Function to set sport for editing
+  void setSportForEdit(int index) {
+    selectedSport.value = savedSports[index].sportsName!;
+    selectedLevel.value = savedSports[index].level!;
+    editingIndex.value = index;
+  }
+
+  // Function to clear selection when canceling
   void clearSelections() {
     selectedSport.value = '';
     selectedLevel.value = '';
     editingIndex.value = -1;
+  }
+
+  Future<void> updateProfile() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      var userId = prefs.getString("user_id");
+
+      final url = Uri.parse('${Urls.baseUrl}/users/$userId');
+
+      final response = await http.get(
+        url,
+        headers: {'Authorization': token.toString()},
+      );
+      if (kDebugMode) {
+        print(response.body);
+      }
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+
+        if (jsonData['success'] == true) {
+          var userData = jsonData['data'];
+
+          if (userData['SportsDetails'] != null &&
+              (userData['SportsDetails'] as List).isNotEmpty) {
+            // Map the fetched sports data to the SportsDetail model
+            savedSports.assignAll(
+              (userData['SportsDetails'] as List)
+                  .map((sportJson) => SportsDetail.fromJson(sportJson))
+                  .toList(),
+            );
+          } else {
+            savedSports.clear();
+          }
+        } else {}
+      } else {
+        EasyLoading.showError('Failed to load profile data');
+      }
+    } catch (e) {
+      EasyLoading.showError('Failed to update user profile');
+    }
+  }
+
+  //update data
+  Future<void> updateUserProfile() async {
+    print("ok");
+    if (formKey.currentState!.validate()) {
+      try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        var token = prefs.getString("token");
+        var userId = prefs.getString("user_id");
+
+        if (token != null && userId != null) {
+          // Show loading indicator
+          EasyLoading.show(status: 'Updating Profile...');
+
+          // Prepare the API URL
+          final url = Uri.parse('${Urls.baseUrl}/users/$userId');
+
+          // Prepare the request body
+          Map<String, dynamic> requestBody = {
+            "firstName": nameController.text.trim(),
+            "dateOfBirth": dateofbirthController.text.trim(),
+            "gender": selectedGender.value,
+            "language": selectedLanguages.join(','),
+            "genderRestriction": genderRestriction.value,
+            "incognito": incognito.value,
+            "bio": bioController.text.trim(),
+            "userProfileImage": imageFile.value != null
+                ? base64Encode(imageFile.value!.readAsBytesSync())
+                : null,
+          };
+
+          // Make the PUT request
+          final response = await http.put(
+            url,
+            headers: {
+              'Authorization': token,
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode(requestBody),
+          );
+          print(response.body);
+          if (response.statusCode == 200) {
+            var jsonResponse = jsonDecode(response.body);
+            if (jsonResponse['success']) {
+              EasyLoading.showSuccess('Profile updated successfully!');
+              refreshdata(); // Call this to refresh UI data
+            } else {
+              EasyLoading.showError('Failed: ${jsonResponse['message']}');
+            }
+          } else {
+            EasyLoading.showError(
+                'Failed to update profile. Please try again.');
+          }
+        } else {
+          EasyLoading.showError('Authentication failed. Please log in again.');
+          Get.offAll(() => const LogIn());
+        }
+      } catch (e) {
+        EasyLoading.showError('Something went wrong. Please try again.');
+        if (kDebugMode) {
+          print('Error: $e');
+        }
+      } finally {
+        EasyLoading.dismiss();
+      }
+    } else {
+      EasyLoading.showError('Please fill in all required fields.');
+    }
   }
 }
