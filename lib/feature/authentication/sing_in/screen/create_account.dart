@@ -19,7 +19,7 @@ class CreateAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: controller.formKey,
+      key: controller.createAccountKey,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +71,7 @@ class CreateAccount extends StatelessWidget {
             ),
             SizedBox(height: 20.h),
             CustomTextFieldForAuth(
-              labelText: AppTexts.password,
+              labelText: AppTexts.confirmPassword,
               isPasswordField: true,
               controller: controller.confirmPasswordController,
             ),

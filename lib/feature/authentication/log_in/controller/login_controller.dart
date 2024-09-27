@@ -41,6 +41,8 @@ class LogInController extends GetxController {
           String? userId = response.responseData['id'];
           if (token != null && userId != null) {
             await AuthService.saveToken(token, userId);
+            emailController.clear();
+            passwordController.clear();
             Get.to(() => const TermsAndCondition());
           } else {
             Get.snackbar(
