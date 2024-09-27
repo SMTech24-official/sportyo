@@ -27,29 +27,41 @@ class LogInController extends GetxController {
   Future<void> login() async {
     if (formKey.currentState!.validate()) {
       EasyLoading.show(status: 'Loading...');
+
       final Map<String, String> requestBody = {
         'email': emailController.text.trim(),
         'password': passwordController.text.trim(),
       };
 
       try {
-        final response =
-        await NetworkCaller().postRequest(Urls.login, body: requestBody);
+        final response = await NetworkCaller().postRequest(Urls.login, body: requestBody);
         if (response.isSuccess) {
-          final token = response.responseData['data']['token'];
-          final userId = response.responseData['data']['id'];
-          await  AuthService.saveToken(token, userId);
-          Get.to(() => const TermsAndCondition());
+          // Check if token and userId are correctly retrieved
+          String? token = response.responseData['token'];
+          String? userId = response.responseData['id'];
+          if (token != null && userId != null) {
+            await AuthService.saveToken(token, userId);
+            Get.to(() => const TermsAndCondition());
+          } else {
+            Get.snackbar(
+              'Login Failed',
+              'Invalid token or user ID in response.',
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: AppColors.primaryColor,
+              colorText: Colors.white,
+            );
+          }
         } else {
           Get.snackbar(
             'Login Failed',
-            response.errorMessage,
+            response.errorMessage ?? 'Unknown error occurred.',
             snackPosition: SnackPosition.TOP,
             backgroundColor: AppColors.primaryColor,
             colorText: Colors.white,
           );
         }
       } catch (e) {
+        print('Error during login: $e');
         Get.snackbar(
           'Error',
           'Something went wrong. Please try again later.',
@@ -70,6 +82,7 @@ class LogInController extends GetxController {
       );
     }
   }
+
 
   @override
   void dispose() {
