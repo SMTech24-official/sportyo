@@ -7,6 +7,6 @@ class ResponseData {
   ResponseData(
       {required this.isSuccess,
       required this.statusCode,
-      this.errorMessage = 'Something went wrong!',
+      required this.errorMessage ,
       required this.responseData});
 }
