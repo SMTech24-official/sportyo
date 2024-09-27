@@ -6,6 +6,7 @@ import 'package:sportyo/core/const/app_colors.dart';
 import 'package:sportyo/core/const/app_texts.dart';
 import 'package:sportyo/core/const/icons_path.dart';
 import 'package:sportyo/core/global_widegts/authentication/custom_bottom.dart';
+import 'package:sportyo/feature/authentication/log_in/widget/show_forgot_password_dialog.dart';
 
 import '../../../../core/global_widegts/authentication/custom_sign_in_bottom.dart';
 import '../../../../core/global_widegts/authentication/custom_text_field.dart';
@@ -108,14 +109,19 @@ class LogIn extends StatelessWidget {
                                 onPressed: () {},
                               ),
                               SizedBox(height: 20.h),
-                              Center(
-                                child: Text(
-                                  AppTexts.forgot,
-                                  style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: const Color(0xff95a0ab),
+                              GestureDetector(
+                                onTap:(){
+                                  showForgotPasswordDialog(context);
+                                },
+                                child: Center(
+                                  child: Text(
+                                    AppTexts.forgot,
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(0xff95a0ab),
+                                      ),
                                     ),
                                   ),
                                 ),

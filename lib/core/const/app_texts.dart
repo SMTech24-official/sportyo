@@ -8,6 +8,7 @@ class AppTexts {
   static const String fillOut = "Fill out the information below in order to access your account.";
   static const String email = "Email";
   static const String password = "Password";
+  static const String confirmPassword = "Confirm Password";
   static const String signIn = "Sign In";
   static const String orSing = "Or sign in with";
   static const String forgot = "Forgot Password?";
