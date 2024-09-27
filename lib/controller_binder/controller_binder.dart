@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:sportyo/feature/authentication/log_in/controller/login_controller.dart';
 import 'package:sportyo/feature/authentication/sing_in/controller/create_account.dart';
 import 'package:sportyo/feature/event/controller/event_controller.dart';
+import 'package:sportyo/feature/splash_screen/controller/splash_screen_controller.dart';
 
 import '../feature/event/controller/event_name_controller.dart';
 import '../feature/event/controller/find_partners_for_event_controller.dart';
@@ -28,6 +29,10 @@ class ControllerBinder extends Bindings {
     );
     Get.lazyPut<FindPartnersForEventController>(
       () => FindPartnersForEventController(),
+      fenix: true,
+    );
+    Get.lazyPut<SplashController>(
+          () => SplashController(),
       fenix: true,
     );
   }
