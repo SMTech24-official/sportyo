@@ -15,7 +15,7 @@ import 'package:sportyo/feature/authentication/log_in/screen/log_in.dart';
 import '../model/sports_model.dart';
 
 class ProfileController extends GetxController {
-  final formKey = GlobalKey<FormState>();
+  final profileKey = GlobalKey<FormState>();
   var imageFile = Rx<File?>(null);
   var userProfileImage = ''.obs;
   final List<String> languages = [
@@ -198,7 +198,9 @@ class ProfileController extends GetxController {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
-      var userId = prefs.getString("user_id");
+      print(token);
+      var userId = prefs.getString("userId");
+      print(userId);
       if (token!.isNotEmpty) {
         EasyLoading.show(status: 'Loading...');
 
@@ -328,7 +330,7 @@ class ProfileController extends GetxController {
   void addOrUpdateSport(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
-    var userId = prefs.getString("user_id");
+    var userId = prefs.getString("userId");
 
     if (selectedSport.isNotEmpty && selectedLevel.isNotEmpty) {
       // Show loading indicator
@@ -441,7 +443,7 @@ class ProfileController extends GetxController {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
-      var userId = prefs.getString("user_id");
+      var userId = prefs.getString("userId");
 
       final url = Uri.parse('${Urls.baseUrl}/users/$userId');
 
@@ -483,11 +485,11 @@ class ProfileController extends GetxController {
     if (kDebugMode) {
       print("ok");
     }
-    if (formKey.currentState!.validate()) {
+    if (profileKey.currentState!.validate()) {
       try {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var token = prefs.getString("token");
-        var userId = prefs.getString("user_id");
+        var userId = prefs.getString("userId");
 
         if (token != null && userId != null) {
           // Show loading indicator
