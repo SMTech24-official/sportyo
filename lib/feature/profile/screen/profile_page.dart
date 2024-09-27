@@ -25,7 +25,7 @@ class ProfileScreen extends StatelessWidget {
           },
           child: SingleChildScrollView(
             child: Form(
-              key: controller.formKey,
+              key: controller.profileKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

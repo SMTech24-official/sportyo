@@ -4,7 +4,7 @@ import 'package:sportyo/feature/authentication/log_in/screen/log_in.dart';
 
 class AuthService {
   static const String tokenKey = 'token';
-  static const String id = 'userId';
+  static const String idKey = 'userId';
   // Check if a token exists in local storage
   static Future<bool> hasToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -16,14 +16,14 @@ class AuthService {
   static Future<void> saveToken(String token, String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(tokenKey, token);
-    await prefs.setString(id, id);
+    await prefs.setString(idKey, id);
   }
 
   // Remove the token from local storage (for logout)
   static Future<void> logoutUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(tokenKey);
-    await prefs.remove(id);
+    await prefs.remove(idKey);
     Get.offAll(() => const LogIn());
   }
 }
