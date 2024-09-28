@@ -21,12 +21,17 @@ class ForgotPasswordController extends GetxController {
     errorMessage.value = '';
     EasyLoading.show(status: "Loading...");
     try {
+      final Map<String, String> requestBody = {
+        'email': email,
+      };
       // Send reset email via network request
-      final response = await NetworkCaller().getRequest(Urls.sendEmail(email));
+      final response = await NetworkCaller().postRequest(Urls.sendEmail,body: requestBody);
 
       // Handle response success
       if (response.isSuccess) {
         EasyLoading.showSuccess('Reset email sent successfully');
+        emailController.clear();
+        Get.back();
       } else {
         EasyLoading.showError('Failed to send reset email. Please try again.');
       }
