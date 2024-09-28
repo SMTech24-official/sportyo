@@ -145,7 +145,9 @@ class FindPartnersForEvent extends StatelessWidget {
                                   SizedBox(width: 10.w),
                                   GestureDetector(
                                     onTap: () {
-                                      Get.to(() => const PartnerDetailsPage());
+                                      Get.to(() => const UserDetailsPage(
+                                            userId: "66f620610f1f3a75bc6d1e2f",
+                                          ));
                                     },
                                     child: Container(
                                       height: 28.h,

@@ -18,7 +18,7 @@ class ProfileController extends GetxController {
   final profileKey = GlobalKey<FormState>();
   //all list and variable
   var imageFile = Rx<File?>(null);
-  var userProfileImage = 'test'.obs;
+  var userProfileImage = ''.obs;
   final List<String> languages = [
     "Chinese",
     "Mandarin",
@@ -519,7 +519,7 @@ class ProfileController extends GetxController {
             "genderRestriction": genderRestriction.value,
             "incognito": incognito.value,
             "bio": bioController.text.trim(),
-            "userProfileImage": ""
+            // "userProfileImage": ""
             // "userProfileImage": imageFile.value != null
             //     ? base64Encode(imageFile.value!.readAsBytesSync())
             //     : null,
