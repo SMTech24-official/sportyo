@@ -6,13 +6,13 @@ import 'package:sportyo/feature/authentication/auth_service/auth_service.dart';
 import '../../../core/const/app_colors.dart';
 import 'global_text_style.dart';
 
-void showConfirmLogoutDialog(BuildContext context) {
+void showDeleteAccountDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.r),
+          borderRadius: BorderRadius.circular(10.r), // Responsive border radius
         ),
         content: SizedBox(
           width: 284.w, // Adjusting width responsively
@@ -21,9 +21,9 @@ void showConfirmLogoutDialog(BuildContext context) {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 20.h),
+              SizedBox(height: 20.h), // Responsive height
               Text(
-                "Are you sure you want to log out?",
+                "Are you sure that you would like to delete your account?",
                 textAlign: TextAlign.center,
                 style: globalTextStyle(fontSize: 16.sp),
               ),

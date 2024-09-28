@@ -16,8 +16,9 @@ import '../model/sports_model.dart';
 
 class ProfileController extends GetxController {
   final profileKey = GlobalKey<FormState>();
+  //all list and variable
   var imageFile = Rx<File?>(null);
-  var userProfileImage = ''.obs;
+  var userProfileImage = 'test'.obs;
   final List<String> languages = [
     "Chinese",
     "Mandarin",
@@ -154,6 +155,7 @@ class ProfileController extends GetxController {
   RxList<SportsDetail> savedSports = <SportsDetail>[].obs;
   RxInt editingIndex = (-1).obs;
 
+  //sports list given by clinet
   List<String> sports = [
     "Running",
     "Cycling",
@@ -174,6 +176,7 @@ class ProfileController extends GetxController {
     fetchUserProfile();
   }
 
+  //redresh method for reload
   void refreshdata() {
     nameController.clear();
     bioController.clear();
@@ -194,13 +197,18 @@ class ProfileController extends GetxController {
     fetchUserProfile();
   }
 
+  //fetch user details and show this in ui to edit or change
   Future<void> fetchUserProfile() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
-      print(token);
+      if (kDebugMode) {
+        print(token);
+      }
       var userId = prefs.getString("userId");
-      print(userId);
+      if (kDebugMode) {
+        print(userId);
+      }
       if (token!.isNotEmpty) {
         EasyLoading.show(status: 'Loading...');
 
@@ -277,11 +285,12 @@ class ProfileController extends GetxController {
     } finally {
       EasyLoading.dismiss();
       if (kDebugMode) {
-        print("Saved Sports: ${savedSports.toString()}");
+        //print("Saved Sports: ${savedSports.toString()}");
       }
     }
   }
 
+  //image picker method
   Future<void> pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -290,6 +299,7 @@ class ProfileController extends GetxController {
     }
   }
 
+  //filter languages from the language list for showing the suggetion
   void filterLanguages(String query) {
     if (query.isEmpty) {
       filteredLanguages.clear();
@@ -327,6 +337,7 @@ class ProfileController extends GetxController {
     genderRestriction.value = !genderRestriction.value;
   }
 
+  //add or update sports
   void addOrUpdateSport(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
@@ -439,6 +450,7 @@ class ProfileController extends GetxController {
     editingIndex.value = -1;
   }
 
+  //update sports list after add or edit
   Future<void> updateProfile() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -480,7 +492,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  //update data
+  //update data method
   Future<void> updateUserProfile() async {
     if (kDebugMode) {
       print("ok");
@@ -507,9 +519,10 @@ class ProfileController extends GetxController {
             "genderRestriction": genderRestriction.value,
             "incognito": incognito.value,
             "bio": bioController.text.trim(),
-            "userProfileImage": imageFile.value != null
-                ? base64Encode(imageFile.value!.readAsBytesSync())
-                : null,
+            "userProfileImage": ""
+            // "userProfileImage": imageFile.value != null
+            //     ? base64Encode(imageFile.value!.readAsBytesSync())
+            //     : null,
           };
 
           // Make the PUT request
@@ -550,6 +563,61 @@ class ProfileController extends GetxController {
       }
     } else {
       EasyLoading.showError('Please fill in all required fields.');
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      var userId = prefs.getString("userId");
+
+      if (token != null && userId != null) {
+        // Show loading indicator
+        EasyLoading.show(status: 'Deleting Profile...');
+
+        // Prepare the API URL
+        final url = Uri.parse('${Urls.baseUrl}/users/$userId');
+
+        // Prepare the request body
+        Map<String, dynamic> requestBody = {
+          "userStatus": "BLOCK",
+        };
+
+        // Make the PUT request
+        final response = await http.put(
+          url,
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(requestBody),
+        );
+        if (kDebugMode) {
+          print(response.body);
+        }
+        if (response.statusCode == 200) {
+          var jsonResponse = jsonDecode(response.body);
+          if (jsonResponse['success']) {
+            EasyLoading.showSuccess('Profile delete successfully!');
+            //navigate to login page
+          } else {
+            EasyLoading.showError('Failed: ${jsonResponse['message']}');
+          }
+        } else {
+          EasyLoading.showError('Failed to delete profile. Please try again.');
+        }
+      } else {
+        EasyLoading.showError('Authentication failed. Please log in again.');
+        Get.offAll(() => const LogIn());
+      }
+    } catch (e) {
+      EasyLoading.showError('Something went wrong. Please try again.');
+      if (kDebugMode) {
+        print('Error: $e');
+      }
+    } finally {
+      EasyLoading.dismiss();
     }
   }
 }

@@ -54,12 +54,14 @@ class ProfileScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(60.r),
                           image: DecorationImage(
                             image: controller.imageFile.value != null
-                                ? FileImage(controller.imageFile.value!)
-                                    as ImageProvider
+                                ? FileImage(
+                                    controller.imageFile.value!,
+                                  ) as ImageProvider
                                 : (controller.userProfileImage.value.isNotEmpty
                                     ? NetworkImage(
                                         controller.userProfileImage.value)
                                     : const AssetImage(ImagePath.profile)),
+                            fit: BoxFit.cover,
                           ),
                         ),
                       );
@@ -653,7 +655,7 @@ class ProfileScreen extends StatelessWidget {
                       width: 107,
                       child: ElevatedButton(
                         onPressed: () {
-                          showDeleteAccountDialog(context);
+                          showConfirmLogoutDialog(context);
                         },
                         child: Text(
                           "Log out",
@@ -685,7 +687,7 @@ class ProfileScreen extends StatelessWidget {
                     alignment: Alignment.center,
                     child: TextButton(
                       onPressed: () {
-                        showDeleteAccountDialog(context);
+                        //showDeleteAccountDialog(context);
                       },
                       child: Text(
                         "Delete my account",
