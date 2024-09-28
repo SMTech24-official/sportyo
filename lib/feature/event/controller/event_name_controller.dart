@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:sportyo/feature/event/screen/find_partners_for_event.dart';
 
 import '../../../core/const/app_colors.dart';
+import '../../../core/service_class/network_caller/repository/network_caller.dart';
+import '../../../core/service_class/network_caller/utility/usrls.dart';
 
 class EventNameController extends GetxController {
   final TextEditingController dateTEController = TextEditingController();
@@ -37,6 +40,7 @@ class EventNameController extends GetxController {
         colorText: Colors.white,
       );
     }
+
   }
 
 
@@ -44,7 +48,25 @@ class EventNameController extends GetxController {
   void resetValidation() {
     isValidate.value = false;
   }
+  //dataLoad methods
+  // final Rx<EventList> _eventList=EventList().obs;
+  // Rx<EventList> get list=>_event;
+  Future<void> featchEventNameData() async {
+    EasyLoading.show(status: "Loading...");
+    try {
+      final response = await NetworkCaller().getRequest(Urls.sendEmail);
 
+      if (response.isSuccess) {
+        // _eventList.value = _eventList.fromJson(response.responseData);
+      } else {
+        EasyLoading.showError('Failed to load data');
+      }
+    } catch (error) {
+      EasyLoading.showError('An error occurred: $error');
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
 
   @override
   void dispose() {
