@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sportyo/core/const/app_colors.dart';
 import 'package:sportyo/core/const/image_path.dart';
 import 'package:sportyo/feature/profile/widget/global_text_style.dart';
@@ -50,29 +51,33 @@ class UserDetailsPage extends StatelessWidget {
                     const SizedBox(height: 16),
 
                     // Name and Age
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          controller.userModel.value.firstName ?? '',
-                          style: const TextStyle(
+                    Center(
+                      child: RichText(
+                        text: TextSpan(
+                          style: GoogleFonts.sourceSans3(
                             fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
                           ),
-                        ),
-                        // ignore: unnecessary_null_comparison
-                        controller.userModel.value.dateOfBirth == null ||
-                                controller.userModel.value.dateOfBirth == ""
-                            ? const Text('')
-                            : Text(
-                                ' ,${controller.age} years',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                          children: [
+                            TextSpan(
+                              text: controller.userModel.value.firstName ?? '',
+                            ),
+                            // ignore: unnecessary_null_comparison
+                            if (controller.userModel.value.dateOfBirth !=
+                                    null &&
+                                controller.userModel.value.dateOfBirth != '')
+                              TextSpan(
+                                text: ' , Age - ${controller.age} years',
                               ),
-                      ],
+                          ],
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
+
                     const SizedBox(height: 16),
 
                     Center(
