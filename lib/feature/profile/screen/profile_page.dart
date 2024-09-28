@@ -6,6 +6,7 @@ import '../../../core/const/image_path.dart';
 import '../../privacy_policy/privacy_policy.dart';
 import '../controller/profile_controller.dart';
 import '../widget/add_sports.dart';
+import '../widget/confirm_delete_account.dart';
 import '../widget/confirm_logout.dart';
 import '../widget/global_text_style.dart';
 import '../widget/language_filed.dart';
@@ -687,7 +688,7 @@ class ProfileScreen extends StatelessWidget {
                     alignment: Alignment.center,
                     child: TextButton(
                       onPressed: () {
-                        //showDeleteAccountDialog(context);
+                        showDeleteAccountDialog(context);
                       },
                       child: Text(
                         "Delete my account",

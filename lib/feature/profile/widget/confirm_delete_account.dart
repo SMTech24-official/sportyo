@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:sportyo/feature/authentication/auth_service/auth_service.dart';
 
 import '../../../core/const/app_colors.dart';
+import '../controller/profile_controller.dart';
 import 'global_text_style.dart';
 
 void showDeleteAccountDialog(BuildContext context) {
+  final ProfileController profileController = Get.find<ProfileController>();
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -59,7 +60,7 @@ void showDeleteAccountDialog(BuildContext context) {
                           side: BorderSide(color: AppColors.purplecolor),
                         ),
                         onPressed: () {
-                          AuthService.logoutUser();
+                          profileController.deleteAccount();
                         },
                         child: Text(
                           'Yes',
