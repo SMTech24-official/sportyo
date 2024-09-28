@@ -4,23 +4,22 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/const/app_colors.dart';
 import '../../../profile/widget/global_text_style.dart';
+import '../controller/forgot_password_controller.dart';
 
 void showForgotPasswordDialog(BuildContext context) {
-  final TextEditingController emailController = TextEditingController();
-  final RxString errorMessage = ''.obs; // For reactive error handling
-
+  final ForgotPasswordController controller =
+      Get.put(ForgotPasswordController());
   showDialog(
     context: context,
-    barrierDismissible: true, // Allow dismiss by tapping outside
+    barrierDismissible: true,
     builder: (BuildContext context) {
       return AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius: BorderRadius.circular(10.r),
         ),
-        contentPadding: EdgeInsets.all(20.w), // Add padding for better spacing
         content: SizedBox(
-          width: 320.w, // Adjusted width for better readability
-          height: 240.h, // Adjusted height for better space utilization
+          width: 320.w,
+          height: 240.h,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -40,101 +39,91 @@ void showForgotPasswordDialog(BuildContext context) {
                 'Enter your email to reset your password',
                 style: globalTextStyle(
                   fontSize: 14.sp,
-                  // color: AppColors.,
                 ),
               ),
               SizedBox(height: 15.h),
-
               SizedBox(
                 height: 35.h,
                 width: 273.w,
                 child: TextField(
-                  controller: emailController,
+                  controller: controller.emailController,
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (_) {
-                    errorMessage.value = ''; // Clear error on input change
+                    controller.errorMessage.value = '';
                   },
                   style: GoogleFonts.sourceSans3(
-                      fontSize:16.sp,
-                      fontWeight: FontWeight.w400,
-                      height: 24.h / 16.h,
-                      color: AppColors.blackColor),
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w400,
+                    height: 24.h / 16.h,
+                    color: AppColors.blackColor,
+                  ),
                   decoration: InputDecoration(
-                    contentPadding:  EdgeInsets.symmetric(
-                        vertical: 5.h, horizontal: 10.w),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
                     hintText: 'Email address',
                     hintStyle: GoogleFonts.sourceSans3(
-                        fontSize:16.sp,
-                        fontWeight: FontWeight.w400,
-                        height:24.h / 16.h,
-                        color: AppColors.blackColor),
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      height: 24.h / 16.h,
+                      color: AppColors.blackColor,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.r),
-                      borderSide: const BorderSide(color: Color(0xff010101), width: 1),
+                      borderSide:
+                          const BorderSide(color: Color(0xff010101), width: 1),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.r),
-                      borderSide: const BorderSide(color: Color(0xff010101), width: 1),
+                      borderSide:
+                          const BorderSide(color: Color(0xff010101), width: 1),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.r),
-                      borderSide: const BorderSide(color: Color(0xff010101), width: 1),
+                      borderSide:
+                          const BorderSide(color: Color(0xff010101), width: 1),
                     ),
-
                   ),
                 ),
               ),
               SizedBox(height: 8.h),
-              // Reactive error message
               Obx(
-                    () => errorMessage.isNotEmpty
+                () => controller.errorMessage.isNotEmpty
                     ? Text(
-                  errorMessage.value,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Colors.red,
-                  ),
-                )
-                    : SizedBox.shrink(),
+                        controller.errorMessage.value,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.red,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
               ),
               SizedBox(height: 20.h),
-              // Send button
               GestureDetector(
-                onTap: () {
-                  String email = emailController.text.trim();
-                  if (email.isEmpty || !GetUtils.isEmail(email)) {
-                    errorMessage.value = 'Please enter a valid email address';
-                  } else {
-                    // Handle forgot password logic, e.g., sending a reset email
-                    print('Sending reset link to $email');
-                    // Optionally show a success message or close dialog
-                    Get.back(); // Close the dialog after sending
-                  }
-                },
+                onTap: controller.forgotPassword,
                 child: Container(
-                  height: 50.h,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: AppColors.purplecolor,
-                    borderRadius: BorderRadius.circular(15.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 1,
-                        blurRadius: 5,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Text(
-                    'Send',
-                    style: globalTextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.whiteColor,
+                    height: 50.h,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: AppColors.purplecolor,
+                      borderRadius: BorderRadius.circular(15.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
                     ),
-                  ),
+                    child: Text(
+                      'Send',
+                      style: globalTextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.whiteColor,
+                      ),
+                    )
                 ),
               ),
             ],
