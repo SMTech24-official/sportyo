@@ -10,6 +10,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sportyo/core/service_class/network_caller/utility/usrls.dart';
+import 'package:sportyo/feature/authentication/auth_service/auth_service.dart';
 import 'package:sportyo/feature/authentication/log_in/screen/log_in.dart';
 
 import '../model/sports_model.dart';
@@ -577,13 +578,11 @@ class ProfileController extends GetxController {
         EasyLoading.show(status: 'Deleting Profile...');
 
         // Prepare the API URL
-        final url = Uri.parse('${Urls.baseUrl}/users/$userId');
-
+        final url = Uri.parse('${Urls.baseUrl}/users/$userId/updateUserStatus');
+        print(url);
         // Prepare the request body
-        Map<String, dynamic> requestBody = {
-          "userStatus": "BLOCK",
-        };
-
+        Map<String, dynamic> requestBody = {"userStatus": "BLOCKED"};
+        print(requestBody.toString());
         // Make the PUT request
         final response = await http.put(
           url,
@@ -600,7 +599,7 @@ class ProfileController extends GetxController {
           var jsonResponse = jsonDecode(response.body);
           if (jsonResponse['success']) {
             EasyLoading.showSuccess('Profile delete successfully!');
-            //navigate to login page
+            AuthService.logoutUser();
           } else {
             EasyLoading.showError('Failed: ${jsonResponse['message']}');
           }
