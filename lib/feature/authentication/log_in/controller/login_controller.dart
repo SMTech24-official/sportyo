@@ -7,14 +7,13 @@ import '../../../../core/service_class/network_caller/utility/usrls.dart';
 import '../../../terms_and_condition/screen/terms_and_condition.dart';
 import '../../auth_service/auth_service.dart';
 
-
 class LogInController extends GetxController {
   // Form key to manage form validation
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   // Controllers for TextFields
   final TextEditingController emailController = TextEditingController();
-  final  TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   // Observable boolean for login state
   var isLoginSelected = true.obs;
@@ -34,7 +33,8 @@ class LogInController extends GetxController {
       };
 
       try {
-        final response = await NetworkCaller().postRequest(Urls.login, body: requestBody);
+        final response =
+            await NetworkCaller().postRequest(Urls.login, body: requestBody);
         if (response.isSuccess) {
           // Check if token and userId are correctly retrieved
           String? token = response.responseData['token'];
@@ -43,7 +43,7 @@ class LogInController extends GetxController {
             await AuthService.saveToken(token, userId);
             emailController.clear();
             passwordController.clear();
-            Get.to(() => const TermsAndCondition());
+            Get.offAll(() => const TermsAndCondition());
           } else {
             Get.snackbar(
               'Login Failed',
@@ -84,7 +84,6 @@ class LogInController extends GetxController {
       );
     }
   }
-
 
   @override
   void dispose() {
