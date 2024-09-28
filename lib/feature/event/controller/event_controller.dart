@@ -1,5 +1,9 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+
+import '../../../core/service_class/network_caller/repository/network_caller.dart';
+import '../../../core/service_class/network_caller/utility/usrls.dart';
 
 class EventController extends GetxController {
   // TextEditingControllers for the text fields
@@ -24,11 +28,6 @@ class EventController extends GetxController {
     eventController.clear();
     dateFromController.clear();
     dateToController.clear();
-    // country.value = '';
-    // sport.value = '';
-    // event.value = '';
-    // dateFrom.value = '';
-    // dateTo.value = '';
   }
 
   // Method to apply the filters and close the dialog
@@ -238,6 +237,28 @@ class EventController extends GetxController {
     'Zambia',
     'Zimbabwe',
   ];
+
+
+
+  //dataLoad methods
+  // final Rx<EventList> _eventList=EventList().obs;
+  // Rx<EventList> get list=>_event;
+  Future<void> featchEventData() async {
+    EasyLoading.show(status: "Loading...");
+    try {
+      final response = await NetworkCaller().getRequest(Urls.sendEmail);
+
+      if (response.isSuccess) {
+        // _eventList.value = _eventList.fromJson(response.responseData);
+      } else {
+        EasyLoading.showError('Failed to load data');
+      }
+    } catch (error) {
+      EasyLoading.showError('An error occurred: $error');
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
   @override
   void dispose() {
     searchController.dispose();

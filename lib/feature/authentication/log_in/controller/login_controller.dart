@@ -5,7 +5,6 @@ import 'package:sportyo/core/const/app_colors.dart';
 import 'package:sportyo/feature/home/screen/home.dart';
 import '../../../../core/service_class/network_caller/repository/network_caller.dart';
 import '../../../../core/service_class/network_caller/utility/usrls.dart';
-import '../../../terms_and_condition/screen/terms_and_condition.dart';
 import '../../auth_service/auth_service.dart';
 
 class LogInController extends GetxController {
@@ -58,14 +57,14 @@ class LogInController extends GetxController {
         } else {
           Get.snackbar(
             'Login Failed',
-            response.errorMessage ?? 'Unknown error occurred.',
+            response.errorMessage ,
             snackPosition: SnackPosition.TOP,
             backgroundColor: AppColors.primaryColor,
             colorText: Colors.white,
           );
         }
       } catch (e) {
-        print('Error during login: $e');
+
         Get.snackbar(
           'Error',
           'Something went wrong. Please try again later.',
