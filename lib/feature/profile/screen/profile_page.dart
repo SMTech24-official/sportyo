@@ -108,7 +108,57 @@ class ProfileScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: TextFormField(
-                      controller: controller.nameController,
+                      controller: controller.firstnameController,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 15.0),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: AppColors.blackColor, width: 1.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: AppColors.blackColor, width: 1.0),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1.0),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 1.0),
+                        ),
+                      ),
+                      style: const TextStyle(color: AppColors.blackColor),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'This field cannot be empty';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 35.w),
+                    child: Text(
+                      "Last Name",
+                      style: globalTextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: TextFormField(
+                      controller: controller.lastnameController,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 15.0),
@@ -542,7 +592,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 10.h),
                   Padding(
-                    padding: EdgeInsets.only(left: 37.w, right: 28.w),
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Obx(
                       () {
                         return controller.savedSports.isEmpty
