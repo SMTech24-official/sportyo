@@ -6,6 +6,7 @@ import 'package:sportyo/feature/splash_screen/controller/splash_screen_controlle
 
 import '../feature/event/controller/event_name_controller.dart';
 import '../feature/event/controller/find_partners_for_event_controller.dart';
+import '../feature/terms_and_condition/controller/terms_and_condition.dart';
 
 class ControllerBinder extends Bindings {
   @override
@@ -33,6 +34,10 @@ class ControllerBinder extends Bindings {
     );
     Get.lazyPut<SplashController>(
           () => SplashController(),
+      fenix: true,
+    );
+    Get.lazyPut<TermsAndConditionController>(
+          () => TermsAndConditionController(),
       fenix: true,
     );
   }

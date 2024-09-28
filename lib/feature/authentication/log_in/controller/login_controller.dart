@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:sportyo/core/const/app_colors.dart';
+import 'package:sportyo/feature/home/screen/home.dart';
 import '../../../../core/service_class/network_caller/repository/network_caller.dart';
 import '../../../../core/service_class/network_caller/utility/usrls.dart';
 import '../../../terms_and_condition/screen/terms_and_condition.dart';
@@ -43,7 +44,8 @@ class LogInController extends GetxController {
             await AuthService.saveToken(token, userId);
             emailController.clear();
             passwordController.clear();
-            Get.offAll(() => const TermsAndCondition());
+
+            Get.offAll(() =>  Home());
           } else {
             Get.snackbar(
               'Login Failed',

@@ -4,16 +4,19 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sportyo/core/const/app_colors.dart';
 import 'package:sportyo/core/const/app_texts.dart';
-import 'package:sportyo/feature/home/screen/home.dart';
+import '../controller/terms_and_condition.dart';
+
 
 class TermsAndCondition extends StatelessWidget {
-  const TermsAndCondition({super.key});
+   TermsAndCondition({super.key});
+   final TermsAndConditionController termsAndConditionController =Get.find<TermsAndConditionController>();
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Column(
+      
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
@@ -64,9 +67,7 @@ class TermsAndCondition extends StatelessWidget {
                   height: 46.h,
                   width: 134.w,
                   child: ElevatedButton(
-                      onPressed: () {
-                        Get.to(() => Home());
-                      },
+                      onPressed: termsAndConditionController.acceptButton,
                       child: Text(
                        AppTexts.accept,
                         textAlign: TextAlign.center,
@@ -86,7 +87,10 @@ class TermsAndCondition extends StatelessWidget {
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.blackColor),
-                      onPressed: () {},
+                      onPressed: () {
+                       termsAndConditionController.isAccept.value=false;
+                       Get.back();
+                      },
                       child: Text(
                         AppTexts.decline,
                         textAlign: TextAlign.center,
