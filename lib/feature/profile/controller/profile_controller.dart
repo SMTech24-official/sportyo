@@ -145,7 +145,8 @@ class ProfileController extends GetxController {
   var filteredLanguages = <String>[].obs;
   var selectedLanguages = <String>[].obs;
   var selectedGender = ''.obs;
-  final TextEditingController nameController = TextEditingController();
+  final TextEditingController firstnameController = TextEditingController();
+  final TextEditingController lastnameController = TextEditingController();
   final TextEditingController dateofbirthController = TextEditingController();
   final TextEditingController languageController = TextEditingController();
   final TextEditingController bioController = TextEditingController();
@@ -179,7 +180,8 @@ class ProfileController extends GetxController {
 
   //redresh method for reload
   void refreshdata() {
-    nameController.clear();
+    firstnameController.clear();
+    lastnameController.clear();
     bioController.clear();
     dateofbirthController.clear();
     languageController.clear();
@@ -231,7 +233,11 @@ class ProfileController extends GetxController {
             // Update name if available
             if (userData['firstName'] != null &&
                 userData['firstName'].isNotEmpty) {
-              nameController.text = userData['firstName'];
+              firstnameController.text = userData['firstName'];
+            }
+            if (userData['lastName'] != null &&
+                userData['lastName'].isNotEmpty) {
+              lastnameController.text = userData['lastName'];
             }
             if (userData['dateOfBirth'] != null &&
                 userData['dateOfBirth'].isNotEmpty) {
@@ -513,7 +519,8 @@ class ProfileController extends GetxController {
 
           // Prepare the request body
           Map<String, dynamic> requestBody = {
-            "firstName": nameController.text.trim(),
+            "firstName": firstnameController.text.trim(),
+            "lastName": lastnameController.text.trim(),
             "dateOfBirth": dateofbirthController.text.trim(),
             "gender": selectedGender.value,
             "language": selectedLanguages.join(','),
