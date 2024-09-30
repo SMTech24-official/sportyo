@@ -165,7 +165,7 @@ void showFilterDialog(BuildContext context) {
                         children: [
                           Text(
                             'From',
-                            style: GoogleFonts.sourceSans3(
+                            style: GoogleFonts.poppins(
                                 fontSize: 10.sp,
                                 fontStyle: FontStyle.italic,
                                 fontWeight: FontWeight.w400,
@@ -186,7 +186,7 @@ void showFilterDialog(BuildContext context) {
                         children: [
                           Text(
                             'TO',
-                            style: GoogleFonts.sourceSans3(
+                            style: GoogleFonts.poppins(
                                 fontSize: 10.sp,
                                 fontStyle: FontStyle.italic,
                                 fontWeight: FontWeight.w400,

@@ -27,7 +27,7 @@ class Sprotyo extends StatelessWidget {
             appBarTheme: AppBarTheme(
                 backgroundColor: AppColors.whiteColor,
                 centerTitle: true,
-                titleTextStyle: GoogleFonts.sourceSans3(
+                titleTextStyle: GoogleFonts.poppins(
                     fontSize: 28.sp,
                     fontWeight: FontWeight.w600,
                     height: 40.sp / 28.sp,
@@ -42,7 +42,7 @@ class Sprotyo extends StatelessWidget {
               ),
             ),
           ),
-          home: SplashScreen(),  // Load SplashScreen as the home screen
+          home: SplashScreen(),
           builder: EasyLoading.init(),
         );
       },

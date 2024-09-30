@@ -75,7 +75,7 @@ class Event extends StatelessWidget {
       title: RichText(
         text: TextSpan(
           text: 'Event XX, ',
-          style: GoogleFonts.sourceSans3(
+          style: GoogleFonts.poppins(
               fontSize: 20.sp,
               fontWeight: FontWeight.w600,
               height: 30.h / 20.h,
@@ -83,7 +83,7 @@ class Event extends StatelessWidget {
           children: [
             TextSpan(
               text: 'City',
-              style: GoogleFonts.sourceSans3(
+              style: GoogleFonts.poppins(
                   fontSize: 20.sp,
                   fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.w600,
@@ -95,7 +95,7 @@ class Event extends StatelessWidget {
       ),
       subtitle: Text(
         'Date DD/MM/YY',
-        style: GoogleFonts.sourceSans3(
+        style: GoogleFonts.poppins(
             fontSize: 10.sp,
             fontWeight: FontWeight.w600,
             height: 15.h / 10.h,
@@ -115,7 +115,7 @@ class Event extends StatelessWidget {
             child: Text(
               AppTexts.viewEvent,
               textAlign: TextAlign.center,
-              style: GoogleFonts.sourceSans3(
+              style: GoogleFonts.poppins(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w600,
                 height: 17.h / 12.h,

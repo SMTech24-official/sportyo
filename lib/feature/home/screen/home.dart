@@ -32,11 +32,11 @@ class Home extends StatelessWidget {
           currentIndex: homeController.currentNavIndex.value,
           selectedItemColor: AppColors.blackColor,
           unselectedItemColor: AppColors.lightBlack,
-          selectedLabelStyle: GoogleFonts.sourceSans3(
+          selectedLabelStyle: GoogleFonts.poppins(
             fontWeight: FontWeight.bold,
             fontSize: 8,
           ),
-          unselectedLabelStyle: GoogleFonts.sourceSans3(
+          unselectedLabelStyle: GoogleFonts.poppins(
             fontSize: 8,
           ),
           backgroundColor: AppColors.whiteColor,

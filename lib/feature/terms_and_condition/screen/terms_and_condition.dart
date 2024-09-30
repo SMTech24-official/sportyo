@@ -27,7 +27,7 @@ class TermsAndCondition extends StatelessWidget {
                 child: Text(
                   'Terms and Conditions',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.sourceSans3(
+                  style: GoogleFonts.poppins(
                     fontSize: 28.sp,
                     fontWeight: FontWeight.w600,
                     height: 39.87.sp / 28.sp,
@@ -49,7 +49,7 @@ class TermsAndCondition extends StatelessWidget {
                       return Text(
                         termsAndConditionController.termsAndPolicy.value.termsConditions ?? '', // Show terms and conditions
                         textAlign: TextAlign.start,
-                        style: GoogleFonts.sourceSans3(
+                        style: GoogleFonts.poppins(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w400,
                           height: 22.7.sp / 16.sp,
@@ -79,7 +79,7 @@ class TermsAndCondition extends StatelessWidget {
                     child: Text(
                       AppTexts.accept,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.sourceSans3(
+                      style: GoogleFonts.poppins(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w600,
                         height: 30.sp / 20.sp,
@@ -105,7 +105,7 @@ class TermsAndCondition extends StatelessWidget {
                     child: Text(
                       AppTexts.decline,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.sourceSans3(
+                      style: GoogleFonts.poppins(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w600,
                         height: 30.sp / 20.sp,
