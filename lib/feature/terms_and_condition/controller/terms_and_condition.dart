@@ -21,7 +21,6 @@ class TermsAndConditionController extends GetxController {
       final response = await NetworkCaller().getRequest(Urls.termsAndPolicy);
 
       if (response.isSuccess) {
-
         if (response.responseData is List &&
             (response.responseData as List).isNotEmpty) {
           // Access the first element of the data list
@@ -31,7 +30,6 @@ class TermsAndConditionController extends GetxController {
           if (data is Map && data.containsKey('id') && data.containsKey('policy') && data.containsKey('termsConditions')) {
             // Cast to Map<String, dynamic>
             final termsMap = data as Map<String, dynamic>;
-
             // Deserialize into your model class
             _termsAndPolicy.value = TermsAndPolicy.fromJson(termsMap);
           } else {
@@ -44,7 +42,6 @@ class TermsAndConditionController extends GetxController {
         EasyLoading.showError('Failed to load data: ${response.errorMessage}');
       }
     } catch (error) {
-      print('An error occurred: $error');
       EasyLoading.showError('An error occurred: $error');
     } finally {
       EasyLoading.dismiss();
