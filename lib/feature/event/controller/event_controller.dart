@@ -1,6 +1,7 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:sportyo/core/service_class/network_caller/repository/second_Network_caller.dart';
 
 import '../../../core/service_class/network_caller/repository/network_caller.dart';
 import '../../../core/service_class/network_caller/utility/usrls.dart';
@@ -246,8 +247,7 @@ class EventController extends GetxController {
   Future<void> featchEventData() async {
     EasyLoading.show(status: "Loading...");
     try {
-      final response = await NetworkCaller().getRequest(Urls.sendEmail);
-
+      final response = await SecondNetworkCaller().getRequest(Urls.sendEmail);
       if (response.isSuccess) {
         // _eventList.value = _eventList.fromJson(response.responseData);
       } else {
