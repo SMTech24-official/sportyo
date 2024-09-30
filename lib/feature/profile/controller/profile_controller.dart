@@ -517,20 +517,18 @@ class ProfileController extends GetxController {
           // Prepare the API URL
           final url = Uri.parse('${Urls.baseUrl}/users/$userId');
 
-          // Prepare the request body
+          // Prepare the request body as a stringified JSON for the data key
           Map<String, dynamic> requestBody = {
-            "firstName": firstnameController.text.trim(),
-            "lastName": lastnameController.text.trim(),
-            "dateOfBirth": dateofbirthController.text.trim(),
-            "gender": selectedGender.value,
-            "language": selectedLanguages.join(','),
-            "genderRestriction": genderRestriction.value,
-            "incognito": incognito.value,
-            "bio": bioController.text.trim(),
-            // "userProfileImage": ""
-            // "userProfileImage": imageFile.value != null
-            //     ? base64Encode(imageFile.value!.readAsBytesSync())
-            //     : null,
+            "data": jsonEncode({
+              "firstName": firstnameController.text.trim(),
+              "lastName": lastnameController.text.trim(),
+              "gender": selectedGender.value,
+              "dateOfBirth": dateofbirthController.text.trim(),
+              "bio": bioController.text.trim(),
+              "language": selectedLanguages.join(','),
+              "incognito": incognito.value,
+              "genderRestriction": genderRestriction.value,
+            }),
           };
 
           // Make the PUT request
@@ -540,11 +538,13 @@ class ProfileController extends GetxController {
               'Authorization': token,
               'Content-Type': 'application/json',
             },
-            body: jsonEncode(requestBody),
+            body: jsonEncode(requestBody), // Send requestBody with data key
           );
+
           if (kDebugMode) {
             print(response.body);
           }
+
           if (response.statusCode == 200) {
             var jsonResponse = jsonDecode(response.body);
             if (jsonResponse['success']) {
