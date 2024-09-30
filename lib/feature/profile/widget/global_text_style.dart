@@ -9,7 +9,7 @@ TextStyle globalTextStyle({
   TextAlign textAlign = TextAlign.center,
   Color color = Colors.black,
 }) {
-  return GoogleFonts.sourceSans3(
+  return GoogleFonts.poppins(
     fontSize: fontSize,
     fontWeight: fontWeight,
     height: lineHeight,

@@ -51,7 +51,7 @@ void showForgotPasswordDialog(BuildContext context) {
                   onChanged: (_) {
                     controller.errorMessage.value = '';
                   },
-                  style: GoogleFonts.sourceSans3(
+                  style: GoogleFonts.poppins(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w400,
                     height: 24.h / 16.h,
@@ -61,7 +61,7 @@ void showForgotPasswordDialog(BuildContext context) {
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
                     hintText: 'Email address',
-                    hintStyle: GoogleFonts.sourceSans3(
+                    hintStyle: GoogleFonts.poppins(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w400,
                       height: 24.h / 16.h,

@@ -54,7 +54,7 @@ class UserDetailsPage extends StatelessWidget {
                     Center(
                       child: RichText(
                         text: TextSpan(
-                          style: GoogleFonts.sourceSans3(
+                          style: GoogleFonts.poppins(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                             color: Colors.black,

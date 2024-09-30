@@ -28,7 +28,7 @@ class CustomTextField extends StatelessWidget {
       child: TextField(
         controller: textEditingController,
 
-        style: GoogleFonts.sourceSans3(
+        style: GoogleFonts.poppins(
             fontSize:fontSize?? 16.sp,
             fontWeight: fontWeight??FontWeight.w400,
             height:lineHeight?? 24.h / 16.h,
@@ -37,7 +37,7 @@ class CustomTextField extends StatelessWidget {
           contentPadding:  EdgeInsets.symmetric(
               vertical: 5.h, horizontal: 10.w),
           hintText: hitText,
-          hintStyle: GoogleFonts.sourceSans3(
+          hintStyle: GoogleFonts.poppins(
               fontSize:fontSize?? 16.sp,
               fontWeight: fontWeight??FontWeight.w400,
               height:lineHeight?? 24.h / 16.h,
