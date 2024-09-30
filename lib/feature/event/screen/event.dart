@@ -34,7 +34,8 @@ class Event extends StatelessWidget {
                 padding: EdgeInsets.only(left: 58.w),
                 child: CustomTextField(
                   hitText: 'Aa',
-                  textEditingController: eventController.searchController, // Bind to controller
+                  textEditingController:
+                      eventController.searchController, // Bind to controller
                 ),
               ),
               SizedBox(width: 14.w),
@@ -55,7 +56,7 @@ class Event extends StatelessWidget {
               child: ListView.separated(
                 itemCount: 12,
                 itemBuilder: (context, index) => eventListTile(onTap: () {
-                  Get.to(()=>EventName());
+                  Get.to(() => EventName());
                 }),
                 separatorBuilder: (BuildContext context, int index) {
                   return const Divider();
