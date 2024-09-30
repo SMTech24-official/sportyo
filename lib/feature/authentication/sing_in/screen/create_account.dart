@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/const/app_colors.dart';
 import '../../../../core/const/app_texts.dart';
 import '../../../../core/const/icons_path.dart';
+import '../../../../core/const/image_path.dart';
 import '../../../../core/global_widegts/authentication/custom_bottom.dart';
 import '../../../../core/global_widegts/authentication/custom_sign_in_bottom.dart';
 import '../../../../core/global_widegts/authentication/custom_text_field.dart';
@@ -14,7 +15,8 @@ class CreateAccount extends StatelessWidget {
   CreateAccount({super.key});
 
   // Bind the controller
-  final CreateAccountController controller = Get.find<CreateAccountController>();
+  final CreateAccountController controller =
+      Get.find<CreateAccountController>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +27,13 @@ class CreateAccount extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Text(
-                AppTexts.appName,
-                style: GoogleFonts.poppins(
-                  color: Colors.black,
-                  textStyle: TextStyle(
-                    fontSize: 30.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+              child: Image.asset(
+                ImagePath.logoText,
+                width: MediaQuery.of(context).size.width * .5,
+                fit: BoxFit.fitWidth,
               ),
             ),
-            SizedBox(height: 30.h),
+            //SizedBox(height: 30.h),
             Text(
               AppTexts.createAccount,
               style: GoogleFonts.poppins(
@@ -85,8 +82,8 @@ class CreateAccount extends StatelessWidget {
               child: Text(
                 AppTexts.orSing,
                 style: GoogleFonts.poppins(
-                  textStyle: TextStyle(
-                      fontSize: 14.sp, color: AppColors.blackColor),
+                  textStyle:
+                      TextStyle(fontSize: 14.sp, color: AppColors.blackColor),
                 ),
               ),
             ),

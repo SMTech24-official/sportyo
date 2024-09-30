@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sportyo/core/const/app_colors.dart';
 import 'package:sportyo/core/const/app_texts.dart';
 import 'package:sportyo/core/const/icons_path.dart';
+import 'package:sportyo/core/const/image_path.dart';
 import 'package:sportyo/core/global_widegts/authentication/custom_bottom.dart';
 import 'package:sportyo/feature/authentication/log_in/widget/show_forgot_password_dialog.dart';
 
@@ -24,7 +25,7 @@ class LogIn extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
+          padding: EdgeInsets.only(left: 20.w, right: 20.w),
           child: Form(
             key: loginController.formKey,
             child: SingleChildScrollView(
@@ -36,18 +37,12 @@ class LogIn extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Center(
-                                child: Text(
-                                  AppTexts.appName,
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.black,
-                                    textStyle: TextStyle(
-                                      fontSize: 30.sp,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                child: Image.asset(
+                                  ImagePath.logoText,
+                                  width: MediaQuery.of(context).size.width * .5,
+                                  fit: BoxFit.fitWidth,
                                 ),
                               ),
-                              SizedBox(height: 30.h),
                               Text(
                                 AppTexts.wellCome,
                                 style: GoogleFonts.poppins(
@@ -110,7 +105,7 @@ class LogIn extends StatelessWidget {
                               ),
                               SizedBox(height: 20.h),
                               GestureDetector(
-                                onTap:(){
+                                onTap: () {
                                   showForgotPasswordDialog(context);
                                 },
                                 child: Center(
