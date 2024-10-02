@@ -549,6 +549,8 @@ class ProfileController extends GetxController {
             var jsonResponse = jsonDecode(response.body);
             if (jsonResponse['success']) {
               EasyLoading.showSuccess('Profile updated successfully!');
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.setBool("profileComplete", true);
               refreshdata();
             } else {
               EasyLoading.showError('Failed: ${jsonResponse['message']}');
@@ -586,10 +588,14 @@ class ProfileController extends GetxController {
 
         // Prepare the API URL
         final url = Uri.parse('${Urls.baseUrl}/users/$userId/updateUserStatus');
-        print(url);
+        if (kDebugMode) {
+          print(url);
+        }
         // Prepare the request body
         Map<String, dynamic> requestBody = {"userStatus": "BLOCKED"};
-        print(requestBody.toString());
+        if (kDebugMode) {
+          print(requestBody.toString());
+        }
         // Make the PUT request
         final response = await http.put(
           url,

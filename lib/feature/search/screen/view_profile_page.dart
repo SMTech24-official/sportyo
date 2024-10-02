@@ -68,7 +68,7 @@ class UserDetailsPage extends StatelessWidget {
                                     null &&
                                 controller.userModel.value.dateOfBirth != '')
                               TextSpan(
-                                text: ' , Age - ${controller.age} years',
+                                text: ' , ${controller.age} years',
                               ),
                           ],
                         ),
@@ -83,7 +83,12 @@ class UserDetailsPage extends StatelessWidget {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          // controller.startChat();
+                          controller.startchat(
+                            controller.userModel.value.firstName ?? '',
+                            controller.userModel.value.userProfileImage ?? '',
+                            controller.userModel.value.id,
+                            context,
+                          );
                         },
                         child: Text(
                           'Start a discussion',
