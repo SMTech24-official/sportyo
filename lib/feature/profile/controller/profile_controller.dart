@@ -234,6 +234,8 @@ class ProfileController extends GetxController {
             if (userData['firstName'] != null &&
                 userData['firstName'].isNotEmpty) {
               firstnameController.text = userData['firstName'];
+
+              await prefs.setBool("profileComplete", true);
             }
             if (userData['lastName'] != null &&
                 userData['lastName'].isNotEmpty) {
@@ -549,8 +551,7 @@ class ProfileController extends GetxController {
             var jsonResponse = jsonDecode(response.body);
             if (jsonResponse['success']) {
               EasyLoading.showSuccess('Profile updated successfully!');
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              await prefs.setBool("profileComplete", true);
+
               refreshdata();
             } else {
               EasyLoading.showError('Failed: ${jsonResponse['message']}');

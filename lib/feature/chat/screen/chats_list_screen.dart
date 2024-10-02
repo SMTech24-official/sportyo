@@ -28,12 +28,15 @@ class ChatsListScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Your chats",
-                style:
-                    globalTextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Your chats",
+                  style: globalTextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w600),
+                ),
               ),
             ),
             Expanded(
