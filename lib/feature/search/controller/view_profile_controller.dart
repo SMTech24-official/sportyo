@@ -1,10 +1,16 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:sportyo/core/const/app_colors.dart';
+import 'package:sportyo/feature/chat/screen/chats_screen.dart';
+import 'package:sportyo/feature/home/screen/home.dart';
+import 'package:sportyo/feature/profile/widget/global_text_style.dart';
 
+import '../../authentication/auth_service/auth_service.dart';
 import '../model/profile_model.dart';
 
 class UsersController extends GetxController {
@@ -117,5 +123,48 @@ class UsersController extends GetxController {
         print('Error: $e');
       }
     } finally {}
+  }
+
+  void startchat(String name, String image, String id, context) async {
+    bool profileComplete = await AuthService.profileComplete();
+    if (profileComplete) {
+      Get.to(() => ChatScreen(name: name, image: image, chatId: id));
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            backgroundColor: Colors.white,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Please fill your documents first",
+                  style: globalTextStyle(),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Get.offAll(() => Home());
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    "Fill Documents",
+                    style: globalTextStyle(color: AppColors.whiteColor),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
   }
 }
