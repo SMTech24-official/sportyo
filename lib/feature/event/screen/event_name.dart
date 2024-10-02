@@ -110,10 +110,22 @@ class EventName extends StatelessWidget {
                         style: globalTextStyle(lineHeight: 21.sp / 14.sp),
                       ),
                       SizedBox(height: 10.h),
-                      CustomTextField(
-                        textEditingController:
-                        eventNameController.dateTEController,
+                  Container(
+                    alignment: Alignment.center,
+                    width: 79.w,
+                    height: 29.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                      border: Border.all(
+                        color: const Color(0xFF010101),
+                        width: 1,
                       ),
+                    ),
+                    child: Text(
+                      'Date',
+                      style: globalTextStyle(lineHeight: 21.sp / 14.sp),
+                    ),
+                  ),
                     ],
                   ),
                 ),
@@ -128,9 +140,21 @@ class EventName extends StatelessWidget {
                         style: globalTextStyle(lineHeight: 21.sp / 14.sp),
                       ),
                       SizedBox(height: 10.h),
-                      CustomTextField(
-                        textEditingController:
-                        eventNameController.distanceTEController,
+                      Container(
+                        alignment: Alignment.center,
+                        width: 79.w,
+                        height: 29.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                          border: Border.all(
+                            color: const Color(0xFF010101),
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Distance',
+                          style: globalTextStyle(lineHeight: 21.sp / 14.sp),
+                        ),
                       ),
                     ],
                   ),
@@ -238,10 +262,22 @@ class EventName extends StatelessWidget {
                         style: globalTextStyle(lineHeight: 21.sp / 14.sp),
                       ),
                       SizedBox(height: 10.h),
-                      CustomTextField(
-                        textEditingController:
-                        eventNameController.dateTEController,
+                  Container(
+                    alignment: Alignment.center,
+                    width: 79.w,
+                    height: 29.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                      border: Border.all(
+                        color: const Color(0xFF010101),
+                        width: 1,
                       ),
+                    ),
+                    child: Text(
+                      'Date',
+                      style: globalTextStyle(lineHeight: 21.sp / 14.sp),
+                    ),
+                  ),
                     ],
                   ),
                 ),
@@ -256,9 +292,22 @@ class EventName extends StatelessWidget {
                         style: globalTextStyle(lineHeight: 21.sp / 14.sp),
                       ),
                       SizedBox(height: 10.h),
-                      CustomTextField(
-                        textEditingController:
-                        eventNameController.distanceTEController,
+                      Container(
+                        alignment: Alignment.center,
+                        width: 79.w,
+                        height: 29.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                          border: Border.all(
+                            color: const Color(0xFF010101),
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Distance'
+                              ,
+                          style: globalTextStyle(lineHeight: 21.sp / 14.sp),
+                        ),
                       ),
                     ],
                   ),

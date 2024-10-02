@@ -59,7 +59,7 @@ void showFinishTimeDialog(BuildContext context) {
               CustomButtonContainer(
                 text: 'Validate',
                 save: () {
-                  eventNameController.validateInput(); // Call validateInput here
+                  eventNameController.validateInput();
                 },
                 cancel: () {
                   Get.back();

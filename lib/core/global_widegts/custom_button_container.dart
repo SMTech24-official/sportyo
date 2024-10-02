@@ -22,7 +22,7 @@ class CustomButtonContainer extends StatelessWidget {
             onTap: save,
             child: Container(
               height: 46.h,
-              width: 88.w,
+              width: 95.w,
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: AppColors.purplecolor,
@@ -32,7 +32,7 @@ class CustomButtonContainer extends StatelessWidget {
                 text ?? AppTexts.save,
                 style: globalTextStyle(
                   textAlign: TextAlign.center,
-                  fontSize: 20.sp,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w600,
                   color: AppColors.whiteColor,
                 ),

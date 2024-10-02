@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sportyo/feature/splash_screen/controller/splash_screen_controller.dart';
+
+import '../controller/splash_screen_controller.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
