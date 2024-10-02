@@ -723,7 +723,7 @@ class ProfileScreen extends StatelessWidget {
                     alignment: Alignment.center,
                     child: TextButton(
                       onPressed: () {
-                        Get.to(() => const PrivacyPolicy());
+                        Get.to(() => PrivacyPolicy());
                       },
                       child: Text(
                         "Privacy Policy",
