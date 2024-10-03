@@ -121,7 +121,7 @@ class ChatsListScreen extends StatelessWidget {
                               () => ChatScreen(
                                 name: chat.name,
                                 image: chat.imageUrl,
-                                chatId: "5454151511",
+                                receiverId: "66f620610f1f3a75bc6d1e2f",
                               ),
                             );
                           },
