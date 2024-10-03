@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +13,8 @@ import '../../profile/widget/global_text_style.dart';
 import '../controller/event_controller.dart';
 import '../model/event_model_class.dart';
 import '../widgets/filter_dialog.dart';
+import 'event_name.dart';
+
 
 class Event extends StatelessWidget {
   Event({super.key});
@@ -67,7 +70,7 @@ class Event extends StatelessWidget {
               // Event list
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(right: 8.w),
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
                   child: Obx(() {
                     if (eventController.filteredEventList.isEmpty) {
                       return const Center(
@@ -82,7 +85,7 @@ class Event extends StatelessWidget {
                         return eventListTile(
                           event: event,
                           onTap: () {
-                            // Get.to(() => EventName(event: event)); // Navigate with event data
+                            Get.to(() => EventName(event: event)); // Navigate with event data
                           },
                         );
                       },
@@ -104,7 +107,9 @@ class Event extends StatelessWidget {
     DateTime? eventDateTime;
     try {
       eventDateTime = DateTime.parse(event.date ?? '');
-    } catch (e) {}
+    } catch (e) {
+      log(e.toString());
+    }
 
     String formattedDate = eventDateTime != null
         ? DateFormat('dd/MM/yyyy').format(eventDateTime)
