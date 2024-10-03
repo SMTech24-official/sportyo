@@ -11,6 +11,8 @@ class EventController extends GetxController {
   final Rx<EventModel> _eventModelList = EventModel().obs;
   Rx<EventModel> get eventModelList => _eventModelList;
 
+  // This list will hold the filtered events
+  final RxList<EventList> filteredEventList = <EventList>[].obs;
 
   // Variables for search and filters
   final TextEditingController searchController = TextEditingController();
@@ -20,6 +22,65 @@ class EventController extends GetxController {
   final TextEditingController dateFromController = TextEditingController();
   final TextEditingController dateToController = TextEditingController();
 
+  @override
+  void onInit() {
+    super.onInit();
+    if (eventModelList.value.eventList == null ||
+        eventModelList.value.eventList!.isEmpty) {
+      featchEventData();
+    } else {
+      // Initialize the filtered list with all events when the controller is initialized
+      filteredEventList.value = eventModelList.value.eventList ?? [];
+    }
+
+    // Listen to changes in the search field and filter events
+    searchController.addListener(() {
+      filterEventsByNameOrCity(searchController.text);
+    });
+  }
+
+  // Method to fetch event data
+  Future<void> featchEventData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("token");
+    EasyLoading.show(status: "Loading...");
+    try {
+      final response =
+      await SecondNetworkCaller().getRequest(Urls.event, token: token);
+      if (response.isSuccess) {
+        _eventModelList.value = EventModel.fromJson(response.responseData);
+        // Initialize the filtered list with fetched data
+        filteredEventList.value = eventModelList.value.eventList ?? [];
+      } else {
+        EasyLoading.showError('Failed to load data');
+      }
+    } catch (error) {
+      EasyLoading.showError('An error occurred: $error');
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  // Method to filter events based on search input for event name or city name
+  void filterEventsByNameOrCity(String query) {
+    if (query.isEmpty) {
+      // If the search field is empty, show all events
+      filteredEventList.value = eventModelList.value.eventList ?? [];
+    } else {
+      // Filter events where either the event name or the city contains the query (case insensitive)
+      filteredEventList.value = eventModelList.value.eventList
+          ?.where((event) =>
+      (event.eventName?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
+          (event.city?.toLowerCase().contains(query.toLowerCase()) ?? false))
+          .toList() ??
+          [];
+    }
+  }
+
+  // Clear the search input
+  void clearSearch() {
+    searchController.clear();
+  }
   // Filter fields
   var country = ''.obs;
   var sport = ''.obs;
@@ -224,36 +285,6 @@ class EventController extends GetxController {
     'Zambia',
     'Zimbabwe',
   ];
-
-  @override
-  void onInit() {
-    super.onInit();
-    if (eventModelList.value.eventList == null ||
-        eventModelList.value.eventList!.isEmpty) {
-      featchEventData();
-    }
-  }
-
-  // Method to fetch event data
-  Future<void> featchEventData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString("token");
-    EasyLoading.show(status: "Loading...");
-    try {
-      final response =
-          await SecondNetworkCaller().getRequest(Urls.event, token: token);
-      if (response.isSuccess) {
-        _eventModelList.value = EventModel.fromJson(response.responseData);
-      } else {
-        EasyLoading.showError('Failed to load data');
-      }
-    } catch (error) {
-      EasyLoading.showError('An error occurred: $error');
-    } finally {
-      EasyLoading.dismiss();
-    }
-  }
-
   // Apply filters
   void applyFilters() {
     country.value = countryController.text;

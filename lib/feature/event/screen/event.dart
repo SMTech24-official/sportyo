@@ -48,8 +48,8 @@ class Event extends StatelessWidget {
                     padding: EdgeInsets.only(left: 58.w),
                     child: CustomTextField(
                       hitText: 'Search...',
-                      textEditingController: eventController
-                          .searchController,
+                      textEditingController:
+                      eventController.searchController,
                     ),
                   ),
                   SizedBox(width: 14.w),
@@ -69,19 +69,16 @@ class Event extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(right: 8.w),
                   child: Obx(() {
-                    if (eventController.eventModelList.value.eventList ==
-                            null ||
-                        eventController
-                            .eventModelList.value.eventList!.isEmpty) {
-                      return const SizedBox.shrink();
+                    if (eventController.filteredEventList.isEmpty) {
+                      return const Center(
+                        child: Text('No events found.'),
+                      );
                     }
-
                     return ListView.separated(
-                      itemCount: eventController
-                          .eventModelList.value.eventList!.length,
+                      itemCount: eventController.filteredEventList.length,
                       itemBuilder: (context, index) {
-                        var event = eventController
-                            .eventModelList.value.eventList![index];
+                        var event =
+                        eventController.filteredEventList[index];
                         return eventListTile(
                           event: event,
                           onTap: () {
@@ -103,25 +100,19 @@ class Event extends StatelessWidget {
     );
   }
 
-  Widget eventListTile(
-      {required EventList event, required VoidCallback onTap}) {
-    // Parse the date string and format it
+  Widget eventListTile({required EventList event, required VoidCallback onTap}) {
     DateTime? eventDateTime;
     try {
-      eventDateTime = DateTime.parse(event.date ?? ''); // Parse the event date
-    } catch (e) {
-      // Handle parsing error if needed
-    }
+      eventDateTime = DateTime.parse(event.date ?? '');
+    } catch (e) {}
 
-    // Format the date to "DD/MM/YYYY"
     String formattedDate = eventDateTime != null
         ? DateFormat('dd/MM/yyyy').format(eventDateTime)
         : 'Date DD/MM/YYYY';
 
     return ListTile(
       leading: Image.network(
-        event.eventImage ??
-            ImagePath.running, // Use dynamic image or default one
+        event.eventImage ?? ImagePath.running,
         width: 50.w,
         height: 50.h,
       ),
@@ -129,18 +120,18 @@ class Event extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              '${event.eventName ?? 'Event'}, ', // Event name
+              '${event.eventName ?? 'Event'}, ',
               style: GoogleFonts.poppins(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w600,
                 height: 30.h / 18.h,
                 color: AppColors.blackColor,
               ),
-              overflow: TextOverflow.ellipsis, // Set overflow for event name
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           Text(
-            event.city ?? 'City', // Dynamic city name
+            event.city ?? 'City',
             style: GoogleFonts.poppins(
               fontSize: 18.sp,
               fontStyle: FontStyle.italic,
@@ -187,3 +178,4 @@ class Event extends StatelessWidget {
     );
   }
 }
+
