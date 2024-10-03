@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:sportyo/feature/event/screen/find_partners_for_event.dart';
-
 import '../../../core/const/app_colors.dart';
 import '../../../core/service_class/network_caller/repository/network_caller.dart';
 import '../../../core/service_class/network_caller/utility/usrls.dart';
 
 class EventNameController extends GetxController {
-  final TextEditingController dateTEController = TextEditingController();
-  final TextEditingController distanceTEController = TextEditingController();
+
   final TextEditingController predictedTimeController=TextEditingController();
   RxBool isValidate = false.obs;
 
@@ -71,8 +69,6 @@ class EventNameController extends GetxController {
   @override
   void dispose() {
     super.dispose();
-    dateTEController.dispose();
-    distanceTEController.dispose();
     predictedTimeController.dispose();
   }
 }

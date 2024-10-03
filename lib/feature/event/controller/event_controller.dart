@@ -1,12 +1,18 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sportyo/core/service_class/network_caller/repository/second_Network_caller.dart';
+import 'package:sportyo/feature/event/model/event_model_class.dart';
 import '../../../core/service_class/network_caller/utility/usrls.dart';
 
-
 class EventController extends GetxController {
-  // TextEditingControllers for the text fields
+  // Observable for storing event data
+  final Rx<EventModel> _eventModelList = EventModel().obs;
+  Rx<EventModel> get eventModelList => _eventModelList;
+
+
+  // Variables for search and filters
   final TextEditingController searchController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
   final TextEditingController sportController = TextEditingController();
@@ -14,31 +20,12 @@ class EventController extends GetxController {
   final TextEditingController dateFromController = TextEditingController();
   final TextEditingController dateToController = TextEditingController();
 
-  // Observable variables for filters
+  // Filter fields
   var country = ''.obs;
   var sport = ''.obs;
   var event = ''.obs;
   var dateFrom = ''.obs;
   var dateTo = ''.obs;
-
-  // Method to clear all filters
-  void clearFilters() {
-    countryController.clear();
-    sportController.clear();
-    eventController.clear();
-    dateFromController.clear();
-    dateToController.clear();
-  }
-
-  // Method to apply the filters and close the dialog
-  void applyFilters() {
-    country.value = countryController.text;
-    sport.value = sportController.text;
-    event.value = eventController.text;
-    dateFrom.value = dateFromController.text;
-    dateTo.value = dateToController.text;
-    Get.back(); // Close the dialog
-  }
 // Country list
   final List<String> countries = [
     'Afghanistan',
@@ -238,17 +225,25 @@ class EventController extends GetxController {
     'Zimbabwe',
   ];
 
+  @override
+  void onInit() {
+    super.onInit();
+    if (eventModelList.value.eventList == null ||
+        eventModelList.value.eventList!.isEmpty) {
+      featchEventData();
+    }
+  }
 
-
-  //dataLoad methods
-  // final Rx<EventList> _eventList=EventList().obs;
-  // Rx<EventList> get list=>_event;
+  // Method to fetch event data
   Future<void> featchEventData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("token");
     EasyLoading.show(status: "Loading...");
     try {
-      final response = await SecondNetworkCaller().getRequest(Urls.sendEmail);
+      final response =
+          await SecondNetworkCaller().getRequest(Urls.event, token: token);
       if (response.isSuccess) {
-        // _eventList.value = _eventList.fromJson(response.responseData);
+        _eventModelList.value = EventModel.fromJson(response.responseData);
       } else {
         EasyLoading.showError('Failed to load data');
       }
@@ -258,14 +253,25 @@ class EventController extends GetxController {
       EasyLoading.dismiss();
     }
   }
-  @override
-  void dispose() {
-    searchController.dispose();
-    countryController.dispose();
-    sportController.dispose();
-    eventController.dispose();
-    dateFromController.dispose();
-    dateToController.dispose();
-    super.dispose();
+
+  // Apply filters
+  void applyFilters() {
+    country.value = countryController.text;
+    sport.value = sportController.text;
+    event.value = eventController.text;
+    dateFrom.value = dateFromController.text;
+    dateTo.value = dateToController.text;
+    Get.back(); // Close the dialog
+  }
+
+  // Clear filters
+  void clearFilters() {
+    countryController.clear();
+    sportController.clear();
+    eventController.clear();
+    dateFromController.clear();
+    dateToController.clear();
+
+
   }
 }
