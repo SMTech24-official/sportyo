@@ -1,14 +1,47 @@
+// lib/controller/chats_controller.dart
+
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../model/chat_model.dart';
+import '../service/socket_service.dart';
 
 class ChatsController extends GetxController {
   var messageController = TextEditingController();
   ScrollController scrollController = ScrollController();
+  var chatMessages = <ChatMessage>[].obs;
+  var conversationId = ''.obs; // This holds the conversation ID.
+  var senderId = ''.obs;
+  late WebSocketService webSocketService;
+
+  // Indicates whether senderId has been loaded
+  var isSenderIdLoaded = false.obs;
+
+  // Holds the receiverId if a room join is attempted before senderId is loaded
+  String? pendingReceiverId;
+
   @override
   void onInit() {
     super.onInit();
+    webSocketService = WebSocketService();
+    webSocketService.setOnMessageReceived(handleIncomingMessage);
+    getSenderIdFromPreferences().then((_) {
+      // Mark that senderId has been loaded
+      isSenderIdLoaded.value = true;
+      print("Sender ID successfully loaded: ${senderId.value}");
+
+      // Initialize WebSocket after retrieving senderId
+      webSocketService.initSocket();
+
+      // If there is a pending receiverId, join the room now
+      if (pendingReceiverId != null) {
+        webSocketService.joinRoom(senderId.value, pendingReceiverId!);
+        print("Joined room with receiverId: $pendingReceiverId");
+        pendingReceiverId = null; // Clear after joining
+      }
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (scrollController.hasClients) {
         scrollController.jumpTo(scrollController.position.maxScrollExtent);
@@ -16,191 +49,127 @@ class ChatsController extends GetxController {
     });
   }
 
-  // Dummy chat list
-  var chatMessages = <ChatMessage>[
-    ChatMessage(
-      messageId: '1',
-      senderId: '101',
-      receiverId: '102',
-      message: 'Hello!',
-      isRead: true,
-      isMe: false,
-    ),
-    ChatMessage(
-      messageId: '2',
-      senderId: '102',
-      receiverId: '101',
-      message: 'Hi, how are you?',
-      isRead: true,
-      isMe: true,
-    ),
-    ChatMessage(
-      messageId: '3',
-      senderId: '101',
-      receiverId: '102',
-      message: 'I am good, thank you.',
-      isRead: true,
-      isMe: false,
-    ),
-    ChatMessage(
-      messageId: '4',
-      senderId: '102',
-      receiverId: '101',
-      message: 'What about you?',
-      isRead: true,
-      isMe: true,
-    ),
-    ChatMessage(
-      messageId: '5',
-      senderId: '101',
-      receiverId: '102',
-      message: 'I am doing great! Been busy with work.',
-      isRead: true,
-      isMe: false,
-    ),
-    ChatMessage(
-      messageId: '6',
-      senderId: '102',
-      receiverId: '101',
-      message: 'That’s good to hear. Are you free this weekend?',
-      isRead: true,
-      isMe: true,
-    ),
-    ChatMessage(
-      messageId: '7',
-      senderId: '101',
-      receiverId: '102',
-      message: 'Yes, I am. Do you have any plans?',
-      isRead: true,
-      isMe: false,
-    ),
-    ChatMessage(
-      messageId: '8',
-      senderId: '102',
-      receiverId: '101',
-      message: 'I was thinking of going for a hike. Want to join?',
-      isRead: true,
-      isMe: true,
-    ),
-    ChatMessage(
-      messageId: '9',
-      senderId: '101',
-      receiverId: '102',
-      message: 'That sounds like fun! Count me in.',
-      isRead: true,
-      isMe: false,
-    ),
-    ChatMessage(
-      messageId: '10',
-      senderId: '102',
-      receiverId: '101',
-      message: 'Great! I’ll send you the details later.',
-      isRead: true,
-      isMe: true,
-    ),
-    ChatMessage(
-      messageId: '11',
-      senderId: '101',
-      receiverId: '102',
-      message: 'Perfect! Looking forward to it.',
-      isRead: true,
-      isMe: false,
-    ),
-    ChatMessage(
-      messageId: '12',
-      senderId: '102',
-      receiverId: '101',
-      message: 'Me too! Do you need a ride?',
-      isRead: true,
-      isMe: true,
-    ),
-    ChatMessage(
-      messageId: '13',
-      senderId: '101',
-      receiverId: '102',
-      message: 'Yes, that would be great, thanks!',
-      isRead: true,
-      isMe: false,
-    ),
-    ChatMessage(
-      messageId: '14',
-      senderId: '102',
-      receiverId: '101',
-      message: 'No problem! I’ll pick you up at 8 AM.',
-      isRead: true,
-      isMe: true,
-    ),
-    ChatMessage(
-      messageId: '15',
-      senderId: '101',
-      receiverId: '102',
-      message: 'Sounds good! See you then.',
-      isRead: true,
-      isMe: false,
-    ),
-    ChatMessage(
-      messageId: '16',
-      senderId: '102',
-      receiverId: '101',
-      message: 'See you!',
-      isRead: true,
-      isMe: true,
-    ),
-    ChatMessage(
-      messageId: '17',
-      senderId: '101',
-      receiverId: '102',
-      message: 'By the way, do I need to bring anything?',
-      isRead: true,
-      isMe: false,
-    ),
-    ChatMessage(
-      messageId: '18',
-      senderId: '102',
-      receiverId: '101',
-      message: 'Just some water and snacks should be fine.',
-      isRead: true,
-      isMe: true,
-    ),
-    ChatMessage(
-      messageId: '19',
-      senderId: '101',
-      receiverId: '102',
-      message: 'Got it! I’ll bring some sandwiches too.',
-      isRead: true,
-      isMe: false,
-    ),
-    ChatMessage(
-      messageId: '20',
-      senderId: '102',
-      receiverId: '101',
-      message: 'Awesome! We’re all set then!',
-      isRead: true,
-      isMe: true,
-    ),
-  ].obs;
+  // Retrieve the senderId from SharedPreferences
+  Future<void> getSenderIdFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? storedSenderId = prefs.getString('userId');
 
-  // Method to send a message
-  void sendMessage(String message) {
-    var newMessage = ChatMessage(
-      messageId: DateTime.now().toString(),
-      senderId: '102',
-      receiverId: '101',
-      message: message,
-      isRead: false,
-      isMe: true,
-    );
-    chatMessages.add(newMessage);
-    scrollToBottom();
+    if (storedSenderId != null && storedSenderId.isNotEmpty) {
+      senderId.value = storedSenderId;
+      print("Sender ID loaded from SharedPreferences: ${senderId.value}");
+    } else {
+      print("Sender ID is missing or not found in SharedPreferences.");
+    }
   }
 
+  // Join a room with receiverId
+  void connectToWebSocketAndJoinRoom(String receiverId) {
+    if (isSenderIdLoaded.value) {
+      webSocketService.joinRoom(senderId.value, receiverId);
+      print("Joined room with receiverId: $receiverId");
+    } else {
+      // If senderId is not yet loaded, store the receiverId to join later
+      pendingReceiverId = receiverId;
+      print(
+          "Sender ID is not available yet. Will join the room once it is loaded.");
+    }
+  }
+
+  // Handle incoming messages
+  void handleIncomingMessage(String message) {
+    final parsedData = jsonDecode(message);
+
+    switch (parsedData['type']) {
+      case 'loadMessages':
+        final conversation = parsedData['conversation'];
+        final messages = conversation['messages'];
+
+        // Correctly set the conversationId using 'id'
+        conversationId.value = conversation['id'];
+        print("Conversation ID set to: ${conversationId.value}");
+
+        chatMessages.clear(); // Clear old messages
+
+        for (var messageData in messages) {
+          chatMessages.add(ChatMessage.fromJson(messageData, senderId.value));
+        }
+
+        scrollToBottom();
+        break;
+
+      case 'receiveMessage':
+        final newMessageData = parsedData['message'];
+
+        // Ensure the conversationId is set if not already
+        conversationId.value =
+            parsedData['conversationId'] ?? conversationId.value;
+
+        var newMessage = ChatMessage.fromJson(newMessageData, senderId.value);
+
+        // Check if the message already exists to prevent duplication
+        if (!chatMessages.any((msg) => msg.messageId == newMessage.messageId)) {
+          chatMessages.add(newMessage);
+          scrollToBottom();
+        } else {
+          print("Duplicate message detected: ${newMessage.messageId}");
+        }
+        break;
+
+      case 'typing':
+        print('${parsedData['username']} is typing...');
+        break;
+
+      default:
+        print('Unknown message type: ${parsedData['type']}');
+    }
+  }
+
+  // Send a new message
+  void sendMessage(String message, String senderName) {
+    if (conversationId.value.isEmpty) {
+      print("No conversation ID found, join room first.");
+      return;
+    }
+
+    webSocketService.sendMessage(
+      conversationId.value,
+      senderId.value,
+      senderName,
+      message,
+    );
+
+    // Removed local addition to prevent duplication
+    // If instant feedback is desired without duplication, consider alternative approaches
+  }
+
+  // Emit typing notification to WebSocket
+  void emitTyping() {
+    if (conversationId.value.isNotEmpty) {
+      webSocketService.emitTyping(conversationId.value,
+          'YourUsername'); // Replace 'YourUsername' as needed
+    }
+  }
+
+  // Disconnect WebSocket when leaving the screen
+  void disconnectFromWebSocket() {
+    webSocketService.disconnect();
+  }
+
+  // Scroll to the bottom of the chat when new messages are added
   void scrollToBottom() {
     Future.delayed(const Duration(milliseconds: 300), () {
       if (scrollController.hasClients) {
-        scrollController.jumpTo(
-          scrollController.position.maxScrollExtent,
-        );
+        scrollController.jumpTo(scrollController.position.maxScrollExtent);
       }
     });
+  }
+
+  // Dispose controllers
+  @override
+  void onClose() {
+    messageController.dispose();
+    scrollController.dispose();
+    disconnectFromWebSocket();
+    super.onClose();
   }
 }

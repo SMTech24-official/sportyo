@@ -1,36 +1,38 @@
+// lib/view/chat_screen.dart
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:sportyo/core/const/app_colors.dart';
-import 'package:sportyo/core/const/icons_path.dart';
-import 'package:sportyo/feature/chat/widget/report_user_dialouge.dart';
-import 'package:sportyo/feature/profile/widget/global_text_style.dart';
 
 import '../controller/chat_controller.dart';
-import '../widget/delete_chat_dialouge.dart';
 
 class ChatScreen extends StatelessWidget {
   final String name;
   final String image;
-  final String chatId;
+  final String receiverId;
 
   ChatScreen({
-    super.key,
+    Key? key,
     required this.name,
     required this.image,
-    required this.chatId,
-  });
+    required this.receiverId,
+  }) : super(key: key);
 
   final ChatsController chatsController = Get.put(ChatsController());
 
   @override
   Widget build(BuildContext context) {
+    // Ensure the connection and joining room is done once after the first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      chatsController.connectToWebSocketAndJoinRoom(receiverId);
+    });
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
             Get.back();
+            chatsController.disconnectFromWebSocket();
           },
         ),
         title: Row(
@@ -52,33 +54,18 @@ class ChatScreen extends StatelessWidget {
           ],
         ),
         centerTitle: true,
-        actions: [
-          TextButton(
-            onPressed: () {
-              deleteChatDialog(context);
-            },
-            child: Text(
-              'Delete chat',
-              style: globalTextStyle(
-                fontSize: 12,
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              reportUserDialog(context);
-            },
-            child: Text(
-              'Report',
-              style: globalTextStyle(fontSize: 12, color: AppColors.redcolor),
-            ),
-          ),
-        ],
       ),
       body: Column(
         children: [
+          // Chat Messages List using Obx
           Expanded(
             child: Obx(() {
+              if (chatsController.chatMessages.isEmpty) {
+                return const Center(
+                  child: Text('No messages yet'),
+                );
+              }
+
               return ListView.builder(
                 controller: chatsController.scrollController,
                 itemCount: chatsController.chatMessages.length,
@@ -89,23 +76,21 @@ class ChatScreen extends StatelessWidget {
                         ? Alignment.centerRight
                         : Alignment.centerLeft,
                     child: Container(
-                      width: 224.h,
                       padding: const EdgeInsets.all(10),
                       margin: const EdgeInsets.symmetric(
-                        vertical: 12,
-                        horizontal: 15,
+                        vertical: 6,
+                        horizontal: 12,
                       ),
                       decoration: BoxDecoration(
                         color: message.isMe
-                            ? AppColors.primaryColor
-                            : const Color(0xfff8f7f7),
-                        borderRadius: BorderRadius.circular(10),
+                            ? Colors.blueAccent
+                            : Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        message.message,
-                        style: globalTextStyle(
-                          color: message.isMe ? Colors.white : Colors.black,
-                          fontSize: 16,
+                        message.content,
+                        style: TextStyle(
+                          color: message.isMe ? Colors.white : Colors.black87,
                         ),
                       ),
                     ),
@@ -114,73 +99,40 @@ class ChatScreen extends StatelessWidget {
               );
             }),
           ),
+
+          // Message Input Field
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
                 Expanded(
-                    child: SizedBox(
-                  height: 40,
                   child: TextField(
                     controller: chatsController.messageController,
-                    decoration: InputDecoration(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 10),
+                    onChanged: (text) {
+                      chatsController.emitTyping();
+                    },
+                    decoration: const InputDecoration(
                       hintText: "Type a message",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          width: 1,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          width: 1,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          width: 1,
-                        ),
-                      ),
-                    ),
-                  ),
-                )),
-                const SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  height: 35,
-                  width: 35,
-                  decoration: BoxDecoration(
-                      color: AppColors.purplecolor,
-                      borderRadius: BorderRadius.circular(17.5)),
-                  child: Center(
-                    child: IconButton(
-                      icon: Image.asset(
-                        IconsPath.sendButton,
-                        height: 15,
-                        width: 15,
-                      ),
-                      onPressed: () {
-                        if (chatsController.messageController.text.isNotEmpty) {
-                          chatsController.sendMessage(
-                            chatsController.messageController.text,
-                          );
-                          chatsController.messageController.clear();
-                        }
-                      },
+                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 12),
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 5,
-                )
+                IconButton(
+                  icon: const Icon(Icons.send),
+                  color: Colors.blueAccent,
+                  onPressed: () {
+                    if (chatsController.messageController.text
+                        .trim()
+                        .isNotEmpty) {
+                      chatsController.sendMessage(
+                        chatsController.messageController.text.trim(),
+                        'YourUsername', // Replace 'YourUsername' with the actual sender name
+                      );
+                      chatsController.messageController.clear();
+                    }
+                  },
+                ),
               ],
             ),
           ),
