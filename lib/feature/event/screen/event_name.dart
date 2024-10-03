@@ -10,12 +10,12 @@ import '../widgets/show_finish_time_dialog.dart';
 import '../../../core/global_widegts/customTextField.dart';
 
 class EventName extends StatelessWidget {
-   EventName({super.key});
-  final EventNameController eventNameController = Get.find<EventNameController>();
+  EventName({super.key});
+  final EventNameController eventNameController =
+      Get.find<EventNameController>();
 
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: () async {
         eventNameController.resetValidation();
@@ -39,107 +39,36 @@ class EventName extends StatelessWidget {
         body: Obx(() {
           return eventNameController.isValidate.value == false
               ? Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    ImagePath.running,
-                    height: 122.h,
-                    width: 122.w,
-                  ),
-                ),
-                SizedBox(height: 5.h),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'City',
-                    style: globalTextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        textAlign: TextAlign.center,
-                        lineHeight: 23.sp / 16.sp),
-                  ),
-                ),
-                SizedBox(height: 20.h),
-                Text(
-                  'Event Type',
-                  style: globalTextStyle(lineHeight: 21.sp / 14.sp),
-                ),
-                SizedBox(height: 5.h),
-                Container(
-                  alignment: Alignment.center,
-                  width: 79.w,
-                  height: 29.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                    border: Border.all(
-                      color: const Color(0xFF010101),
-                      width: 1,
-                    ),
-                  ),
-                  child: Text(
-                    'Running',
-                    style: globalTextStyle(lineHeight: 21.sp / 14.sp),
-                  ),
-                ),
-                SizedBox(height: 20.h),
-                Text(
-                  'Description',
-                  style: globalTextStyle(lineHeight: 21.sp / 14.sp),
-                ),
-                SizedBox(height: 5.h),
-                Text(
-                  'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n'
-                      'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n'
-                      'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-                  style: globalTextStyle(
-                      fontWeight: FontWeight.w600,
-                      lineHeight: 21.sp / 14.sp),
-                ),
-                SizedBox(height: 16.h),
-                SizedBox(
-                  width: 153.w,
+                  padding: const EdgeInsets.all(20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image.asset(
+                          ImagePath.running,
+                          height: 122.h,
+                          width: 122.w,
+                        ),
+                      ),
+                      SizedBox(height: 5.h),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'City',
+                          style: globalTextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              textAlign: TextAlign.center,
+                              lineHeight: 23.sp / 16.sp),
+                        ),
+                      ),
+                      SizedBox(height: 20.h),
                       Text(
-                        'Date',
+                        'Event Type',
                         style: globalTextStyle(lineHeight: 21.sp / 14.sp),
                       ),
-                      SizedBox(height: 10.h),
-                  Container(
-                    alignment: Alignment.center,
-                    width: 79.w,
-                    height: 29.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                      border: Border.all(
-                        color: const Color(0xFF010101),
-                        width: 1,
-                      ),
-                    ),
-                    child: Text(
-                      'Date',
-                      style: globalTextStyle(lineHeight: 21.sp / 14.sp),
-                    ),
-                  ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                SizedBox(
-                  width: 153.w,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Distance',
-                        style: globalTextStyle(lineHeight: 21.sp / 14.sp),
-                      ),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 5.h),
                       Container(
                         alignment: Alignment.center,
                         width: 79.w,
@@ -152,257 +81,335 @@ class EventName extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          'Distance',
+                          'Running',
                           style: globalTextStyle(lineHeight: 21.sp / 14.sp),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20.h),
-                Align(
-                  alignment: Alignment.center,
-                  child: GestureDetector(
-                    onTap: () {
-                      showFinishTimeDialog(context);
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: 281.w,
-                      height: 60.h,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(10.r)),
-                      ),
-                      child: Text(
-                        'I would like to participate in this event with someone',
-                        style: globalTextStyle(
-                            lineHeight: 23.sp / 16.sp,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16.sp,
-                            color: const Color(0xffFFFAFA)),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          )
-              : Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    ImagePath.running,
-                    height: 122.h,
-                    width: 122.w,
-                  ),
-                ),
-                SizedBox(height: 5.h),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'City',
-                    style: globalTextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        textAlign: TextAlign.center,
-                        lineHeight: 23.sp / 16.sp),
-                  ),
-                ),
-                SizedBox(height: 20.h),
-                Text(
-                  'Event Type',
-                  style: globalTextStyle(lineHeight: 21.sp / 14.sp),
-                ),
-                SizedBox(height: 5.h),
-                Container(
-                  alignment: Alignment.center,
-                  width: 79.w,
-                  height: 29.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                    border: Border.all(
-                      color: const Color(0xFF010101),
-                      width: 1,
-                    ),
-                  ),
-                  child: Text(
-                    'Running',
-                    style: globalTextStyle(lineHeight: 21.sp / 14.sp),
-                  ),
-                ),
-                SizedBox(height: 20.h),
-                Text(
-                  'Description',
-                  style: globalTextStyle(lineHeight: 21.sp / 14.sp),
-                ),
-                SizedBox(height: 5.h),
-                Text(
-                  'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n'
-                      'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n'
-                      'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-                  style: globalTextStyle(
-                      fontWeight: FontWeight.w600,
-                      lineHeight: 21.sp / 14.sp),
-                ),
-                SizedBox(height: 16.h),
-                SizedBox(
-                  width: 153.w,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                      SizedBox(height: 20.h),
                       Text(
-                        'Date',
+                        'Description',
                         style: globalTextStyle(lineHeight: 21.sp / 14.sp),
                       ),
-                      SizedBox(height: 10.h),
-                  Container(
-                    alignment: Alignment.center,
-                    width: 79.w,
-                    height: 29.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                      border: Border.all(
-                        color: const Color(0xFF010101),
-                        width: 1,
-                      ),
-                    ),
-                    child: Text(
-                      'Date',
-                      style: globalTextStyle(lineHeight: 21.sp / 14.sp),
-                    ),
-                  ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                SizedBox(
-                  width: 153.w,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                      SizedBox(height: 5.h),
                       Text(
-                        'Distance',
-                        style: globalTextStyle(lineHeight: 21.sp / 14.sp),
-                      ),
-                      SizedBox(height: 10.h),
-                      Container(
-                        alignment: Alignment.center,
-                        width: 79.w,
-                        height: 29.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                          border: Border.all(
-                            color: const Color(0xFF010101),
-                            width: 1,
-                          ),
-                        ),
-                        child: Text(
-                          'Distance'
-                              ,
-                          style: globalTextStyle(lineHeight: 21.sp / 14.sp),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20.h),
-                GestureDetector(
-                  onTap: eventNameController.findPartner,
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: double.infinity,
-                    height: 60.h,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10.r)),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(10.h),
-                      child: Text(
-                        'Find Partners for Event',
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n'
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n'
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
                         style: globalTextStyle(
-                            fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
-                            color: Colors.white),
+                            lineHeight: 21.sp / 14.sp),
                       ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 24.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 50.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          showFinishTimeDialog(context);
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: 118.w,
-                          height: 35.h,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(10.r)),
-                            border: Border.all(
-                              color: AppColors.primaryColor,
-                              width: 1,
-                            ),
-                          ),
-                          child: Text(
-                            'Edit',
-                            style: globalTextStyle(
-                                color: AppColors.primaryColor,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                                lineHeight: 22.sp / 16.sp),
-                          ),
-                        ),
-                      ),
+                      SizedBox(height: 16.h),
                       SizedBox(
-                        width: 30.w,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: 118.w,
-                          height: 35.h,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(10.r)),
-                            border: Border.all(
-                              color: AppColors.primaryColor,
-                              width: 1,
+                        width: 153.w,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Date',
+                              style: globalTextStyle(lineHeight: 21.sp / 14.sp),
                             ),
-                          ),
-                          child: Text(
-                            AppTexts.cancel,
-                            style: globalTextStyle(
-                                color: AppColors.primaryColor,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                                lineHeight: 22.sp / 16.sp),
-                          ),
+                            SizedBox(height: 10.h),
+                            Container(
+                              alignment: Alignment.center,
+                              width: 79.w,
+                              height: 29.h,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.r)),
+                                border: Border.all(
+                                  color: const Color(0xFF010101),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Text(
+                                'Date',
+                                style:
+                                    globalTextStyle(lineHeight: 21.sp / 14.sp),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      SizedBox(height: 10.h),
+                      SizedBox(
+                        width: 153.w,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Distance',
+                              style: globalTextStyle(lineHeight: 21.sp / 14.sp),
+                            ),
+                            SizedBox(height: 10.h),
+                            Container(
+                              alignment: Alignment.center,
+                              width: 79.w,
+                              height: 29.h,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.r)),
+                                border: Border.all(
+                                  color: const Color(0xFF010101),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Text(
+                                'Distance',
+                                style:
+                                    globalTextStyle(lineHeight: 21.sp / 14.sp),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20.h),
+                      Align(
+                        alignment: Alignment.center,
+                        child: GestureDetector(
+                          onTap: () {
+                            showFinishTimeDialog(context);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: 281.w,
+                            height: 60.h,
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryColor,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.r)),
+                            ),
+                            child: Text(
+                              'I would like to participate in this event with someone',
+                              style: globalTextStyle(
+                                  lineHeight: 23.sp / 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16.sp,
+                                  color: const Color(0xffFFFAFA)),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 )
-              ],
-            ),
-          );
+              : Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image.asset(
+                          ImagePath.running,
+                          height: 122.h,
+                          width: 122.w,
+                        ),
+                      ),
+                      SizedBox(height: 5.h),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'City',
+                          style: globalTextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              textAlign: TextAlign.center,
+                              lineHeight: 23.sp / 16.sp),
+                        ),
+                      ),
+                      SizedBox(height: 20.h),
+                      Text(
+                        'Event Type',
+                        style: globalTextStyle(lineHeight: 21.sp / 14.sp),
+                      ),
+                      SizedBox(height: 5.h),
+                      Container(
+                        alignment: Alignment.center,
+                        width: 79.w,
+                        height: 29.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                          border: Border.all(
+                            color: const Color(0xFF010101),
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Running',
+                          style: globalTextStyle(lineHeight: 21.sp / 14.sp),
+                        ),
+                      ),
+                      SizedBox(height: 20.h),
+                      Text(
+                        'Description',
+                        style: globalTextStyle(lineHeight: 21.sp / 14.sp),
+                      ),
+                      SizedBox(height: 5.h),
+                      Text(
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n'
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n'
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                        style: globalTextStyle(
+                            fontWeight: FontWeight.w600,
+                            lineHeight: 21.sp / 14.sp),
+                      ),
+                      SizedBox(height: 16.h),
+                      SizedBox(
+                        width: 153.w,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Date',
+                              style: globalTextStyle(lineHeight: 21.sp / 14.sp),
+                            ),
+                            SizedBox(height: 10.h),
+                            Container(
+                              alignment: Alignment.center,
+                              width: 79.w,
+                              height: 29.h,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.r)),
+                                border: Border.all(
+                                  color: const Color(0xFF010101),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Text(
+                                'Date',
+                                style:
+                                    globalTextStyle(lineHeight: 21.sp / 14.sp),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      SizedBox(
+                        width: 153.w,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Distance',
+                              style: globalTextStyle(lineHeight: 21.sp / 14.sp),
+                            ),
+                            SizedBox(height: 10.h),
+                            Container(
+                              alignment: Alignment.center,
+                              width: 79.w,
+                              height: 29.h,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.r)),
+                                border: Border.all(
+                                  color: const Color(0xFF010101),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Text(
+                                'Distance',
+                                style:
+                                    globalTextStyle(lineHeight: 21.sp / 14.sp),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20.h),
+                      GestureDetector(
+                        onTap: eventNameController.findPartner,
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          height: 60.h,
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryColor,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.r)),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(10.h),
+                            child: Text(
+                              'Find Partners for Event',
+                              style: globalTextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 24.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 50.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                showFinishTimeDialog(context);
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 118.w,
+                                height: 35.h,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.r)),
+                                  border: Border.all(
+                                    color: AppColors.primaryColor,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Text(
+                                  'Edit',
+                                  style: globalTextStyle(
+                                      color: AppColors.primaryColor,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w600,
+                                      lineHeight: 22.sp / 16.sp),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 30.w,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 118.w,
+                                height: 35.h,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.r)),
+                                  border: Border.all(
+                                    color: AppColors.primaryColor,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Text(
+                                  AppTexts.cancel,
+                                  style: globalTextStyle(
+                                      color: AppColors.primaryColor,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w600,
+                                      lineHeight: 22.sp / 16.sp),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                );
         }),
       ),
     );

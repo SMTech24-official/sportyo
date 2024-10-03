@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:sportyo/core/const/app_texts.dart';
 import 'package:sportyo/core/const/icons_path.dart';
-import 'package:sportyo/feature/event/screen/event_name.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/image_path.dart';
 import '../../../core/global_widegts/customTextField.dart';
+import '../../profile/widget/global_text_style.dart';
 import '../controller/event_controller.dart';
+import '../model/event_model_class.dart';
 import '../widgets/filter_dialog.dart';
 
 class Event extends StatelessWidget {
@@ -18,88 +20,145 @@ class Event extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(AppTexts.events),
-        automaticallyImplyLeading: false,
-      ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 5.h,
-          ),
-          Row(
+    return SafeArea(
+      child: Scaffold(
+        body: RefreshIndicator(
+          onRefresh: () async {
+            eventController.featchEventData();
+          },
+          child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: 58.w),
-                child: CustomTextField(
-                  hitText: 'Aa',
-                  textEditingController:
-                      eventController.searchController, // Bind to controller
+              Align(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  "Events",
+                  style: globalTextStyle(
+                    fontSize: 28.sp,
+                    fontWeight: FontWeight.w600,
+                    lineHeight: 1.5.h,
+                    textAlign: TextAlign.center,
+                    color: AppColors.blackColor,
+                  ),
                 ),
               ),
-              SizedBox(width: 14.w),
-              InkWell(
-                onTap: () => showFilterDialog(context),
-                child: Image.asset(
-                  IconsPath.filter,
-                  height: 18.h,
-                  width: 18.w,
+              SizedBox(height: 18.h),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 58.w),
+                    child: CustomTextField(
+                      hitText: 'Search...',
+                      textEditingController: eventController
+                          .searchController,
+                    ),
+                  ),
+                  SizedBox(width: 14.w),
+                  InkWell(
+                    onTap: () => showFilterDialog(context),
+                    child: Image.asset(
+                      IconsPath.filter,
+                      height: 18.h,
+                      width: 18.w,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 11.h),
+              // Event list
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(right: 8.w),
+                  child: Obx(() {
+                    if (eventController.eventModelList.value.eventList ==
+                            null ||
+                        eventController
+                            .eventModelList.value.eventList!.isEmpty) {
+                      return const SizedBox.shrink();
+                    }
+
+                    return ListView.separated(
+                      itemCount: eventController
+                          .eventModelList.value.eventList!.length,
+                      itemBuilder: (context, index) {
+                        var event = eventController
+                            .eventModelList.value.eventList![index];
+                        return eventListTile(
+                          event: event,
+                          onTap: () {
+                            // Get.to(() => EventName(event: event)); // Navigate with event data
+                          },
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const Divider();
+                      },
+                    );
+                  }),
                 ),
               ),
             ],
           ),
-          // Event list
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(right: 8.w),
-              child: ListView.separated(
-                itemCount: 12,
-                itemBuilder: (context, index) => eventListTile(onTap: () {
-                  Get.to(() => EventName());
-                }),
-                separatorBuilder: (BuildContext context, int index) {
-                  return const Divider();
-                },
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget eventListTile({required VoidCallback onTap}) {
+  Widget eventListTile(
+      {required EventList event, required VoidCallback onTap}) {
+    // Parse the date string and format it
+    DateTime? eventDateTime;
+    try {
+      eventDateTime = DateTime.parse(event.date ?? ''); // Parse the event date
+    } catch (e) {
+      // Handle parsing error if needed
+    }
+
+    // Format the date to "DD/MM/YYYY"
+    String formattedDate = eventDateTime != null
+        ? DateFormat('dd/MM/yyyy').format(eventDateTime)
+        : 'Date DD/MM/YYYY';
+
     return ListTile(
-      leading: Image.asset(ImagePath.running, width: 50.w, height: 50.h),
-      title: RichText(
-        text: TextSpan(
-          text: 'Event XX, ',
-          style: GoogleFonts.poppins(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.w600,
-              height: 30.h / 20.h,
-              color: AppColors.blackColor),
-          children: [
-            TextSpan(
-              text: 'City',
+      leading: Image.network(
+        event.eventImage ??
+            ImagePath.running, // Use dynamic image or default one
+        width: 50.w,
+        height: 50.h,
+      ),
+      title: Row(
+        children: [
+          Expanded(
+            child: Text(
+              '${event.eventName ?? 'Event'}, ', // Event name
               style: GoogleFonts.poppins(
-                  fontSize: 20.sp,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.w600,
-                  height: 30.h / 20.h,
-                  color: AppColors.blackColor),
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+                height: 30.h / 18.h,
+                color: AppColors.blackColor,
+              ),
+              overflow: TextOverflow.ellipsis, // Set overflow for event name
             ),
-          ],
-        ),
+          ),
+          Text(
+            event.city ?? 'City', // Dynamic city name
+            style: GoogleFonts.poppins(
+              fontSize: 18.sp,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w600,
+              height: 30.h / 18.h,
+              color: AppColors.blackColor,
+            ),
+          ),
+        ],
       ),
       subtitle: Text(
-        'Date DD/MM/YY',
+        'Date $formattedDate',
         style: GoogleFonts.poppins(
-            fontSize: 10.sp,
-            fontWeight: FontWeight.w600,
-            height: 15.h / 10.h,
-            color: const Color(0xff555151)),
+          fontSize: 10.sp,
+          fontWeight: FontWeight.w600,
+          height: 15.h / 10.h,
+          color: const Color(0xff555151),
+        ),
       ),
       trailing: SizedBox(
         height: 28.h,

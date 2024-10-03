@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
@@ -15,13 +14,15 @@ class SecondNetworkCaller {
     try {
       final Response response = await get(
         Uri.parse(url),
-        headers: {'Content-type': 'application/json'},
+        headers: {
+          'Authorization': token.toString(),
+          'Content-type': 'application/json',
+
+        },
       ).timeout(
         Duration(seconds: timeoutDuration),
       );
-      log(response.headers.toString());
-      log(response.statusCode.toString());
-      log(response.body.toString());
+
       return _handleResponse(response);
     } catch (e) {
       return _handleError(e);
@@ -36,8 +37,8 @@ class SecondNetworkCaller {
 
     try {
       final Response response = await post(Uri.parse(url),
-          headers: {'Content-type': 'application/json'},
-          body: jsonEncode(body))
+              headers: {'Content-type': 'application/json'},
+              body: jsonEncode(body))
           .timeout(Duration(seconds: timeoutDuration));
       return _handleResponse(response);
     } catch (e) {
@@ -80,8 +81,8 @@ class SecondNetworkCaller {
         isSuccess: false,
         statusCode: response.statusCode,
         responseData: '',
-        errorMessage: decodedResponse['message'] ??
-            'An unexpected error occurred!',
+        errorMessage:
+            decodedResponse['message'] ?? 'An unexpected error occurred!',
       );
     } else {
       return ResponseData(
@@ -131,5 +132,3 @@ class SecondNetworkCaller {
     }
   }
 }
-
-
