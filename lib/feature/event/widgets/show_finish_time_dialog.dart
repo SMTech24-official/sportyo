@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sportyo/core/global_widegts/custom_button_container.dart';
+import 'package:sportyo/feature/event/model/event_model_class.dart';
 
 import '../../../core/global_widegts/customTextField.dart';
 import '../../profile/widget/global_text_style.dart';
 import '../controller/event_name_controller.dart';
 
-void showFinishTimeDialog(BuildContext context) {
+void showFinishTimeDialog(BuildContext context,String event) {
   final EventNameController eventNameController = Get.find<EventNameController>();
 
   showDialog(
@@ -59,7 +60,7 @@ void showFinishTimeDialog(BuildContext context) {
               CustomButtonContainer(
                 text: 'Validate',
                 save: () {
-                  eventNameController.validateInput();
+                  eventNameController.addEventName(event);
                 },
                 cancel: () {
                   Get.back();

@@ -6,4 +6,5 @@ class Urls {
   static const String sendEmail= '$_baseUrl/auth/forgot-password';
   static const String termsAndPolicy= '$_baseUrl/termsPolicy';
   static const String event= '$_baseUrl/event';
+  static const String addEvent= '$_baseUrl/eventUser';
 }

@@ -194,7 +194,7 @@ class EventName extends StatelessWidget {
                           alignment: Alignment.center,
                           child: GestureDetector(
                             onTap: () {
-                              showFinishTimeDialog(context);
+                              showFinishTimeDialog(context,event.id??'');
                             },
                             child: Container(
                               alignment: Alignment.center,
@@ -388,7 +388,7 @@ class EventName extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  showFinishTimeDialog(context);
+                                  showFinishTimeDialog(context,event.id??'');
                                 },
                                 child: Container(
                                   alignment: Alignment.center,

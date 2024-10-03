@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sportyo/feature/event/screen/find_partners_for_event.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/service_class/network_caller/repository/network_caller.dart';
@@ -21,13 +22,39 @@ class EventNameController extends GetxController {
     final RegExp timeRegex = RegExp(r'^([01]\d|2[0-3]):([0-5]\d)$');
     return timeRegex.hasMatch(time);
   }
+
+  Future<void> addEventName(String eventId)async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userId = prefs.getString("userId");
+    EasyLoading.show(status: "Loading...");
+    try {
+      final Map<String, String> requestBody = {
+        'eventId': eventId.toString(),
+        'userId': userId.toString(),
+      };
+      // Send reset email via network request
+      final response = await NetworkCaller().postRequest(Urls.addEvent,body: requestBody);
+
+      // Handle response success
+      if (response.isSuccess) {
+        isValidate.value = true;
+        Get.back();
+        EasyLoading.show(status: 'added ');
+      }
+    } catch (error) {
+      EasyLoading.showError('An error occurred. Please try again later.');
+
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
   // Method to handle validation logic
   void validateInput() {
     String predictedTime = predictedTimeController.text.trim();
 
     if (validatePredictedTime(predictedTime)) {
-      isValidate.value = true;
-      Get.back(); // Close the dialog after successful validation
+      // Close the dialog after successful validation
     } else {
       // Show error message or dialog if the time format is incorrect
       Get.snackbar(
