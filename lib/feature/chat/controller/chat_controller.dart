@@ -18,8 +18,20 @@ class ChatsController extends GetxController {
   // Indicates whether senderId has been loaded
   var isSenderIdLoaded = false.obs;
 
+  // Indicates whether messages are loading
+  var isLoading = false.obs;
+
+  // Indicates if the other user is typing
+  var isTyping = false.obs;
+
+  // Indicates if the other user is active
+  var isActive = false.obs;
+
   // Holds the receiverId if a room join is attempted before senderId is loaded
   String? pendingReceiverId;
+
+  // Current receiverId
+  String? currentReceiverId;
 
   @override
   void onInit() {
@@ -36,15 +48,8 @@ class ChatsController extends GetxController {
 
       // If there is a pending receiverId, join the room now
       if (pendingReceiverId != null) {
-        webSocketService.joinRoom(senderId.value, pendingReceiverId!);
-        print("Joined room with receiverId: $pendingReceiverId");
+        connectToRoom(pendingReceiverId!);
         pendingReceiverId = null; // Clear after joining
-      }
-    });
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (scrollController.hasClients) {
-        scrollController.jumpTo(scrollController.position.maxScrollExtent);
       }
     });
   }
@@ -65,14 +70,21 @@ class ChatsController extends GetxController {
   // Join a room with receiverId
   void connectToWebSocketAndJoinRoom(String receiverId) {
     if (isSenderIdLoaded.value) {
-      webSocketService.joinRoom(senderId.value, receiverId);
-      print("Joined room with receiverId: $receiverId");
+      currentReceiverId = receiverId; // Set currentReceiverId
+      connectToRoom(receiverId);
     } else {
       // If senderId is not yet loaded, store the receiverId to join later
       pendingReceiverId = receiverId;
       print(
           "Sender ID is not available yet. Will join the room once it is loaded.");
     }
+  }
+
+  // Helper method to join a room and set loading state
+  void connectToRoom(String receiverId) {
+    isLoading.value = true; // Start loading
+    webSocketService.joinRoom(senderId.value, receiverId);
+    print("Joined room with receiverId: $receiverId");
   }
 
   // Handle incoming messages
@@ -93,6 +105,8 @@ class ChatsController extends GetxController {
         for (var messageData in messages) {
           chatMessages.add(ChatMessage.fromJson(messageData, senderId.value));
         }
+
+        isLoading.value = false; // Stop loading after messages are loaded
 
         scrollToBottom();
         break;
@@ -116,7 +130,23 @@ class ChatsController extends GetxController {
         break;
 
       case 'typing':
-        print('${parsedData['username']} is typing...');
+        final username = parsedData['username'];
+        print('$username is typing...');
+        isTyping.value = true; // Set typing to true
+
+        // Reset typing status after 2 seconds of no typing event
+        Future.delayed(const Duration(seconds: 2), () {
+          isTyping.value = false;
+        });
+        break;
+
+      case 'activeStatus':
+        final userId = parsedData['userId'];
+        final activeStatus = parsedData['isActive'];
+        print("User $userId is active: $activeStatus");
+        if (userId == currentReceiverId) {
+          isActive.value = activeStatus;
+        }
         break;
 
       default:
@@ -137,16 +167,12 @@ class ChatsController extends GetxController {
       senderName,
       message,
     );
-
-    // Removed local addition to prevent duplication
-    // If instant feedback is desired without duplication, consider alternative approaches
   }
 
   // Emit typing notification to WebSocket
   void emitTyping() {
     if (conversationId.value.isNotEmpty) {
-      webSocketService.emitTyping(conversationId.value,
-          'YourUsername'); // Replace 'YourUsername' as needed
+      webSocketService.emitTyping(conversationId.value, 'YourUsername');
     }
   }
 
@@ -155,11 +181,13 @@ class ChatsController extends GetxController {
     webSocketService.disconnect();
   }
 
-  // Scroll to the bottom of the chat when new messages are added
+  // Scroll to the bottom of the chat instantly
   void scrollToBottom() {
-    Future.delayed(const Duration(milliseconds: 300), () {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (scrollController.hasClients) {
-        scrollController.jumpTo(scrollController.position.maxScrollExtent);
+        scrollController.jumpTo(
+          scrollController.position.maxScrollExtent,
+        );
       }
     });
   }
