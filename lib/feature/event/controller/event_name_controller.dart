@@ -32,18 +32,20 @@ class EventNameController extends GetxController {
         'eventId': eventId.toString(),
         'userId': userId.toString(),
       };
-      // Send reset email via network request
+
       final response = await NetworkCaller().postRequest(Urls.addEvent,body: requestBody);
 
       // Handle response success
       if (response.isSuccess) {
         isValidate.value = true;
-        Get.back();
-        EasyLoading.show(status: 'added ');
+        EasyLoading.showSuccess('Event added successfully');
+      }else{
+        predictedTimeController.clear();
+        EasyLoading.showError('You are already associated with this event');
       }
+      Get.back();
     } catch (error) {
-      EasyLoading.showError('An error occurred. Please try again later.');
-
+      EasyLoading.showError('Failed to add event. Please try again.');
     } finally {
       EasyLoading.dismiss();
     }
