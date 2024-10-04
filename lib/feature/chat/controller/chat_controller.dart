@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sportyo/feature/chat/controller/chat_list_controller.dart';
 import '../model/chat_model.dart';
 import '../service/socket_service.dart';
 
@@ -167,6 +168,8 @@ class ChatsController extends GetxController {
       senderName,
       message,
     );
+    final ChatsListController controller = Get.put(ChatsListController());
+    controller.fetchChatUsers();
   }
 
   // Emit typing notification to WebSocket
