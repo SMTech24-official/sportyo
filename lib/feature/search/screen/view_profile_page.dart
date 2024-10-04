@@ -83,12 +83,12 @@ class UserDetailsPage extends StatelessWidget {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          // controller.startchat(
-                          //   controller.userModel.value.firstName ?? '',
-                          //   controller.userModel.value.userProfileImage ?? '',
-                          //   controller.userModel.value.id,
-                          //   context,
-                          // );
+                          controller.startchat(
+                            controller.userModel.value.firstName ?? '',
+                            controller.userModel.value.userProfileImage ?? '',
+                            controller.userModel.value.id,
+                            context,
+                          );
                         },
                         child: Text(
                           'Start a discussion',
