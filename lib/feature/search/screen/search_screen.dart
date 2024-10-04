@@ -17,7 +17,6 @@ class SearchScreen extends StatelessWidget {
     final SearchsController controller = Get.put(SearchsController());
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: const Text('Find Partners'),
       ),
       body: Padding(

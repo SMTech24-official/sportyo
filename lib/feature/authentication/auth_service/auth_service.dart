@@ -24,7 +24,7 @@ class AuthService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(tokenKey);
     await prefs.remove(idKey);
-    await prefs.remove("profileComplete");
+    await prefs.setBool("profileComplete", false);
     Get.offAll(() => const LogIn());
   }
 
