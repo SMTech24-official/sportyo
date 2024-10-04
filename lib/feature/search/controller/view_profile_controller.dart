@@ -108,6 +108,7 @@ class UsersController extends GetxController {
 
   void startchat(String name, String image, String id, context) async {
     bool profileComplete = await AuthService.profileComplete();
+    print(profileComplete);
     if (profileComplete) {
       Get.to(() => ChatScreen(name: name, image: image, receiverId: id));
     } else {

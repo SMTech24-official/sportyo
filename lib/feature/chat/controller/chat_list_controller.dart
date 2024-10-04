@@ -1,110 +1,45 @@
+import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sportyo/core/service_class/network_caller/utility/usrls.dart';
+
+import '../model/chat_list_model.dart';
 
 class ChatsListController extends GetxController {
-  var chats = <Chat>[
-    Chat(
-      imageUrl:
-          'https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1727049600&semt=ais_hybrid',
-      name: 'John Doe',
-      lastMessage: 'Hey, how are you? ca we talk . i want to go an event',
-    ),
-    Chat(
-      imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPmIVL39xwKm42kJS3b3F_aI7WhosNdC7rrWXIeX74C98ibrQT91M1nxiFgjyfX1XBIB0&usqp=CAU',
-      name: 'Jane Smith',
-      lastMessage: 'See you tomorrow!',
-    ),
-    Chat(
-      imageUrl:
-          'https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1727049600&semt=ais_hybrid',
-      name: 'John Doe',
-      lastMessage: 'Hey, how are you?',
-    ),
-    Chat(
-      imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPmIVL39xwKm42kJS3b3F_aI7WhosNdC7rrWXIeX74C98ibrQT91M1nxiFgjyfX1XBIB0&usqp=CAU',
-      name: 'Jane Smith',
-      lastMessage: 'See you tomorrow!',
-    ),
-    Chat(
-      imageUrl:
-          'https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1727049600&semt=ais_hybrid',
-      name: 'John Doe',
-      lastMessage: 'Hey, how are you?',
-    ),
-    Chat(
-      imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPmIVL39xwKm42kJS3b3F_aI7WhosNdC7rrWXIeX74C98ibrQT91M1nxiFgjyfX1XBIB0&usqp=CAU',
-      name: 'Jane Smith',
-      lastMessage: 'See you tomorrow!',
-    ),
-    Chat(
-      imageUrl:
-          'https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1727049600&semt=ais_hybrid',
-      name: 'John Doe',
-      lastMessage: 'Hey, how are you?',
-    ),
-    Chat(
-      imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPmIVL39xwKm42kJS3b3F_aI7WhosNdC7rrWXIeX74C98ibrQT91M1nxiFgjyfX1XBIB0&usqp=CAU',
-      name: 'Jane Smith',
-      lastMessage: 'See you tomorrow!',
-    ),
-    Chat(
-      imageUrl:
-          'https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1727049600&semt=ais_hybrid',
-      name: 'John Doe',
-      lastMessage: 'Hey, how are you?',
-    ),
-    Chat(
-      imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPmIVL39xwKm42kJS3b3F_aI7WhosNdC7rrWXIeX74C98ibrQT91M1nxiFgjyfX1XBIB0&usqp=CAU',
-      name: 'Jane Smith',
-      lastMessage: 'See you tomorrow!',
-    ),
-    Chat(
-      imageUrl:
-          'https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1727049600&semt=ais_hybrid',
-      name: 'John Doe',
-      lastMessage: 'Hey, how are you?',
-    ),
-    Chat(
-      imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPmIVL39xwKm42kJS3b3F_aI7WhosNdC7rrWXIeX74C98ibrQT91M1nxiFgjyfX1XBIB0&usqp=CAU',
-      name: 'Jane Smith',
-      lastMessage: 'See you tomorrow!',
-    ),
-    Chat(
-      imageUrl:
-          'https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1727049600&semt=ais_hybrid',
-      name: 'John Doe',
-      lastMessage: 'Hey, how are you?',
-    ),
-    Chat(
-      imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPmIVL39xwKm42kJS3b3F_aI7WhosNdC7rrWXIeX74C98ibrQT91M1nxiFgjyfX1XBIB0&usqp=CAU',
-      name: 'Jane Smith',
-      lastMessage: 'See you tomorrow!',
-    ),
-    Chat(
-      imageUrl:
-          'https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1727049600&semt=ais_hybrid',
-      name: 'John Doe',
-      lastMessage: 'Hey, how are you?',
-    ),
-    Chat(
-      imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPmIVL39xwKm42kJS3b3F_aI7WhosNdC7rrWXIeX74C98ibrQT91M1nxiFgjyfX1XBIB0&usqp=CAU',
-      name: 'Jane Smith',
-      lastMessage: 'See you tomorrow!',
-    ),
-  ].obs;
-}
+  var chatUsers = <ChatUser>[].obs;
+  var isLoading = true.obs;
 
-class Chat {
-  final String imageUrl;
-  final String name;
-  final String lastMessage;
+  @override
+  void onInit() {
+    fetchChatUsers();
+    super.onInit();
+  }
 
-  Chat({required this.imageUrl, required this.name, required this.lastMessage});
+  // Fetch the chat users from the API
+  Future<void> fetchChatUsers() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userId = prefs.getString("userId");
+    final url = '${Urls.baseUrl}/chat/$userId/chatUsers';
+    try {
+      isLoading(true);
+      final response = await http.get(Uri.parse(url));
+      print(response.body);
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        if (jsonData['success'] == true) {
+          var users = (jsonData['data'] as List)
+              .map((user) => ChatUser.fromJson(user))
+              .toList();
+          chatUsers.value = users;
+        }
+      } else {
+        Get.snackbar("Error", "Failed to load data");
+      }
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    } finally {
+      isLoading(false);
+    }
+  }
 }
