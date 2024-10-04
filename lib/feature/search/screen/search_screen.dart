@@ -142,7 +142,7 @@ class SearchScreen extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () {
                                     Get.to(() => const UserDetailsPage(
-                                          userId: "66f620610f1f3a75bc6d1e2f",
+                                          userId: "66f539a6857b7a52a58718ac",
                                         ));
                                   },
                                   child: Container(

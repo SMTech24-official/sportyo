@@ -83,12 +83,12 @@ class UserDetailsPage extends StatelessWidget {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          controller.startchat(
-                            controller.userModel.value.firstName ?? '',
-                            controller.userModel.value.userProfileImage ?? '',
-                            controller.userModel.value.id,
-                            context,
-                          );
+                          // controller.startchat(
+                          //   controller.userModel.value.firstName ?? '',
+                          //   controller.userModel.value.userProfileImage ?? '',
+                          //   controller.userModel.value.id,
+                          //   context,
+                          // );
                         },
                         child: Text(
                           'Start a discussion',
@@ -219,13 +219,53 @@ class UserDetailsPage extends StatelessWidget {
                       style: TextStyle(fontSize: 16),
                     ),
                     const SizedBox(height: 24),
-
-                    const Text(
-                      'Upcoming Events',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 16),
+                    controller.events.isEmpty
+                        ? const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "No Upcoming Events",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Upcoming Events',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 16),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: controller.events.length,
+                                itemBuilder: (context, index) {
+                                  final event = controller.events[index].event;
+                                  return Container(
+                                    margin: const EdgeInsets.only(bottom: 10),
+                                    height: 40,
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: AppColors.blackColor),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Center(
+                                      child: Text(
+                                        event.eventName,
+                                        style: globalTextStyle(),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                    const SizedBox(
+                      height: 20,
+                    )
                   ],
                 ),
               ),

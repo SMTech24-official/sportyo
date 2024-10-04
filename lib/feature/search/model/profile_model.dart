@@ -15,6 +15,7 @@ class UserModel {
   DateTime createdAt;
   DateTime updatedAt;
   List<SportsDetail> sportsDetails;
+  List<EventUser> eventUsers; // New field for events
 
   UserModel({
     required this.id,
@@ -33,6 +34,7 @@ class UserModel {
     required this.createdAt,
     required this.updatedAt,
     required this.sportsDetails,
+    required this.eventUsers,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -55,6 +57,9 @@ class UserModel {
       sportsDetails: (json['SportsDetails'] as List)
           .map((item) => SportsDetail.fromJson(item))
           .toList(),
+      eventUsers: (json['EventUser'] as List)
+          .map((item) => EventUser.fromJson(item))
+          .toList(), // Handling events data
     );
   }
 }
@@ -75,6 +80,42 @@ class SportsDetail {
       id: json['id'] ?? '',
       sportsName: json['sportsName'] ?? '',
       level: json['level'] ?? '',
+    );
+  }
+}
+
+// New EventUser class
+class EventUser {
+  Event event;
+
+  EventUser({required this.event});
+
+  factory EventUser.fromJson(Map<String, dynamic> json) {
+    return EventUser(
+      event: Event.fromJson(json['event']),
+    );
+  }
+}
+
+class Event {
+  String eventName;
+  String city;
+  String country;
+  DateTime date; // Change this to DateTime
+
+  Event({
+    required this.eventName,
+    required this.city,
+    required this.country,
+    required this.date,
+  });
+
+  factory Event.fromJson(Map<String, dynamic> json) {
+    return Event(
+      eventName: json['eventName'] ?? '',
+      city: json['city'] ?? '',
+      country: json['country'] ?? '',
+      date: DateTime.parse(json['date']), // Parse directly to DateTime
     );
   }
 }
