@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sportyo/core/const/image_path.dart';
 
 import '../controller/chat_controller.dart';
 
@@ -36,10 +37,12 @@ class ChatScreen extends StatelessWidget {
           },
         ),
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(image),
+              backgroundImage: image.isEmpty || image == ''
+                  ? const AssetImage(ImagePath.profile)
+                  : NetworkImage(image),
               radius: 20,
             ),
             const SizedBox(width: 10),
