@@ -8,7 +8,6 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Access the controller lazily within the build method
     final splashController = Get.find<SplashController>();
 
     return Scaffold(

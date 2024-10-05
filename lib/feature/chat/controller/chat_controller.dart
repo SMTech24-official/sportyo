@@ -43,16 +43,22 @@ class ChatsController extends GetxController {
     getSenderIdFromPreferences().then((_) {
       // Mark that senderId has been loaded
       isSenderIdLoaded.value = true;
+
       if (kDebugMode) {
         print("Sender ID successfully loaded: ${senderId.value}");
       }
+
 
       // Initialize WebSocket after retrieving senderId
       webSocketService.initSocket();
 
       // If there is a pending receiverId, join the room now
       if (pendingReceiverId != null) {
+
+        webSocketService.joinRoom(senderId.value, pendingReceiverId!);
+
         connectToRoom(pendingReceiverId!);
+
         pendingReceiverId = null; // Clear after joining
       }
     });
@@ -65,6 +71,11 @@ class ChatsController extends GetxController {
 
     if (storedSenderId != null && storedSenderId.isNotEmpty) {
       senderId.value = storedSenderId;
+
+      log("Sender ID loaded from SharedPreferences: ${senderId.value}");
+    } else {
+      
+
       if (kDebugMode) {
         print("Sender ID loaded from SharedPreferences: ${senderId.value}");
       }
@@ -72,6 +83,7 @@ class ChatsController extends GetxController {
       if (kDebugMode) {
         print("Sender ID is missing or not found in SharedPreferences.");
       }
+
     }
   }
 

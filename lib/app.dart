@@ -42,7 +42,7 @@ class Sprotyo extends StatelessWidget {
               ),
             ),
           ),
-          home: SplashScreen(),
+          home: const SplashScreen(),
           builder: EasyLoading.init(),
         );
       },
