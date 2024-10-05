@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,24 +25,23 @@ class ChatsListController extends GetxController {
     try {
       isLoading(true);
       final response = await http.get(Uri.parse(url));
-      print(response.body);
+      if (kDebugMode) {
+        print(response.body);
+      }
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         if (jsonData['success'] == true) {
           var users = (jsonData['data'] as List)
               .map((user) => ChatUser.fromJson(user))
               .toList();
-
-          // Sort the users based on lastMessage createdAt in descending order
           users.sort((a, b) {
-            // Compare using createdAt, handling potential null values
             if (a.createdAt == null && b.createdAt == null) return 0;
             if (a.createdAt == null) return 1;
             if (b.createdAt == null) return -1;
             return b.createdAt!.compareTo(a.createdAt!);
           });
 
-          chatUsers.value = users; // Assign sorted list
+          chatUsers.value = users;
         }
       } else {
         Get.snackbar("Error", "Failed to load data");

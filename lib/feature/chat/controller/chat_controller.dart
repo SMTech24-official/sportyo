@@ -1,6 +1,7 @@
 // lib/controller/chats_controller.dart
 
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,7 +43,9 @@ class ChatsController extends GetxController {
     getSenderIdFromPreferences().then((_) {
       // Mark that senderId has been loaded
       isSenderIdLoaded.value = true;
-      print("Sender ID successfully loaded: ${senderId.value}");
+      if (kDebugMode) {
+        print("Sender ID successfully loaded: ${senderId.value}");
+      }
 
       // Initialize WebSocket after retrieving senderId
       webSocketService.initSocket();
@@ -62,9 +65,13 @@ class ChatsController extends GetxController {
 
     if (storedSenderId != null && storedSenderId.isNotEmpty) {
       senderId.value = storedSenderId;
-      print("Sender ID loaded from SharedPreferences: ${senderId.value}");
+      if (kDebugMode) {
+        print("Sender ID loaded from SharedPreferences: ${senderId.value}");
+      }
     } else {
-      print("Sender ID is missing or not found in SharedPreferences.");
+      if (kDebugMode) {
+        print("Sender ID is missing or not found in SharedPreferences.");
+      }
     }
   }
 
@@ -76,8 +83,10 @@ class ChatsController extends GetxController {
     } else {
       // If senderId is not yet loaded, store the receiverId to join later
       pendingReceiverId = receiverId;
-      print(
-          "Sender ID is not available yet. Will join the room once it is loaded.");
+      if (kDebugMode) {
+        print(
+            "Sender ID is not available yet. Will join the room once it is loaded.");
+      }
     }
   }
 
@@ -85,7 +94,9 @@ class ChatsController extends GetxController {
   void connectToRoom(String receiverId) {
     isLoading.value = true; // Start loading
     webSocketService.joinRoom(senderId.value, receiverId);
-    print("Joined room with receiverId: $receiverId");
+    if (kDebugMode) {
+      print("Joined room with receiverId: $receiverId");
+    }
   }
 
   // Handle incoming messages
@@ -99,7 +110,9 @@ class ChatsController extends GetxController {
 
         // Correctly set the conversationId using 'id'
         conversationId.value = conversation['id'];
-        print("Conversation ID set to: ${conversationId.value}");
+        if (kDebugMode) {
+          print("Conversation ID set to: ${conversationId.value}");
+        }
 
         chatMessages.clear(); // Clear old messages
 
@@ -126,13 +139,17 @@ class ChatsController extends GetxController {
           chatMessages.add(newMessage);
           scrollToBottom();
         } else {
-          print("Duplicate message detected: ${newMessage.messageId}");
+          if (kDebugMode) {
+            print("Duplicate message detected: ${newMessage.messageId}");
+          }
         }
         break;
 
       case 'typing':
         final username = parsedData['username'];
-        print('$username is typing...');
+        if (kDebugMode) {
+          print('$username is typing...');
+        }
         isTyping.value = true; // Set typing to true
 
         // Reset typing status after 2 seconds of no typing event
@@ -144,32 +161,41 @@ class ChatsController extends GetxController {
       case 'activeStatus':
         final userId = parsedData['userId'];
         final activeStatus = parsedData['isActive'];
-        print("User $userId is active: $activeStatus");
+        if (kDebugMode) {
+          print("User $userId is active: $activeStatus");
+        }
         if (userId == currentReceiverId) {
           isActive.value = activeStatus;
         }
         break;
 
       default:
-        print('Unknown message type: ${parsedData['type']}');
+        if (kDebugMode) {
+          print('Unknown message type: ${parsedData['type']}');
+        }
     }
   }
 
+  RxInt messageCount = 0.obs;
   // Send a new message
   void sendMessage(String message, String senderName) {
     if (conversationId.value.isEmpty) {
-      print("No conversation ID found, join room first.");
+      if (kDebugMode) {
+        print("No conversation ID found, join room first.");
+      }
       return;
     }
-
+    messageCount.value++;
     webSocketService.sendMessage(
       conversationId.value,
       senderId.value,
       senderName,
       message,
     );
-    final ChatsListController controller = Get.put(ChatsListController());
-    controller.fetchChatUsers();
+    if (messageCount.value == 1) {
+      final ChatsListController controller = Get.put(ChatsListController());
+      controller.fetchChatUsers();
+    }
   }
 
   // Emit typing notification to WebSocket
