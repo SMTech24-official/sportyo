@@ -10,15 +10,7 @@ import '../model/chat_list_model.dart';
 class ChatsListController extends GetxController {
   var chatUsers = <ChatUser>[].obs;
   var isLoading = true.obs;
-
-  // Polling timer
   Timer? _timer;
-
-  // @override
-  // void donInit() {
-  //   super.onInit();
-  //   startPolling();
-  // }
 
   @override
   void onClose() {
@@ -26,24 +18,26 @@ class ChatsListController extends GetxController {
     super.onClose();
   }
 
-  // Start polling every 2 seconds
+  // Start polling data from API every second
   void startPolling() {
+    _timer?.cancel(); // Ensure no duplicate timers
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
       await fetchChatUsers();
     });
   }
 
-  // Fetch chat users from API
+  // Stop polling data
+  void stopPolling() {
+    _timer?.cancel();
+  }
+
   Future<void> fetchChatUsers() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userId = prefs.getString("userId");
     final url = '${Urls.baseUrl}/chat/$userId/chatUsers';
     try {
       final response = await http.get(Uri.parse(url));
-      if (kDebugMode) {
-        print(response.body);
-      }
-
+      print(response.body);
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         if (jsonData['success'] == true) {

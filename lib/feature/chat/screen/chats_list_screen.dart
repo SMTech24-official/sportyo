@@ -17,24 +17,39 @@ class ChatsListScreen extends StatefulWidget {
   State<ChatsListScreen> createState() => _ChatsListScreenState();
 }
 
-class _ChatsListScreenState extends State<ChatsListScreen> {
+class _ChatsListScreenState extends State<ChatsListScreen>
+    with WidgetsBindingObserver {
   ChatsListController chatsController = Get.put(ChatsListController());
+
   @override
   void initState() {
     super.initState();
-    chatsController.startPolling();
+    WidgetsBinding.instance
+        .addObserver(this); // Add observer to listen for app lifecycle changes
+    chatsController.startPolling(); // Start polling initially
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this); // Remove observer on dispose
+    chatsController
+        .onClose(); // Ensure polling stops when the screen is disposed
     super.dispose();
-    chatsController.onClose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // Screen is back in focus, start polling again
+      chatsController.startPolling();
+    } else if (state == AppLifecycleState.paused) {
+      // Screen is out of focus, stop polling
+      chatsController.onClose();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Put the controller to have it available throughout the screen
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -64,10 +79,8 @@ class _ChatsListScreenState extends State<ChatsListScreen> {
               ),
             ),
             Expanded(
-              // Using Obx to automatically rebuild when the list is updated
               child: Obx(() {
                 if (chatsController.isLoading.value) {
-                  // Show shimmer while loading
                   return Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -90,7 +103,6 @@ class _ChatsListScreenState extends State<ChatsListScreen> {
                     ),
                   );
                 } else if (chatsController.chatUsers.isEmpty) {
-                  // Empty state
                   return Center(
                     child: ListView(
                       children: [
@@ -146,7 +158,6 @@ class _ChatsListScreenState extends State<ChatsListScreen> {
                     ),
                   );
                 } else {
-                  // Show chat list
                   return ListView.separated(
                     itemCount: chatsController.chatUsers.length,
                     separatorBuilder: (context, index) => const Divider(
@@ -185,12 +196,18 @@ class _ChatsListScreenState extends State<ChatsListScreen> {
                             style: globalTextStyle(),
                           ),
                           onTap: () {
+                            // Stop polling when navigating to ChatScreen
+                            chatsController.onClose();
                             Get.to(() => ChatScreen(
-                                  name:
-                                      '${chatUser.firstName} ${chatUser.lastName}',
-                                  image: chatUser.userProfileImage,
-                                  receiverId: chatUser.id,
-                                ));
+                                      name:
+                                          '${chatUser.firstName} ${chatUser.lastName}',
+                                      image: chatUser.userProfileImage,
+                                      receiverId: chatUser.id,
+                                    ))!
+                                .then((_) {
+                              // Restart polling when returning back to ChatsListScreen
+                              chatsController.startPolling();
+                            });
                           },
                         ),
                       );
