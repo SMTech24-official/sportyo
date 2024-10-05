@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -10,29 +11,46 @@ class ChatsListController extends GetxController {
   var chatUsers = <ChatUser>[].obs;
   var isLoading = true.obs;
 
+  // Polling timer
+  Timer? _timer;
+
+  // @override
+  // void donInit() {
+  //   super.onInit();
+  //   startPolling();
+  // }
+
   @override
-  void onInit() {
-    fetchChatUsers();
-    super.onInit();
+  void onClose() {
+    _timer?.cancel();
+    super.onClose();
   }
 
-  // Fetch the chat users from the API
+  // Start polling every 2 seconds
+  void startPolling() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+      await fetchChatUsers();
+    });
+  }
+
+  // Fetch chat users from API
   Future<void> fetchChatUsers() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userId = prefs.getString("userId");
     final url = '${Urls.baseUrl}/chat/$userId/chatUsers';
     try {
-      isLoading(true);
       final response = await http.get(Uri.parse(url));
       if (kDebugMode) {
         print(response.body);
       }
+
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         if (jsonData['success'] == true) {
           var users = (jsonData['data'] as List)
               .map((user) => ChatUser.fromJson(user))
               .toList();
+
           users.sort((a, b) {
             if (a.createdAt == null && b.createdAt == null) return 0;
             if (a.createdAt == null) return 1;
@@ -40,7 +58,9 @@ class ChatsListController extends GetxController {
             return b.createdAt!.compareTo(a.createdAt!);
           });
 
-          chatUsers.value = users;
+          if (!listEquals(chatUsers, users)) {
+            chatUsers.assignAll(users);
+          }
         }
       } else {
         Get.snackbar("Error", "Failed to load data");
