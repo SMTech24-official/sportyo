@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sportyo/feature/chat/controller/chat_list_controller.dart';
 import '../model/chat_model.dart';
 import '../service/socket_service.dart';
 
@@ -180,7 +179,7 @@ class ChatsController extends GetxController {
     }
   }
 
-  RxInt messageCount = 0.obs;
+  //RxInt messageCount = 0.obs;
   // Send a new message
   void sendMessage(String message, String senderName) {
     if (conversationId.value.isEmpty) {
@@ -189,17 +188,17 @@ class ChatsController extends GetxController {
       }
       return;
     }
-    messageCount.value++;
+    //messageCount.value++;
     webSocketService.sendMessage(
       conversationId.value,
       senderId.value,
       senderName,
       message,
     );
-    if (messageCount.value == 1) {
-      final ChatsListController controller = Get.put(ChatsListController());
-      controller.fetchChatUsers();
-    }
+    // if (messageCount.value == 1) {
+    //   final ChatsListController controller = Get.put(ChatsListController());
+    //   controller.fetchChatUsers();
+    // }
   }
 
   // Emit typing notification to WebSocket
@@ -233,4 +232,11 @@ class ChatsController extends GetxController {
     disconnectFromWebSocket();
     super.onClose();
   }
+
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   final ChatsListController controller = Get.put(ChatsListController());
+  //   controller.fetchChatUsers();
+  // }
 }
