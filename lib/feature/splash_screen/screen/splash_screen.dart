@@ -31,8 +31,8 @@ class SplashScreen extends StatelessWidget {
       //   ),
       // ),
       body: Center(
-        child: CircularProgressIndicator(),
-      ),
+          // child: CircularProgressIndicator(),
+          ),
     );
   }
 }
