@@ -12,10 +12,7 @@ class EventNameController extends GetxController {
   final TextEditingController predictedTimeController=TextEditingController();
   RxBool isValidate = false.obs;
 
-  // Method to handle navigation logic
-  void findPartner() {
-    Get.to(()=>  FindPartnersForEvent());
-  }
+
   // Method to validate the predicted time input
   bool validatePredictedTime(String time) {
     // Regular expression to match the HH:MM format
@@ -24,45 +21,39 @@ class EventNameController extends GetxController {
   }
 
   Future<void> addEventName(String eventId)async{
+    String predictedTime = predictedTimeController.text.trim();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userId = prefs.getString("userId");
-    EasyLoading.show(status: "Loading...");
-    try {
-      final Map<String, String> requestBody = {
-        'eventId': eventId.toString(),
-        'userId': userId.toString(),
-      };
-
-      final response = await NetworkCaller().postRequest(Urls.addEvent,body: requestBody);
-
-      // Handle response success
-      if (response.isSuccess) {
-        isValidate.value = true;
-        EasyLoading.showSuccess('Event added successfully');
-      }else{
-        predictedTimeController.clear();
-        EasyLoading.showError('You are already associated with this event');
-      }
-      Get.back();
-    } catch (error) {
-      EasyLoading.showError('Failed to add event. Please try again.');
-    } finally {
-      EasyLoading.dismiss();
-    }
-  }
-
-  // Method to handle validation logic
-  void validateInput() {
-    String predictedTime = predictedTimeController.text.trim();
-
     if (validatePredictedTime(predictedTime)) {
-      // Close the dialog after successful validation
+      try {
+        EasyLoading.show(status: "Loading...");
+        final Map<String, String> requestBody = {
+          'eventId': eventId.toString(),
+          'userId': userId.toString(),
+          'joinedAt': predictedTime.toString(),
+        };
+        final response = await NetworkCaller().postRequest(Urls.addEvent,body: requestBody);
+
+
+        // Handle response success
+        if (response.isSuccess) {
+          isValidate.value = true;
+          EasyLoading.showSuccess('Event added successfully');
+        }else{
+          predictedTimeController.clear();
+          EasyLoading.showError('You are already associated with this event');
+        }
+        Get.back();
+      } catch (error) {
+        EasyLoading.showError('Failed to add event. Please try again.');
+      } finally {
+        EasyLoading.dismiss();
+      }
     } else {
-      // Show error message or dialog if the time format is incorrect
       Get.snackbar(
         'Invalid Input',
         'Please enter a valid time in HH:MM format.',
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor:  AppColors.primaryColor,
         colorText: Colors.white,
       );
@@ -71,30 +62,11 @@ class EventNameController extends GetxController {
   }
 
 
+
   // Reset the validation state
   void resetValidation() {
     isValidate.value = false;
   }
-  //dataLoad methods
-  // final Rx<EventList> _eventList=EventList().obs;
-  // Rx<EventList> get list=>_event;
-  Future<void> featchEventNameData() async {
-    EasyLoading.show(status: "Loading...");
-    try {
-      final response = await NetworkCaller().getRequest(Urls.sendEmail);
-
-      if (response.isSuccess) {
-        // _eventList.value = _eventList.fromJson(response.responseData);
-      } else {
-        EasyLoading.showError('Failed to load data');
-      }
-    } catch (error) {
-      EasyLoading.showError('An error occurred: $error');
-    } finally {
-      EasyLoading.dismiss();
-    }
-  }
-
   @override
   void dispose() {
     super.dispose();

@@ -9,6 +9,7 @@ import 'package:sportyo/feature/event/controller/event_name_controller.dart';
 import '../../profile/widget/global_text_style.dart';
 import '../model/event_model_class.dart';
 import '../widgets/show_finish_time_dialog.dart';
+import 'find_partners_for_event.dart';
 
 class EventName extends StatelessWidget {
   final EventList event;
@@ -358,7 +359,9 @@ class EventName extends StatelessWidget {
                         ),
                         SizedBox(height: 20.h),
                         GestureDetector(
-                          onTap: eventNameController.findPartner,
+                          onTap: (){
+                            Get.to(()=>  FindPartnersForEvent(event: event));
+                          },
                           child: Container(
                             alignment: Alignment.center,
                             width: double.infinity,

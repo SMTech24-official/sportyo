@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sportyo/core/service_class/network_caller/utility/usrls.dart';
-
 import '../model/chat_list_model.dart';
 
 class ChatsListController extends GetxController {
