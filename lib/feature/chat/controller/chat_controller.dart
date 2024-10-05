@@ -1,6 +1,7 @@
 // lib/controller/chats_controller.dart
 
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,7 +30,7 @@ class ChatsController extends GetxController {
     getSenderIdFromPreferences().then((_) {
       // Mark that senderId has been loaded
       isSenderIdLoaded.value = true;
-      print("Sender ID successfully loaded: ${senderId.value}");
+      log("Sender ID successfully loaded: ${senderId.value}");
 
       // Initialize WebSocket after retrieving senderId
       webSocketService.initSocket();
@@ -37,7 +38,7 @@ class ChatsController extends GetxController {
       // If there is a pending receiverId, join the room now
       if (pendingReceiverId != null) {
         webSocketService.joinRoom(senderId.value, pendingReceiverId!);
-        print("Joined room with receiverId: $pendingReceiverId");
+        log("Joined room with receiverId: $pendingReceiverId");
         pendingReceiverId = null; // Clear after joining
       }
     });
@@ -56,9 +57,9 @@ class ChatsController extends GetxController {
 
     if (storedSenderId != null && storedSenderId.isNotEmpty) {
       senderId.value = storedSenderId;
-      print("Sender ID loaded from SharedPreferences: ${senderId.value}");
+      log("Sender ID loaded from SharedPreferences: ${senderId.value}");
     } else {
-      print("Sender ID is missing or not found in SharedPreferences.");
+      log("Sender ID is missing or not found in SharedPreferences.");
     }
   }
 
