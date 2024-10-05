@@ -15,7 +15,6 @@ import '../model/event_model_class.dart';
 import '../widgets/filter_dialog.dart';
 import 'event_name.dart';
 
-
 class Event extends StatelessWidget {
   Event({super.key});
 
@@ -25,34 +24,31 @@ class Event extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Events",
+            style: globalTextStyle(
+              fontSize: 28.sp,
+              fontWeight: FontWeight.w600,
+              lineHeight: 1.5.h,
+              textAlign: TextAlign.center,
+              color: AppColors.blackColor,
+            ),
+          ),
+        ),
         body: RefreshIndicator(
           onRefresh: () async {
             eventController.featchEventData();
           },
           child: Column(
             children: [
-              Align(
-                alignment: Alignment.topCenter,
-                child: Text(
-                  "Events",
-                  style: globalTextStyle(
-                    fontSize: 28.sp,
-                    fontWeight: FontWeight.w600,
-                    lineHeight: 1.5.h,
-                    textAlign: TextAlign.center,
-                    color: AppColors.blackColor,
-                  ),
-                ),
-              ),
-              SizedBox(height: 18.h),
               Row(
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 58.w),
                     child: CustomTextField(
                       hitText: 'Search...',
-                      textEditingController:
-                      eventController.searchController,
+                      textEditingController: eventController.searchController,
                     ),
                   ),
                   SizedBox(width: 14.w),
@@ -80,12 +76,12 @@ class Event extends StatelessWidget {
                     return ListView.separated(
                       itemCount: eventController.filteredEventList.length,
                       itemBuilder: (context, index) {
-                        var event =
-                        eventController.filteredEventList[index];
+                        var event = eventController.filteredEventList[index];
                         return eventListTile(
                           event: event,
                           onTap: () {
-                            Get.to(() => EventName(event: event)); // Navigate with event data
+                            Get.to(() => EventName(
+                                event: event)); // Navigate with event data
                           },
                         );
                       },
@@ -103,7 +99,8 @@ class Event extends StatelessWidget {
     );
   }
 
-  Widget eventListTile({required EventList event, required VoidCallback onTap}) {
+  Widget eventListTile(
+      {required EventList event, required VoidCallback onTap}) {
     DateTime? eventDateTime;
     try {
       eventDateTime = DateTime.parse(event.date ?? '');
@@ -183,4 +180,3 @@ class Event extends StatelessWidget {
     );
   }
 }
-

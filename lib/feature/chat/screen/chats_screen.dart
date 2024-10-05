@@ -2,13 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sportyo/core/const/image_path.dart';
+import 'package:shimmer/shimmer.dart';
 
+import '../../../core/const/app_colors.dart';
+import '../../../core/const/icons_path.dart';
 import '../controller/chat_controller.dart';
+import '../widget/chat_screen_appbar.dart';
 
 class ChatScreen extends StatelessWidget {
   final String name;
-  final String image;
+  final String image; // Used for AppBar avatar
   final String receiverId;
 
   ChatScreen({
@@ -22,84 +25,107 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Ensure the connection and joining room is done once after the first frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       chatsController.connectToWebSocketAndJoinRoom(receiverId);
     });
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Get.back();
-            chatsController.disconnectFromWebSocket();
-          },
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            CircleAvatar(
-              backgroundImage: image.isEmpty || image == ''
-                  ? const AssetImage(ImagePath.profile)
-                  : NetworkImage(image),
-              radius: 20,
-            ),
-            const SizedBox(width: 10),
-            Flexible(
-              child: Text(
-                name,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                softWrap: false,
-              ),
-            ),
-          ],
-        ),
-        centerTitle: true,
+      appBar: CustomAppBar(
+        name: name,
+        image: image,
+        chatsController: Get.find<ChatsController>(),
       ),
       body: Column(
         children: [
-          // Chat Messages List using Obx
           Expanded(
             child: Obx(() {
-              if (chatsController.chatMessages.isEmpty) {
-                return const Center(
-                  child: Text('No messages yet'),
-                );
-              }
-
-              return ListView.builder(
-                controller: chatsController.scrollController,
-                itemCount: chatsController.chatMessages.length,
-                itemBuilder: (context, index) {
-                  var message = chatsController.chatMessages[index];
-                  return Align(
-                    alignment: message.isMe
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 6,
-                        horizontal: 12,
+              if (chatsController.isLoading.value) {
+                return ListView.builder(
+                  itemCount: 12,
+                  itemBuilder: (context, index) {
+                    bool isMe = index % 2 == 1;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 6.0,
+                        horizontal: 12.0,
                       ),
-                      decoration: BoxDecoration(
-                        color: message.isMe
-                            ? Colors.blueAccent
-                            : Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        message.content,
-                        style: TextStyle(
-                          color: message.isMe ? Colors.white : Colors.black87,
+                      child: Align(
+                        alignment:
+                            isMe ? Alignment.centerRight : Alignment.centerLeft,
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            width: 230,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
                         ),
                       ),
+                    );
+                  },
+                );
+              } else if (chatsController.chatMessages.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'No messages yet',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
                     ),
-                  );
-                },
-              );
+                  ),
+                );
+              } else {
+                return Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        controller: chatsController.scrollController,
+                        itemCount: chatsController.chatMessages.length,
+                        itemBuilder: (context, index) {
+                          var message = chatsController.chatMessages[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 6.0,
+                              horizontal: 12.0,
+                            ),
+                            child: Align(
+                              alignment: message.isMe
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                  maxWidth: 230, // Max width constraint
+                                ),
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: message.isMe
+                                        ? const Color(0xff6151f0)
+                                        : const Color(0xfff8f7f7),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    message.content,
+                                    style: TextStyle(
+                                      color: message.isMe
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              }
             }),
           ),
 
@@ -109,6 +135,8 @@ class ChatScreen extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
+                    child: SizedBox(
+                  height: 40,
                   child: TextField(
                     controller: chatsController.messageController,
                     onChanged: (text) {
@@ -117,28 +145,49 @@ class ChatScreen extends StatelessWidget {
                     decoration: const InputDecoration(
                       hintText: "Type a message",
                       border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    ),
+                  ),
+                )),
+                const SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  height: 35,
+                  width: 35,
+                  decoration: BoxDecoration(
+                      color: AppColors.purplecolor,
+                      borderRadius: BorderRadius.circular(17.5)),
+                  child: Center(
+                    child: IconButton(
+                      icon: Image.asset(
+                        IconsPath.sendButton,
+                        height: 15,
+                        width: 15,
+                      ),
+                      onPressed: () {
+                        if (chatsController.messageController.text
+                            .trim()
+                            .isNotEmpty) {
+                          chatsController.sendMessage(
+                            chatsController.messageController.text.trim(),
+                            name,
+                          );
+                          chatsController.messageController.clear();
+                        }
+                      },
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  color: Colors.blueAccent,
-                  onPressed: () {
-                    if (chatsController.messageController.text
-                        .trim()
-                        .isNotEmpty) {
-                      chatsController.sendMessage(
-                        chatsController.messageController.text.trim(),
-                        'YourUsername', // Replace 'YourUsername' with the actual sender name
-                      );
-                      chatsController.messageController.clear();
-                    }
-                  },
-                ),
+                const SizedBox(
+                  width: 5,
+                )
               ],
             ),
           ),
+          const SizedBox(
+            height: 5,
+          )
         ],
       ),
     );
