@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sportyo/feature/event/model/event_model_class.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/icons_path.dart';
 import '../../profile/widget/global_text_style.dart';
@@ -9,7 +10,8 @@ import '../controller/find_partners_for_event_controller.dart';
 import '../widgets/show_filter_participants.dart';
 
 class FindPartnersForEvent extends StatelessWidget {
-  FindPartnersForEvent({super.key});
+  final EventList event;
+  FindPartnersForEvent({super.key, required this.event});
   final FindPartnersForEventController controller =
       Get.find<FindPartnersForEventController>();
 
@@ -36,7 +38,7 @@ class FindPartnersForEvent extends StatelessWidget {
           children: [
             Center(
               child: Text(
-                "Event XX",
+                event.eventName.toString(),
                 style: globalTextStyle(
                   fontSize: 22.sp,
                   fontWeight: FontWeight.w700,
