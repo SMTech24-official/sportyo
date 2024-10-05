@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:sportyo/core/const/image_path.dart';
 import 'package:sportyo/feature/event/model/event_model_class.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/icons_path.dart';
@@ -35,6 +34,7 @@ class FindPartnersForEvent extends StatelessWidget {
         title: const Text('Find Partners'),
       ),
       body: RefreshIndicator(
+
         onRefresh: () => controller.getEventListByEventId(event.id.toString()),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -62,7 +62,9 @@ class FindPartnersForEvent extends StatelessWidget {
                       height: 35.h,
                       child: TextFormField(
                         controller: controller.searchController,
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          controller.filterParticipantsByName(value);
+                        },
                         decoration: InputDecoration(
                           hintText: 'Search Partners',
                           contentPadding: const EdgeInsets.symmetric(
@@ -102,11 +104,11 @@ class FindPartnersForEvent extends StatelessWidget {
               ),
               SizedBox(height: 20.h),
               Obx(() {
-                if (controller.userListById.value.data == null) {
+                if (controller.filteredParticipants.isEmpty) {
                   return Expanded(
                     child: Center(
                       child: Text(
-                        "No participants available for this event.",
+                        "No participants available.",
                         style: globalTextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w600,
@@ -119,9 +121,9 @@ class FindPartnersForEvent extends StatelessWidget {
                 final participants = controller.userListById.value.data!;
                 return Expanded(
                   child: ListView.builder(
-                    itemCount: participants.length,
+                    itemCount: controller.filteredParticipants.length,
                     itemBuilder: (context, index) {
-                      final participant = participants[index];
+                      final participant = controller.filteredParticipants[index];
                       final DateTime joinedAtDateTime =
                           DateTime.parse(participant.joinedAt!);
                       final String formattedTime =
