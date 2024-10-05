@@ -11,17 +11,21 @@ class FindPartnersForEventController extends GetxController {
   TextEditingController searchController = TextEditingController();
 
   final Rx<UserListByEventId> _userListById = UserListByEventId().obs;
+  final RxList<Data> filteredParticipants = <Data>[].obs;
   Rx<UserListByEventId> get userListById => _userListById;
-  Future<void> getEventListByEventId(String eventId)async{
 
+
+  Future<void> getEventListByEventId(String eventId)async{
+    EasyLoading.show(status: "Loading...");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
-    EasyLoading.show(status: "Loading...");
+
     try {
       final response = await SecondNetworkCaller().getRequest(Urls.findPartnersByEvent(eventId,),token: token);
       // Handle response success
       if (response.isSuccess) {
         _userListById.value = UserListByEventId.fromJson(response.responseData);
+        filteredParticipants.assignAll(_userListById.value.data!);
       }
     } catch (error) {
       EasyLoading.showError('Failed to add event. Please try again.');
@@ -29,6 +33,20 @@ class FindPartnersForEventController extends GetxController {
       EasyLoading.dismiss();
     }
 
+  }
+  // Filter participants by name
+  void filterParticipantsByName(String searchQuery) {
+    if (searchQuery.isEmpty) {
+      filteredParticipants.assignAll(_userListById.value.data!); // Show all participants if search is cleared
+    } else {
+      final queryLower = searchQuery.toLowerCase();
+      filteredParticipants.assignAll(
+        _userListById.value.data!.where((participant) {
+          final fullName = '${participant.firstName ?? ''} ${participant.lastName ?? ''}'.toLowerCase();
+          return fullName.contains(queryLower);
+        }).toList(),
+      );
+    }
   }
   @override
   void onClose() {
