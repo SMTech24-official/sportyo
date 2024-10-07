@@ -595,7 +595,9 @@ class ProfileScreen extends StatelessWidget {
                     child: Obx(
                       () {
                         return controller.savedSports.isEmpty
-                            ? const SizedBox.shrink()
+                            ? const Center(
+                                child: Text("add at least one sports"),
+                              )
                             : ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),

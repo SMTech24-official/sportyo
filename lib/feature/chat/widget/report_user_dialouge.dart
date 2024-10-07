@@ -13,10 +13,10 @@ void reportUserDialog(BuildContext context) {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
         ),
-        content: SingleChildScrollView(  // Added SingleChildScrollView to prevent overflow
+        content: SingleChildScrollView(
           child: SizedBox(
             child: Column(
-              mainAxisSize: MainAxisSize.min,  // Ensures the dialog adjusts based on content
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
@@ -25,7 +25,7 @@ void reportUserDialog(BuildContext context) {
                 Text(
                   "Are you sure that you would like to report this user?",
                   style: globalTextStyle(fontSize: 16),
-                  textAlign: TextAlign.center,  // Center align the text
+                  textAlign: TextAlign.center, // Center align the text
                 ),
                 const SizedBox(
                   height: 35,

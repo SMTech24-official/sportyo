@@ -137,7 +137,7 @@ void showSearchFilterDialog(BuildContext context) {
                 SizedBox(height: 20.h),
                 CustomButtonContainer(
                   save: () {
-                    controller.filterUsers();
+                    controller.searchUser();
                     Get.back();
                   },
                   cancel: () {
