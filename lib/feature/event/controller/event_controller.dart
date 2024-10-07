@@ -46,7 +46,7 @@ class EventController extends GetxController {
     EasyLoading.show(status: "Loading...");
     try {
       final response =
-      await SecondNetworkCaller().getRequest(Urls.event, token: token);
+          await SecondNetworkCaller().getRequest(Urls.event, token: token);
       if (response.isSuccess) {
         _eventModelList.value = EventModel.fromJson(response.responseData);
         // Initialize the filtered list with fetched data
@@ -69,11 +69,140 @@ class EventController extends GetxController {
     } else {
       // Filter events where either the event name or the city contains the query (case insensitive)
       filteredEventList.value = eventModelList.value.eventList
-          ?.where((event) =>
-      (event.eventName?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
-          (event.city?.toLowerCase().contains(query.toLowerCase()) ?? false))
-          .toList() ??
+              ?.where((event) =>
+                  (event.eventName
+                          ?.toLowerCase()
+                          .contains(query.toLowerCase()) ??
+                      false) ||
+                  (event.city?.toLowerCase().contains(query.toLowerCase()) ??
+                      false))
+              .toList() ??
           [];
+    }
+  }
+
+// Method to filter events based on the selected country
+  Future<void> filterEventByCountry() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("token");
+    EasyLoading.show(status: "Loading...");
+    try {
+      // Construct the URL with the selected country for filtering
+      final response = await SecondNetworkCaller().getRequest(
+        Urls.filterEventByCountry(countryController.text.trim()),
+        token: token,
+      );
+
+      // Handle response success
+      if (response.isSuccess) {
+        // Parse the response data into the EventModel
+        EventModel fetchedEventModel =
+            EventModel.fromJson(response.responseData);
+        // Update the event list with the filtered data from the API
+        _eventModelList.value = fetchedEventModel;
+        // Update the filteredEventList with the filtered events
+        filteredEventList.value = fetchedEventModel.eventList ?? [];
+        Get.back(); // Close any open dialogs or pages if needed
+      } else {
+        EasyLoading.showError('No participants present at this time.');
+      }
+    } catch (error) {
+      EasyLoading.showError('Failed to search event. Please try again.');
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  Future<void> filterEventBySport() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("token");
+    EasyLoading.show(status: "Loading...");
+    try {
+      // Construct the URL with the selected country for filtering
+      final response = await SecondNetworkCaller().getRequest(
+        Urls.filterEventBySport(
+            countryController.text.trim(), sportController.text.trim()),
+        token: token,
+      );
+      // Handle response success
+      if (response.isSuccess) {
+        // Parse the response data into the EventModel
+        EventModel fetchedEventModel =
+            EventModel.fromJson(response.responseData);
+        // Update the event list with the filtered data from the API
+        _eventModelList.value = fetchedEventModel;
+        // Update the filteredEventList with the filtered events
+        filteredEventList.value = fetchedEventModel.eventList ?? [];
+        Get.back(); // Close any open dialogs or pages if needed
+      } else {
+        EasyLoading.showError('No participants present at this time.');
+      }
+    } catch (error) {
+      EasyLoading.showError('Failed to search event. Please try again.');
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  Future<void> filterEventByLevel() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("token");
+    EasyLoading.show(status: "Loading...");
+    try {
+      // Construct the URL with the selected country for filtering
+      final response = await SecondNetworkCaller().getRequest(
+        Urls.filterEventByLevel(countryController.text.trim(),
+            sportController.text.trim(), eventController.text.trim()),
+        token: token,
+      );
+      // Handle response success
+      if (response.isSuccess) {
+        // Parse the response data into the EventModel
+        EventModel fetchedEventModel =
+            EventModel.fromJson(response.responseData);
+        // Update the event list with the filtered data from the API
+        _eventModelList.value = fetchedEventModel;
+        // Update the filteredEventList with the filtered events
+        filteredEventList.value = fetchedEventModel.eventList ?? [];
+        Get.back(); // Close any open dialogs or pages if needed
+      } else {
+        EasyLoading.showError('No participants present at this time.');
+      }
+    } catch (error) {
+      EasyLoading.showError('Failed to search event. Please try again.');
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  Future<void> filterEventByDate() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("token");
+    EasyLoading.show(status: "Loading...");
+    try {
+      // Construct the URL with the selected country for filtering
+      final response = await SecondNetworkCaller().getRequest(
+        Urls.filterEventByDate(countryController.text.trim(),
+            sportController.text.trim(), eventController.text.trim(),dateFromController.text.trim(),dateToController.text.trim()),
+        token: token,
+      );
+      // Handle response success
+      if (response.isSuccess) {
+        // Parse the response data into the EventModel
+        EventModel fetchedEventModel =
+            EventModel.fromJson(response.responseData);
+        // Update the event list with the filtered data from the API
+        _eventModelList.value = fetchedEventModel;
+        // Update the filteredEventList with the filtered events
+        filteredEventList.value = fetchedEventModel.eventList ?? [];
+        Get.back(); // Close any open dialogs or pages if needed
+      } else {
+        EasyLoading.showError('No participants present at this time.');
+      }
+    } catch (error) {
+      EasyLoading.showError('Failed to search event. Please try again.');
+    } finally {
+      EasyLoading.dismiss();
     }
   }
 
@@ -81,6 +210,7 @@ class EventController extends GetxController {
   void clearSearch() {
     searchController.clear();
   }
+
   // Filter fields
   var country = ''.obs;
   var sport = ''.obs;
@@ -302,7 +432,5 @@ class EventController extends GetxController {
     eventController.clear();
     dateFromController.clear();
     dateToController.clear();
-
-
   }
 }

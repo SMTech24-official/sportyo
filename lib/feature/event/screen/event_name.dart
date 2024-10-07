@@ -196,20 +196,21 @@ class EventName extends StatelessWidget {
                           Align(
                             alignment: Alignment.center,
                             child: GestureDetector(
-                              onTap: ()async {
-                                bool hasComplete = await AuthService.profileComplete();
-                                if (!context.mounted) return;
-                                if(hasComplete){
-                                  showFinishTimeDialog(context,event.id??'',false);
-                                }else{
-                                  Get.snackbar(
-                                    'Invalid Input',
-                                    'Please Completed Your Profile.',
-                                    snackPosition: SnackPosition.TOP,
-                                    backgroundColor: AppColors.primaryColor,
-                                    colorText: Colors.white,
-                                  );
-                                }
+                              onTap: () {
+                                showFinishTimeDialog(context,event.id??'',false);
+                                // bool hasComplete = await AuthService.profileComplete();
+                                // if (!context.mounted) return;
+                                // if(hasComplete){
+                                //   showFinishTimeDialog(context,event.id??'',false);
+                                // }else{
+                                //   Get.snackbar(
+                                //     'Empty Profile',
+                                //     'Please Completed Your Profile.',
+                                //     snackPosition: SnackPosition.TOP,
+                                //     backgroundColor: AppColors.primaryColor,
+                                //     colorText: Colors.white,
+                                //   );
+                                // }
 
                               },
                               child: Container(
