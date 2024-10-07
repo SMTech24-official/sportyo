@@ -209,8 +209,21 @@ void showFilterDialog(BuildContext context) {
               // Save and Cancel buttons
               CustomButtonContainer(
                 save: () {
-                  eventController.clearFilters();
-                  Get.back();
+                  if( eventController.countryController.text.isNotEmpty){
+                    eventController.filterEventByCountry();
+                    Get.back();
+                  }else if( eventController.sportController.text.isNotEmpty){
+                   eventController.filterEventBySport();
+                   Get.back();
+                  }else if( eventController.eventController.text.isNotEmpty){
+                    eventController.filterEventByLevel();
+                    Get.back();
+                  }else{
+                    eventController.filterEventByDate();
+                    Get.back();
+                  }
+
+
                 },
                 cancel: () {
                   Get.back();
