@@ -1,34 +1,34 @@
 // lib/controller/chats_controller.dart
 
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../core/service_class/network_caller/utility/usrls.dart';
 import '../model/chat_model.dart';
 import '../service/socket_service.dart';
+import 'package:http/http.dart' as http;
 
 class ChatsController extends GetxController {
   var messageController = TextEditingController();
   ScrollController scrollController = ScrollController();
   var chatMessages = <ChatMessage>[].obs;
-  var conversationId = ''.obs; // This holds the conversation ID.
+  var conversationId = ''.obs;
   var senderId = ''.obs;
+  var reciverUid = ''.obs;
   late WebSocketService webSocketService;
 
-  // Indicates whether senderId has been loaded
   var isSenderIdLoaded = false.obs;
 
-  // Indicates whether messages are loading
   var isLoading = false.obs;
 
-  // Indicates if the other user is typing
   var isTyping = false.obs;
 
-  // Indicates if the other user is active
   var isActive = false.obs;
 
-  // Holds the receiverId if a room join is attempted before senderId is loaded
   String? pendingReceiverId;
 
   // Current receiverId
@@ -95,7 +95,9 @@ class ChatsController extends GetxController {
 
   // Helper method to join a room and set loading state
   void connectToRoom(String receiverId) {
-    isLoading.value = true; // Start loading
+    isLoading.value = true;
+    reciverUid.value = receiverId;
+    log(reciverUid.toString());
     webSocketService.joinRoom(senderId.value, receiverId);
     if (kDebugMode) {
       print("Joined room with receiverId: $receiverId");
@@ -221,6 +223,85 @@ class ChatsController extends GetxController {
         );
       }
     });
+  }
+
+  Future<void> reportUsers() async {
+    try {
+      EasyLoading.show(status: "Please wait");
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      final url = Uri.parse('${Urls.baseUrl}/report');
+      Map<String, dynamic> requestData = {
+        "reportedUserId": reciverUid.value.toString()
+      };
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': token.toString(),
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(requestData),
+      );
+      if (kDebugMode) {
+        print(response.body);
+      }
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+
+        if (jsonData['success'] == true) {
+          EasyLoading.showSuccess(jsonData['message']);
+          Get.back();
+        } else {
+          EasyLoading.showError(jsonData['message']);
+        }
+      } else {
+        EasyLoading.showError('Failed to load profile data');
+      }
+    } catch (e) {
+      EasyLoading.showError('Failed to update user profile');
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  Future<void> deleteConversation() async {
+    try {
+      EasyLoading.show(status: "Deleting conversation...");
+
+      // Retrieve token from shared preferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      print(conversationId.value.toString());
+      // Define the API URL for deleting a conversation
+      final url = Uri.parse(
+          'https://sports-app-alpha.vercel.app/api/v1/chat/conversation/${conversationId.value.toString()}');
+
+      // Send the HTTP DELETE request
+      final response = await http.delete(
+        url,
+        // headers: {
+        //   'Authorization': token.toString(),
+        //   'Content-Type': 'application/json',
+        // },
+      );
+      log(response.body);
+      // Handle the response
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+        if (jsonData['success'] == true) {
+          EasyLoading.showSuccess('Conversation deleted successfully');
+          Get.back();
+        } else {
+          EasyLoading.showError('Failed to delete conversation');
+        }
+      } else {
+        EasyLoading.showError('Failed to delete conversation');
+      }
+    } catch (e) {
+      EasyLoading.showError('An error occurred while deleting conversation');
+    } finally {
+      EasyLoading.dismiss();
+    }
   }
 
   // Dispose controllers

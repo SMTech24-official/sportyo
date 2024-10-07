@@ -30,7 +30,7 @@ class AuthService {
 
   static Future<bool> profileComplete() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    bool? token = preferences.getBool("profileComplete");
+    bool? token = preferences.getBool("profileComplete") ?? false;
     return token != false;
   }
 }
