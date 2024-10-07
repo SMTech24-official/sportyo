@@ -9,4 +9,13 @@ class Urls {
   static const String addEvent = '$_baseUrl/eventUser';
   static String findPartnersByEvent(String eventId) =>
       '$_baseUrl/eventUser/$eventId';
+  static String filterByPredictedTime(String eventId,String time) =>
+      '$_baseUrl/eventUser/$eventId?joinTime=$time';
+  static String filterByTimeRange(String eventId,String predictedTime,String time) =>
+      '$_baseUrl/eventUser/$eventId?joinTime=$predictedTime&rangeInMinutes=$time';
+  static String deleteEvent(String eventId) =>
+      '$_baseUrl/eventUser/$eventId';
+  static String editEvent(String eventId) =>
+      '$_baseUrl/eventUser/$eventId';
+
 }

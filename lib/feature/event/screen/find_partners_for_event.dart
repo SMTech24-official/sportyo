@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -5,10 +7,11 @@ import 'package:intl/intl.dart';
 import 'package:sportyo/feature/event/model/event_model_class.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/icons_path.dart';
+import '../../../core/global_widegts/customTextField.dart';
+import '../../../core/global_widegts/custom_button_container.dart';
 import '../../profile/widget/global_text_style.dart';
 import '../../search/screen/view_profile_page.dart';
 import '../controller/find_partners_for_event_controller.dart';
-import '../widgets/show_filter_participants.dart';
 
 class FindPartnersForEvent extends StatelessWidget {
   final EventList event;
@@ -34,7 +37,6 @@ class FindPartnersForEvent extends StatelessWidget {
         title: const Text('Find Partners'),
       ),
       body: RefreshIndicator(
-
         onRefresh: () => controller.getEventListByEventId(event.id.toString()),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -93,7 +95,7 @@ class FindPartnersForEvent extends StatelessWidget {
                   ),
                   SizedBox(width: 10.w),
                   IconButton(
-                    onPressed: () => showFilterParticipants(context),
+                    onPressed: () => showFilterParticipants(context,event.id.toString()),
                     icon: Image.asset(
                       IconsPath.filter,
                       height: 16.h,
@@ -123,7 +125,8 @@ class FindPartnersForEvent extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: controller.filteredParticipants.length,
                     itemBuilder: (context, index) {
-                      final participant = controller.filteredParticipants[index];
+                      final participant =
+                          controller.filteredParticipants[index];
                       final DateTime joinedAtDateTime =
                           DateTime.parse(participant.joinedAt!);
                       final String formattedTime =
@@ -156,7 +159,7 @@ class FindPartnersForEvent extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            SizedBox(width: 10.w),
+                            SizedBox(width: 5.w),
                             Text(
                               formattedTime,
                               style: globalTextStyle(
@@ -175,7 +178,7 @@ class FindPartnersForEvent extends StatelessWidget {
                               },
                               child: Container(
                                 height: 28.h,
-                                width: 78.w,
+                                width: 88.w,
                                 decoration: BoxDecoration(
                                   color: AppColors.primaryColor,
                                   borderRadius: BorderRadius.circular(10),
@@ -205,6 +208,107 @@ class FindPartnersForEvent extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+  void showFilterParticipants(BuildContext context,String eventId) {
+    final FindPartnersForEventController controller=Get.find<FindPartnersForEventController>();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+          content: SizedBox(
+            width: 284.w,
+            height: 284.h,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: Text(
+                    'Filter Participants',
+                    style: globalTextStyle(
+                        fontSize: 20.sp, lineHeight: 30.sp / 20.sp),
+                  ),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Predicted Time',
+                      style: globalTextStyle(
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    SizedBox(
+                      height: 35.h,
+                      width: double.infinity,
+                      child: CustomTextField(
+                        hitText: 'HH:MM',
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        lineHeight: 21.sp / 14.sp,
+                        textEditingController:controller.predictedTimeController,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Search Time Range',
+                      style: globalTextStyle(
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    SizedBox(
+                      height: 35.h,
+                      width: double.infinity,
+                      child: CustomTextField(
+                        hitText: 'Enter Range',
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        lineHeight: 21.sp / 14.sp,
+                        textEditingController:controller.timeRangeTEController,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+                // Save and Cancel buttons
+                CustomButtonContainer(save: () {
+
+                  if(controller.timeRangeTEController.text.isEmpty){
+                    controller.filterByPredictedTime(eventId);
+                  }else{
+                   controller.filterByPTimeRange(eventId);
+                  }
+
+
+
+                }, cancel: () {
+                  Get.back();
+                },)
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:sportyo/feature/authentication/sing_in/controller/create_account
 import 'package:sportyo/feature/event/controller/event_controller.dart';
 import 'package:sportyo/feature/splash_screen/controller/splash_screen_controller.dart';
 
-import '../feature/event/controller/event_name_controller.dart';
+import '../feature/event/controller/event_details_controller.dart';
 import '../feature/event/controller/find_partners_for_event_controller.dart';
 import '../feature/terms_and_condition/controller/terms_and_condition.dart';
 
