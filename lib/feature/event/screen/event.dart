@@ -22,78 +22,76 @@ class Event extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Events",
-            style: globalTextStyle(
-              fontSize: 28.sp,
-              fontWeight: FontWeight.w600,
-              lineHeight: 1.5.h,
-              textAlign: TextAlign.center,
-              color: AppColors.blackColor,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Events",
+          style: globalTextStyle(
+            fontSize: 28.sp,
+            fontWeight: FontWeight.w600,
+            lineHeight: 1.5.h,
+            textAlign: TextAlign.center,
+            color: AppColors.blackColor,
           ),
         ),
-        body: RefreshIndicator(
-          onRefresh: () async {
-            eventController.featchEventData();
-          },
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 58.w),
-                    child: CustomTextField(
-                      hitText: 'Search...',
-                      textEditingController: eventController.searchController,
-                    ),
+      ),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          eventController.featchEventData();
+        },
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 58.w),
+                  child: CustomTextField(
+                    hitText: 'Search...',
+                    textEditingController: eventController.searchController,
                   ),
-                  SizedBox(width: 14.w),
-                  InkWell(
-                    onTap: () => showFilterDialog(context),
-                    child: Image.asset(
-                      IconsPath.filter,
-                      height: 18.h,
-                      width: 18.w,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 11.h),
-              // Event list
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w),
-                  child: Obx(() {
-                    if (eventController.filteredEventList.isEmpty) {
-                      return const Center(
-                        child: Text('No events found.'),
-                      );
-                    }
-                    return ListView.separated(
-                      itemCount: eventController.filteredEventList.length,
-                      itemBuilder: (context, index) {
-                        var event = eventController.filteredEventList[index];
-                        return eventListTile(
-                          event: event,
-                          onTap: () {
-                            Get.to(() => EventName(
-                                event: event)); // Navigate with event data
-                          },
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const Divider();
-                      },
-                    );
-                  }),
                 ),
+                SizedBox(width: 14.w),
+                InkWell(
+                  onTap: () => showFilterDialog(context),
+                  child: Image.asset(
+                    IconsPath.filter,
+                    height: 18.h,
+                    width: 18.w,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 11.h),
+            // Event list
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: Obx(() {
+                  if (eventController.filteredEventList.isEmpty) {
+                    return const Center(
+                      child: Text('No events found.'),
+                    );
+                  }
+                  return ListView.separated(
+                    itemCount: eventController.filteredEventList.length,
+                    itemBuilder: (context, index) {
+                      var event = eventController.filteredEventList[index];
+                      return eventListTile(
+                        event: event,
+                        onTap: () {
+                          Get.to(() => EventName(
+                              event: event)); // Navigate with event data
+                        },
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const Divider();
+                    },
+                  );
+                }),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -109,7 +107,7 @@ class Event extends StatelessWidget {
     }
 
     String formattedDate = eventDateTime != null
-        ? DateFormat('dd/MM/yyyy').format(eventDateTime)
+        ? DateFormat('dd/MM').format(eventDateTime)
         : 'Date DD/MM/YYYY';
 
     return ListTile(
