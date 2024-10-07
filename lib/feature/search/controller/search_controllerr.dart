@@ -1,5 +1,15 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../core/service_class/network_caller/utility/usrls.dart';
 
 class SearchsController extends GetxController {
   // Dummy user list
@@ -102,10 +112,106 @@ class SearchsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    requestLocationAndSendToAPI();
     filteredUsers.value = List<Map<String, dynamic>>.from(users);
     searchController.addListener(() {
       filterUsers();
     });
+  }
+
+  var latitude = 0.0.obs;
+  var longitude = 0.0.obs;
+  var city = '......'.obs;
+  var isLoading = false.obs;
+
+  Future<void> requestLocationAndSendToAPI() async {
+    isLoading.value = true;
+
+    // Step 1: Request location permission
+    PermissionStatus permission = await Permission.location.request();
+
+    if (permission.isGranted) {
+      try {
+        // Step 2: Get the current location with high accuracy
+        Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best,
+        );
+
+        latitude.value = position.latitude;
+        longitude.value = position.longitude;
+
+        // Step 3: Get the city name from latitude and longitude
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+          latitude.value,
+          longitude.value,
+        );
+
+        // Step 4: Extract the city name
+        if (placemarks.isNotEmpty) {
+          city.value = placemarks.first.locality ?? 'Unknown';
+          log("City: ${city.value}");
+        } else {
+          city.value = 'Unknown';
+        }
+
+        // Step 5: Send location data (latitude, longitude, city) to API
+        await sendLocationToAPI(latitude.value, longitude.value, city.value);
+      } catch (e) {
+        log('Error getting location: $e');
+      }
+    } else {
+      log('Location permission not granted');
+    }
+
+    isLoading.value = false;
+  }
+
+  // Function to send the location data to your API
+  Future<void> sendLocationToAPI(
+      double latitude, double longitude, String city) async {
+    log("long$longitude");
+    log("lat$latitude");
+    log("city$city");
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      var userId = prefs.getString("userId");
+
+      if (token != null && userId != null) {
+        // Show loading indicator
+        // Prepare the API URL
+        final url = Uri.parse('${Urls.baseUrl}/users/$userId');
+
+        // Prepare the request body as a stringified JSON for the data key
+        Map<String, dynamic> requestBody = {
+          "data": jsonEncode({
+            "latitude": latitude,
+            "longitude": longitude,
+            "city": city.toString()
+          }),
+        };
+
+        // Make the PUT request
+        final response = await http.put(
+          url,
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(requestBody),
+        );
+
+        log(response.body);
+
+        if (response.statusCode == 200) {
+          var jsonResponse = jsonDecode(response.body);
+          if (jsonResponse['success']) {
+          } else {}
+        } else {}
+      } else {}
+    } catch (e) {
+      log('Error: $e');
+    } finally {}
   }
 
   void filterUsers() {
