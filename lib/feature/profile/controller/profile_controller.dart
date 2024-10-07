@@ -234,8 +234,10 @@ class ProfileController extends GetxController {
             if (userData['firstName'] != null &&
                 userData['firstName'].isNotEmpty) {
               firstnameController.text = userData['firstName'];
-
-              await prefs.setBool("profileComplete", true);
+              if (userData['SportsDetails'] != null &&
+                  (userData['SportsDetails'] as List).isNotEmpty) {
+                await prefs.setBool("profileComplete", true);
+              }
             }
             if (userData['lastName'] != null &&
                 userData['lastName'].isNotEmpty) {

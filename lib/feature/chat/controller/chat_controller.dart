@@ -85,7 +85,6 @@ class ChatsController extends GetxController {
       currentReceiverId = receiverId; // Set currentReceiverId
       connectToRoom(receiverId);
     } else {
-      // If senderId is not yet loaded, store the receiverId to join later
       pendingReceiverId = receiverId;
       if (kDebugMode) {
         print(
@@ -232,11 +231,4 @@ class ChatsController extends GetxController {
     disconnectFromWebSocket();
     super.onClose();
   }
-
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   final ChatsListController controller = Get.put(ChatsListController());
-  //   controller.fetchChatUsers();
-  // }
 }
