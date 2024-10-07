@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 
 import '../../../core/const/app_colors.dart';
 import '../../profile/widget/global_text_style.dart';
+import '../controller/chat_controller.dart';
 
 void reportUserDialog(BuildContext context) {
+  final ChatsController controller = Get.find();
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -25,7 +27,7 @@ void reportUserDialog(BuildContext context) {
                 Text(
                   "Are you sure that you would like to report this user?",
                   style: globalTextStyle(fontSize: 16),
-                  textAlign: TextAlign.center, // Center align the text
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(
                   height: 35,
@@ -43,6 +45,7 @@ void reportUserDialog(BuildContext context) {
                             backgroundColor: AppColors.purplecolor,
                           ),
                           onPressed: () {
+                            controller.reportUsers();
                             Get.back();
                           },
                           child: Text(

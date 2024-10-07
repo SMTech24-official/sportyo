@@ -204,6 +204,7 @@ class ProfileController extends GetxController {
   Future<void> fetchUserProfile() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool("profileComplete", false);
       var token = prefs.getString("token");
       if (kDebugMode) {
         print(token);
@@ -237,6 +238,8 @@ class ProfileController extends GetxController {
               if (userData['SportsDetails'] != null &&
                   (userData['SportsDetails'] as List).isNotEmpty) {
                 await prefs.setBool("profileComplete", true);
+              } else {
+                await prefs.setBool("profileComplete", false);
               }
             }
             if (userData['lastName'] != null &&

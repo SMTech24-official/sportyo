@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 
 import '../../../core/const/app_colors.dart';
 import '../../profile/widget/global_text_style.dart';
+import '../controller/chat_controller.dart';
 
 void deleteChatDialog(BuildContext context) {
+  final ChatsController controller = Get.find();
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -14,13 +16,10 @@ void deleteChatDialog(BuildContext context) {
           borderRadius: BorderRadius.circular(10.r),
         ),
         content: SingleChildScrollView(
-          // Added SingleChildScrollView to prevent overflow
           child: SizedBox(
-            // Remove hardcoded height to let the dialog adjust its height dynamically
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize
-                  .min, // Use min to allow the Column to shrink based on content
+              mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
                   height: 20.h,
@@ -47,6 +46,7 @@ void deleteChatDialog(BuildContext context) {
                             backgroundColor: AppColors.purplecolor,
                           ),
                           onPressed: () {
+                            controller.deleteConversation();
                             Get.back();
                           },
                           child: Text(
