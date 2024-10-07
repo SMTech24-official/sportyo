@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sportyo/core/const/app_colors.dart';
+import 'package:sportyo/feature/authentication/log_in/controller/login_controller.dart';
 import 'package:sportyo/feature/terms_and_condition/controller/terms_and_condition.dart';
 import 'package:sportyo/feature/terms_and_condition/screen/terms_and_condition.dart';
 
@@ -9,6 +10,8 @@ import '../../../../core/service_class/network_caller/repository/network_caller.
 import '../../../../core/service_class/network_caller/utility/usrls.dart';
 
 class CreateAccountController extends GetxController {
+  final LogInController loginController =
+  Get.find<LogInController>();
   final TermsAndConditionController termsAndConditionController =
       Get.find<TermsAndConditionController>();
   final GlobalKey<FormState> createAccountKey = GlobalKey<FormState>();
@@ -53,6 +56,7 @@ class CreateAccountController extends GetxController {
           emailController.clear();
           passwordController.clear();
           confirmPasswordController.clear();
+          loginController.isLoginSelected.value=true;
           // Get.to(NextScreen());
         } else {
           // Show error message in case of failure
