@@ -11,12 +11,16 @@ import 'package:sportyo/feature/terms_and_condition/screen/terms_and_condition.d
 import '../../../../core/service_class/network_caller/repository/network_caller.dart';
 import '../../../../core/service_class/network_caller/utility/usrls.dart';
 import '../../../home/screen/home.dart';
+import '../../../profile/controller/profile_controller.dart';
+import '../../../profile/screen/profile_edit.dart';
 import '../../auth_service/auth_service.dart';
 
 class CreateAccountController extends GetxController {
   final LogInController loginController = Get.find<LogInController>();
   final TermsAndConditionController termsAndConditionController =
       Get.find<TermsAndConditionController>();
+  final ProfileViewController controllerProfile =
+  Get.put(ProfileViewController());
   final GlobalKey<FormState> createAccountKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -60,10 +64,24 @@ class CreateAccountController extends GetxController {
             // EasyLoading.showSuccess("Account created successfully");
             // log(token);
             // log(userId);
-            Get.offAll(() => Home());
-            emailController.clear();
-            passwordController.clear();
-            confirmPasswordController.clear();
+            // Get.offAll(() => Home());
+            // emailController.clear();
+            // passwordController.clear();
+            // confirmPasswordController.clear();
+            controllerProfile.fetchUserData().then((value) {
+              if ((controllerProfile.userModel.value.firstName?.isEmpty ??
+                  true) &&
+                  (controllerProfile.userModel.value.sportsDetails?.isEmpty ??
+                      true)) {
+                print(
+                    'First name: ${controllerProfile.userModel.value.firstName}');
+                print(
+                    'Sports details: ${controllerProfile.userModel.value.sportsDetails}');
+                Get.offAll(() => const ProfileViewScreen());
+              } else {
+                Get.offAll(() => Home());
+              }
+            });
           }
         } else {
           // Show error message in case of failure
