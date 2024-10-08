@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -8,6 +10,8 @@ import 'package:sportyo/feature/terms_and_condition/screen/terms_and_condition.d
 
 import '../../../../core/service_class/network_caller/repository/network_caller.dart';
 import '../../../../core/service_class/network_caller/utility/usrls.dart';
+import '../../../home/screen/home.dart';
+import '../../auth_service/auth_service.dart';
 
 class CreateAccountController extends GetxController {
   final LogInController loginController =
@@ -50,14 +54,19 @@ class CreateAccountController extends GetxController {
 
         // If success, show success message and clear controllers
         if (response.isSuccess) {
-          EasyLoading.showSuccess("Account created successfully");
+          String? token = response.responseData['token'];
+          String? userId = response.responseData['id'];
+          if (token != null && userId != null) {
+            await AuthService.saveToken(token, userId);
+            // EasyLoading.showSuccess("Account created successfully");
+            // log(token);
+            // log(userId);
+            Get.offAll(() =>  Home());
+            emailController.clear();
+            passwordController.clear();
+            confirmPasswordController.clear();
+          }
 
-          // Clear all form fields after successful account creation
-          emailController.clear();
-          passwordController.clear();
-          confirmPasswordController.clear();
-          loginController.isLoginSelected.value=true;
-          // Get.to(NextScreen());
         } else {
           // Show error message in case of failure
           EasyLoading.showError('User with this email already exists');
