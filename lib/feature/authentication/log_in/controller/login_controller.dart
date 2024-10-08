@@ -3,14 +3,17 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:sportyo/core/const/app_colors.dart';
 import 'package:sportyo/feature/home/screen/home.dart';
+import 'package:sportyo/feature/profile/screen/profile_edit.dart';
 import '../../../../core/service_class/network_caller/repository/network_caller.dart';
 import '../../../../core/service_class/network_caller/utility/usrls.dart';
+import '../../../profile/controller/profile_controller.dart';
 import '../../auth_service/auth_service.dart';
 
 class LogInController extends GetxController {
   // Form key to manage form validation
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+  final ProfileViewController controllerProfile =
+      Get.put(ProfileViewController());
   // Controllers for TextFields
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -41,10 +44,20 @@ class LogInController extends GetxController {
           String? userId = response.responseData['id'];
           if (token != null && userId != null) {
             await AuthService.saveToken(token, userId);
-            emailController.clear();
-            passwordController.clear();
-
-            Get.offAll(() => Home());
+            controllerProfile.fetchUserData().then((value) {
+              if ((controllerProfile.userModel.value.firstName?.isEmpty ??
+                      true) &&
+                  (controllerProfile.userModel.value.sportsDetails?.isEmpty ??
+                      true)) {
+                print(
+                    'First name: ${controllerProfile.userModel.value.firstName}');
+                print(
+                    'Sports details: ${controllerProfile.userModel.value.sportsDetails}');
+                Get.offAll(() => ProfileViewScreen());
+              } else {
+                Get.offAll(() => Home());
+              }
+            });
           } else {
             Get.snackbar(
               'Login Failed',
@@ -64,6 +77,7 @@ class LogInController extends GetxController {
           );
         }
       } catch (e) {
+        print('Login error: $e');
         Get.snackbar(
           'Error',
           'Something went wrong. Please try again later.',
