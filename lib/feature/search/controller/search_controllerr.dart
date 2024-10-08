@@ -177,7 +177,7 @@ class SearchsController extends GetxController {
           }).map((user) {
             return {
               'id': user.id,
-              'name': '${user.firstName} ${user.lastName}',
+              'name': user.firstName,
               'age': user.age,
               'image': user.userProfileImage ?? '',
             };

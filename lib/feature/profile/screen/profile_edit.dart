@@ -4,21 +4,33 @@ import 'package:get/get.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/image_path.dart';
 import '../../privacy_policy/privacy_policy.dart';
-import '../controller/profile_controller.dart';
+import '../controller/profile_edit_controller.dart';
 import '../widget/add_sports.dart';
 import '../widget/confirm_delete_account.dart';
 import '../widget/confirm_logout.dart';
 import '../widget/global_text_style.dart';
 import '../widget/language_filed.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class ProfileViewScreen extends StatelessWidget {
+  const ProfileViewScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final ProfileController controller = Get.put(ProfileController());
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Edit profile",
+            style: globalTextStyle(
+              fontSize: 28.sp,
+              fontWeight: FontWeight.w600,
+              lineHeight: 1.5.h,
+              textAlign: TextAlign.center,
+              color: AppColors.blackColor,
+            ),
+          ),
+        ),
         body: RefreshIndicator(
           onRefresh: () async {
             controller.refreshdata();
@@ -29,21 +41,21 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 11.h),
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      "Edit profile",
-                      style: globalTextStyle(
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.w600,
-                        lineHeight: 1.5.h,
-                        textAlign: TextAlign.center,
-                        color: AppColors.blackColor,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
+                  // SizedBox(height: 11.h),
+                  // Align(
+                  //   alignment: Alignment.topCenter,
+                  //   child: Text(
+                  //     "Edit profile",
+                  //     style: globalTextStyle(
+                  //       fontSize: 28.sp,
+                  //       fontWeight: FontWeight.w600,
+                  //       lineHeight: 1.5.h,
+                  //       textAlign: TextAlign.center,
+                  //       color: AppColors.blackColor,
+                  //     ),
+                  //   ),
+                  // ),
+                  // SizedBox(height: 12.h),
                   Align(
                     alignment: Alignment.center,
                     child: Obx(() {
@@ -596,7 +608,7 @@ class ProfileScreen extends StatelessWidget {
                       () {
                         return controller.savedSports.isEmpty
                             ? const Center(
-                                child: Text("add at least one sports"),
+                                child: Text("Add at least one sports"),
                               )
                             : ListView.builder(
                                 shrinkWrap: true,

@@ -14,8 +14,7 @@ import '../../../home/screen/home.dart';
 import '../../auth_service/auth_service.dart';
 
 class CreateAccountController extends GetxController {
-  final LogInController loginController =
-  Get.find<LogInController>();
+  final LogInController loginController = Get.find<LogInController>();
   final TermsAndConditionController termsAndConditionController =
       Get.find<TermsAndConditionController>();
   final GlobalKey<FormState> createAccountKey = GlobalKey<FormState>();
@@ -61,12 +60,11 @@ class CreateAccountController extends GetxController {
             // EasyLoading.showSuccess("Account created successfully");
             // log(token);
             // log(userId);
-            Get.offAll(() =>  Home());
+            Get.offAll(() => Home());
             emailController.clear();
             passwordController.clear();
             confirmPasswordController.clear();
           }
-
         } else {
           // Show error message in case of failure
           EasyLoading.showError('User with this email already exists');

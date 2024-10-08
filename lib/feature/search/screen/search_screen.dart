@@ -166,7 +166,8 @@ class SearchScreen extends StatelessWidget {
                                       const SizedBox(width: 10),
                                       Expanded(
                                         child: Text(
-                                          user['name'],
+                                          user['name'][0].toUpperCase() +
+                                              user['name'].substring(1),
                                           style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
