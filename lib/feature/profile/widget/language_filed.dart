@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sportyo/feature/profile/widget/global_text_style.dart';
 import '../../../core/const/app_colors.dart';
-import '../controller/profile_controller.dart';
+import '../controller/profile_edit_controller.dart';
 
 Widget buildLanguageField(ProfileController controller) {
   return FormField<List<String>>(
@@ -25,13 +26,15 @@ Widget buildLanguageField(ProfileController controller) {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Selected languages shown as chips
                   Wrap(
                     spacing: 8.0,
                     runSpacing: 5.0,
                     children: controller.selectedLanguages.map((language) {
                       return Chip(
-                        label: Text(language),
+                        label: Text(
+                          language,
+                          style: globalTextStyle(),
+                        ),
                         deleteIcon: const Icon(Icons.close),
                         onDeleted: () {
                           controller.removeLanguage(language);
@@ -44,14 +47,13 @@ Widget buildLanguageField(ProfileController controller) {
                     controller: controller.languageController,
                     onChanged: (value) {
                       controller.filterLanguages(value);
-                      //formFieldState.validate();
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: "Type a language",
+                      hintStyle: globalTextStyle(),
                       border: InputBorder.none,
                     ),
                   ),
-                  // Filtered languages dropdown
                   controller.filteredLanguages.isNotEmpty
                       ? Container(
                           constraints: const BoxConstraints(maxHeight: 100),
@@ -67,16 +69,16 @@ Widget buildLanguageField(ProfileController controller) {
                               itemCount: controller.filteredLanguages.length,
                               itemBuilder: (context, index) {
                                 return ListTile(
-                                  title:
-                                      Text(controller.filteredLanguages[index]),
+                                  title: Text(
+                                    controller.filteredLanguages[index],
+                                    style: globalTextStyle(),
+                                  ),
                                   onTap: () {
                                     controller.addLanguage(
                                         controller.filteredLanguages[index]);
                                     controller.languageController.clear();
-                                    controller.filterLanguages(
-                                        ""); // Clear the filtered list
-                                    formFieldState
-                                        .validate(); // Revalidate on language selection
+                                    controller.filterLanguages("");
+                                    formFieldState.validate();
                                   },
                                 );
                               },
@@ -87,7 +89,6 @@ Widget buildLanguageField(ProfileController controller) {
                 ],
               ),
             ),
-            // Display validation error message
             if (formFieldState.hasError)
               Padding(
                 padding: const EdgeInsets.only(top: 5),

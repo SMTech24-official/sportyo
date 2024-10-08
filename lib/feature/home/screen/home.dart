@@ -7,7 +7,7 @@ import 'package:sportyo/core/const/icons_path.dart';
 import 'package:sportyo/feature/event/screen/event.dart';
 
 import '../../chat/screen/chats_list_screen.dart';
-import '../../profile/screen/profile_page.dart';
+import '../../profile/screen/profile_view.dart';
 import '../../search/screen/search_screen.dart';
 import '../controller/home_controller.dart';
 
@@ -17,7 +17,7 @@ class Home extends StatelessWidget {
   Home({super.key});
 
   final List<Widget> navBody = [
-    const ProfileScreen(),
+    const ProfileView(),
     const SearchScreen(),
     Event(),
     const ChatsListScreen(),

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../core/const/app_colors.dart';
-import '../controller/profile_controller.dart';
+import '../controller/profile_edit_controller.dart';
 import '../model/sports_model.dart';
 import 'global_text_style.dart';
 

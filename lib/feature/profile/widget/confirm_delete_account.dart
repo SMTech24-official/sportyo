@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sportyo/feature/profile/controller/profile_controller.dart';
 
 import '../../../core/const/app_colors.dart';
-import '../controller/profile_controller.dart';
 import 'global_text_style.dart';
 
 void showDeleteAccountDialog(BuildContext context) {
-  final ProfileController profileController = Get.find<ProfileController>();
+  final ProfileViewController profileController =
+      Get.find<ProfileViewController>();
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.r), // Responsive border radius
+          borderRadius: BorderRadius.circular(10.r),
         ),
         content: SizedBox(
-          width: 284.w, // Adjusting width responsively
-          height: 166.h, // Adjusting height responsively
+          width: 284.w,
+          height: 166.h,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,

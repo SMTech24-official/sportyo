@@ -44,7 +44,7 @@ class LogInController extends GetxController {
             emailController.clear();
             passwordController.clear();
 
-            Get.offAll(() =>  Home());
+            Get.offAll(() => Home());
           } else {
             Get.snackbar(
               'Login Failed',
@@ -57,14 +57,13 @@ class LogInController extends GetxController {
         } else {
           Get.snackbar(
             'Login Failed',
-            response.errorMessage ,
+            response.errorMessage,
             snackPosition: SnackPosition.TOP,
             backgroundColor: AppColors.primaryColor,
             colorText: Colors.white,
           );
         }
       } catch (e) {
-
         Get.snackbar(
           'Error',
           'Something went wrong. Please try again later.',
