@@ -134,8 +134,8 @@ class EventName extends StatelessWidget {
                               children: [
                                 Text(
                                   'Date',
-                                  style:
-                                      globalTextStyle(lineHeight: 21.sp / 14.sp),
+                                  style: globalTextStyle(
+                                      lineHeight: 21.sp / 14.sp),
                                 ),
                                 SizedBox(height: 10.h),
                                 Container(
@@ -167,8 +167,8 @@ class EventName extends StatelessWidget {
                               children: [
                                 Text(
                                   'Distance',
-                                  style:
-                                      globalTextStyle(lineHeight: 21.sp / 14.sp),
+                                  style: globalTextStyle(
+                                      lineHeight: 21.sp / 14.sp),
                                 ),
                                 SizedBox(height: 10.h),
                                 Container(
@@ -196,22 +196,22 @@ class EventName extends StatelessWidget {
                           Align(
                             alignment: Alignment.center,
                             child: GestureDetector(
-                              onTap: () {
-                                showFinishTimeDialog(context,event.id??'',false);
-                                // bool hasComplete = await AuthService.profileComplete();
-                                // if (!context.mounted) return;
-                                // if(hasComplete){
-                                //   showFinishTimeDialog(context,event.id??'',false);
-                                // }else{
-                                //   Get.snackbar(
-                                //     'Empty Profile',
-                                //     'Please Completed Your Profile.',
-                                //     snackPosition: SnackPosition.TOP,
-                                //     backgroundColor: AppColors.primaryColor,
-                                //     colorText: Colors.white,
-                                //   );
-                                // }
-
+                              onTap: ()async {
+                                // showFinishTimeDialog(
+                                //     context, event.id ?? '', false);
+                                bool hasComplete = await AuthService.profileComplete();
+                                if (!context.mounted) return;
+                                if(hasComplete){
+                                  showFinishTimeDialog(context,event.id??'',false);
+                                }else{
+                                  Get.snackbar(
+                                    'Empty Profile',
+                                    'Please Completed Your Profile.',
+                                    snackPosition: SnackPosition.TOP,
+                                    backgroundColor: AppColors.primaryColor,
+                                    colorText: Colors.white,
+                                  );
+                                }
                               },
                               child: Container(
                                 alignment: Alignment.center,
@@ -252,7 +252,7 @@ class EventName extends StatelessWidget {
                                 width: 120.w,
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(65.r)),
+                                        BorderRadius.all(Radius.circular(65.r)),
                                     color: const Color(0xffECE9E9)),
                               ),
                               Image.network(
@@ -286,7 +286,7 @@ class EventName extends StatelessWidget {
                             height: 29.h,
                             decoration: BoxDecoration(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(10.r)),
+                                  BorderRadius.all(Radius.circular(10.r)),
                               border: Border.all(
                                 color: const Color(0xFF010101),
                                 width: 1,
@@ -317,8 +317,8 @@ class EventName extends StatelessWidget {
                               children: [
                                 Text(
                                   'Date',
-                                  style:
-                                  globalTextStyle(lineHeight: 21.sp / 14.sp),
+                                  style: globalTextStyle(
+                                      lineHeight: 21.sp / 14.sp),
                                 ),
                                 SizedBox(height: 10.h),
                                 Container(
@@ -327,7 +327,7 @@ class EventName extends StatelessWidget {
                                   height: 29.h,
                                   decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(10.r)),
+                                        BorderRadius.all(Radius.circular(10.r)),
                                     border: Border.all(
                                       color: const Color(0xFF010101),
                                       width: 1,
@@ -350,8 +350,8 @@ class EventName extends StatelessWidget {
                               children: [
                                 Text(
                                   'Distance',
-                                  style:
-                                  globalTextStyle(lineHeight: 21.sp / 14.sp),
+                                  style: globalTextStyle(
+                                      lineHeight: 21.sp / 14.sp),
                                 ),
                                 SizedBox(height: 10.h),
                                 Container(
@@ -360,7 +360,7 @@ class EventName extends StatelessWidget {
                                   height: 29.h,
                                   decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(10.r)),
+                                        BorderRadius.all(Radius.circular(10.r)),
                                     border: Border.all(
                                       color: const Color(0xFF010101),
                                       width: 1,
@@ -377,8 +377,8 @@ class EventName extends StatelessWidget {
                           ),
                           SizedBox(height: 20.h),
                           GestureDetector(
-                            onTap: (){
-                              Get.to(()=>  FindPartnersForEvent(event: event));
+                            onTap: () {
+                              Get.to(() => FindPartnersForEvent(event: event));
                             },
                             child: Container(
                               alignment: Alignment.center,
@@ -387,7 +387,7 @@ class EventName extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: AppColors.primaryColor,
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(10.r)),
+                                    BorderRadius.all(Radius.circular(10.r)),
                               ),
                               child: Padding(
                                 padding: EdgeInsets.all(10.h),
@@ -409,15 +409,16 @@ class EventName extends StatelessWidget {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    showFinishTimeDialog(context,event.id??'',true);
+                                    showFinishTimeDialog(
+                                        context, event.id ?? '', true);
                                   },
                                   child: Container(
                                     alignment: Alignment.center,
                                     width: 118.w,
                                     height: 35.h,
                                     decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(10.r)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.r)),
                                       border: Border.all(
                                         color: AppColors.primaryColor,
                                         width: 1,
@@ -438,15 +439,16 @@ class EventName extends StatelessWidget {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                   eventNameController.deleteData(event.id.toString());
+                                    eventNameController
+                                        .deleteData(event.id.toString());
                                   },
                                   child: Container(
                                     alignment: Alignment.center,
                                     width: 118.w,
                                     height: 35.h,
                                     decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(10.r)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.r)),
                                       border: Border.all(
                                         color: AppColors.primaryColor,
                                         width: 1,
@@ -475,5 +477,3 @@ class EventName extends StatelessWidget {
     );
   }
 }
-
-
