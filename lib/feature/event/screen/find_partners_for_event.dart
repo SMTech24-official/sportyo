@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -149,7 +148,7 @@ class FindPartnersForEvent extends StatelessWidget {
                             SizedBox(width: 10.w),
                             Expanded(
                               child: Text(
-                                '${participant.firstName} ${participant.lastName}',
+                                toBeginningOfSentenceCase('${participant.firstName}') ?? '',
                                 style: globalTextStyle(
                                   fontSize: 28.sp,
                                   fontWeight: FontWeight.w600,

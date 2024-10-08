@@ -1,12 +1,15 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sportyo/core/const/app_colors.dart';
 import 'package:sportyo/core/const/app_texts.dart';
 import 'package:sportyo/core/const/image_path.dart';
 import 'package:sportyo/feature/authentication/auth_service/auth_service.dart';
 import 'package:sportyo/feature/event/controller/event_details_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../profile/widget/global_text_style.dart';
 import '../model/event_model_class.dart';
 import '../widgets/show_finish_time_dialog.dart';
@@ -192,6 +195,46 @@ class EventName extends StatelessWidget {
                               ],
                             ),
                           ),
+                          SizedBox(height: 10.h),
+                          Text(
+                            'Label',
+                            style: globalTextStyle(lineHeight: 21.sp / 14.sp),
+                          ),
+                          SizedBox(height: 5.h),
+                          Text(
+                            event.label ?? '',
+                            style: globalTextStyle(
+                                fontWeight: FontWeight.w600,
+                                lineHeight: 21.sp / 14.sp),
+                          ),
+                          SizedBox(height: 10.h),
+                          Text(
+                            'Link',
+                            style: globalTextStyle(lineHeight: 21.sp / 14.sp),
+                          ),
+                          SizedBox(height: 5.h),
+                          GestureDetector(
+                            onTap: ()async{
+                              final Uri url = Uri.parse(event.link??'');
+
+                              if (await launchUrl(url)) {
+                                // print('launch $url');
+                              } else {
+                                // Handle the case where the URL can't be launched
+                                // print('Could not launch $url');
+                              }
+                            },
+                            child: Text(
+                              'Event URL',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600,
+                                height: 21.sp/14.sp,
+                                color: AppColors.blackColor,
+                                decoration: TextDecoration.underline,
+                              )
+                            ),
+                          ),
                           SizedBox(height: 20.h),
                           Align(
                             alignment: Alignment.center,
@@ -373,6 +416,45 @@ class EventName extends StatelessWidget {
                                   ),
                                 ),
                               ],
+                            ),
+                          ),
+                          Text(
+                            'Label',
+                            style: globalTextStyle(lineHeight: 21.sp / 14.sp),
+                          ),
+                          SizedBox(height: 5.h),
+                          Text(
+                            event.label ?? '',
+                            style: globalTextStyle(
+                                fontWeight: FontWeight.w600,
+                                lineHeight: 21.sp / 14.sp),
+                          ),
+                          SizedBox(height: 10.h),
+                          Text(
+                            'Link',
+                            style: globalTextStyle(lineHeight: 21.sp / 14.sp),
+                          ),
+                          SizedBox(height: 5.h),
+                          GestureDetector(
+                            onTap: ()async{
+                              final Uri url = Uri.parse(event.link??'');
+
+                              if (await launchUrl(url)) {
+                                // print('launch $url');
+                              } else {
+                                // Handle the case where the URL can't be launched
+                                // print('Could not launch $url');
+                              }
+                            },
+                            child: Text(
+                                'Event URL',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  height: 21.sp/14.sp,
+                                  color: AppColors.blackColor,
+                                  decoration: TextDecoration.underline,
+                                )
                             ),
                           ),
                           SizedBox(height: 20.h),
