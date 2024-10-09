@@ -270,11 +270,12 @@ class ChatsController extends GetxController {
 
       // Retrieve token from shared preferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      // ignore: unused_local_variable
       var token = prefs.getString("token");
-      print(conversationId.value.toString());
+      log(conversationId.value.toString());
       // Define the API URL for deleting a conversation
       final url = Uri.parse(
-          'https://sports-app-alpha.vercel.app/api/v1/chat/conversation/${conversationId.value.toString()}');
+          '${Urls.baseUrl}/chat/conversation/${conversationId.value.toString()}');
 
       // Send the HTTP DELETE request
       final response = await http.delete(

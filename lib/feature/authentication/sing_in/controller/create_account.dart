@@ -20,7 +20,7 @@ class CreateAccountController extends GetxController {
   final TermsAndConditionController termsAndConditionController =
       Get.find<TermsAndConditionController>();
   final ProfileViewController controllerProfile =
-  Get.put(ProfileViewController());
+      Get.put(ProfileViewController());
   final GlobalKey<FormState> createAccountKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -68,15 +68,12 @@ class CreateAccountController extends GetxController {
             // emailController.clear();
             // passwordController.clear();
             // confirmPasswordController.clear();
-            controllerProfile.fetchUserData().then((value) {
+            controllerProfile.fetchUserData().then((value) async {
               if ((controllerProfile.userModel.value.firstName?.isEmpty ??
-                  true) &&
-                  (controllerProfile.userModel.value.sportsDetails?.isEmpty ??
-                      true)) {
-                print(
-                    'First name: ${controllerProfile.userModel.value.firstName}');
-                print(
-                    'Sports details: ${controllerProfile.userModel.value.sportsDetails}');
+                      true) &&
+                  (controllerProfile.userModel.value.sportsDetails.isEmpty)) {
+                log('First name: ${controllerProfile.userModel.value.firstName}');
+                log('Sports details: ${controllerProfile.userModel.value.sportsDetails}');
                 Get.offAll(() => const ProfileViewScreen());
               } else {
                 Get.offAll(() => Home());

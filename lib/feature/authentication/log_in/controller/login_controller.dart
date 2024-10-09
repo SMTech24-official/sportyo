@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sportyo/core/const/app_colors.dart';
 import 'package:sportyo/feature/home/screen/home.dart';
 import 'package:sportyo/feature/profile/screen/profile_edit.dart';
@@ -28,14 +31,13 @@ class LogInController extends GetxController {
 
   Future<void> login() async {
     if (formKey.currentState!.validate()) {
-      EasyLoading.show(status: 'Loading...');
-
       final Map<String, String> requestBody = {
         'email': emailController.text.trim(),
         'password': passwordController.text.trim(),
       };
 
       try {
+        EasyLoading.show(status: 'Loading...');
         final response =
             await NetworkCaller().postRequest(Urls.login, body: requestBody);
         if (response.isSuccess) {
@@ -44,16 +46,13 @@ class LogInController extends GetxController {
           String? userId = response.responseData['id'];
           if (token != null && userId != null) {
             await AuthService.saveToken(token, userId);
-            controllerProfile.fetchUserData().then((value) {
+            controllerProfile.fetchUserData().then((value) async {
               if ((controllerProfile.userModel.value.firstName?.isEmpty ??
                       true) &&
-                  (controllerProfile.userModel.value.sportsDetails?.isEmpty ??
-                      true)) {
-                print(
-                    'First name: ${controllerProfile.userModel.value.firstName}');
-                print(
-                    'Sports details: ${controllerProfile.userModel.value.sportsDetails}');
-                Get.offAll(() => ProfileViewScreen());
+                  (controllerProfile.userModel.value.sportsDetails.isEmpty)) {
+                log('First name: ${controllerProfile.userModel.value.firstName}');
+                log('Sports details: ${controllerProfile.userModel.value.sportsDetails}');
+                Get.offAll(() => const ProfileViewScreen());
               } else {
                 Get.offAll(() => Home());
               }
@@ -77,7 +76,7 @@ class LogInController extends GetxController {
           );
         }
       } catch (e) {
-        print('Login error: $e');
+        log('Login error: $e');
         Get.snackbar(
           'Error',
           'Something went wrong. Please try again later.',

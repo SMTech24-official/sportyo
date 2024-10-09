@@ -205,7 +205,6 @@ class ProfileController extends GetxController {
   Future<void> fetchUserProfile() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool("profileComplete", false);
       var token = prefs.getString("token");
       if (kDebugMode) {
         print(token);
@@ -238,10 +237,7 @@ class ProfileController extends GetxController {
               firstnameController.text = userData['firstName'];
               if (userData['SportsDetails'] != null &&
                   (userData['SportsDetails'] as List).isNotEmpty) {
-                await prefs.setBool("profileComplete", true);
-              } else {
-                await prefs.setBool("profileComplete", false);
-              }
+              } else {}
             }
             if (userData['lastName'] != null &&
                 userData['lastName'].isNotEmpty) {
@@ -515,70 +511,75 @@ class ProfileController extends GetxController {
       print("ok");
     }
     if (profileKey.currentState!.validate()) {
-      try {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        var token = prefs.getString("token");
-        var userId = prefs.getString("userId");
+      if (savedSports.isEmpty) {
+        EasyLoading.showError('Add at least one sports');
+      } else {
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          var token = prefs.getString("token");
+          var userId = prefs.getString("userId");
 
-        if (token != null && userId != null) {
-          // Show loading indicator
-          EasyLoading.show(status: 'Updating Profile...');
+          if (token != null && userId != null) {
+            // Show loading indicator
+            EasyLoading.show(status: 'Updating Profile...');
 
-          // Prepare the API URL
-          final url = Uri.parse('${Urls.baseUrl}/users/$userId');
+            // Prepare the API URL
+            final url = Uri.parse('${Urls.baseUrl}/users/$userId');
 
-          // Prepare the request body as a stringified JSON for the data key
-          Map<String, dynamic> requestBody = {
-            "data": jsonEncode({
-              "firstName": firstnameController.text.trim(),
-              "lastName": lastnameController.text.trim(),
-              "gender": selectedGender.value,
-              "dateOfBirth": dateofbirthController.text.trim(),
-              "bio": bioController.text.trim(),
-              "language": selectedLanguages.join(','),
-              "incognito": incognito.value,
-              "genderRestriction": genderRestriction.value,
-            }),
-          };
+            // Prepare the request body as a stringified JSON for the data key
+            Map<String, dynamic> requestBody = {
+              "data": jsonEncode({
+                "firstName": firstnameController.text.trim(),
+                "lastName": lastnameController.text.trim(),
+                "gender": selectedGender.value,
+                "dateOfBirth": dateofbirthController.text.trim(),
+                "bio": bioController.text.trim(),
+                "language": selectedLanguages.join(','),
+                "incognito": incognito.value,
+                "genderRestriction": genderRestriction.value,
+              }),
+            };
 
-          // Make the PUT request
-          final response = await http.put(
-            url,
-            headers: {
-              'Authorization': token,
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode(requestBody), // Send requestBody with data key
-          );
+            // Make the PUT request
+            final response = await http.put(
+              url,
+              headers: {
+                'Authorization': token,
+                'Content-Type': 'application/json',
+              },
+              body: jsonEncode(requestBody),
+            );
 
-          if (kDebugMode) {
-            print(response.body);
-          }
+            if (kDebugMode) {
+              print(response.body);
+            }
 
-          if (response.statusCode == 200) {
-            var jsonResponse = jsonDecode(response.body);
-            if (jsonResponse['success']) {
-              EasyLoading.showSuccess('Profile updated successfully!');
+            if (response.statusCode == 200) {
+              var jsonResponse = jsonDecode(response.body);
+              if (jsonResponse['success']) {
+                EasyLoading.showSuccess('Profile updated successfully!');
 
-              Get.offAll(Home());
+                Get.offAll(Home());
+              } else {
+                EasyLoading.showError('Failed: ${jsonResponse['message']}');
+              }
             } else {
-              EasyLoading.showError('Failed: ${jsonResponse['message']}');
+              EasyLoading.showError(
+                  'Failed to update profile. Please try again.');
             }
           } else {
             EasyLoading.showError(
-                'Failed to update profile. Please try again.');
+                'Authentication failed. Please log in again.');
+            Get.offAll(() => const LogIn());
           }
-        } else {
-          EasyLoading.showError('Authentication failed. Please log in again.');
-          Get.offAll(() => const LogIn());
+        } catch (e) {
+          EasyLoading.showError('Something went wrong. Please try again.');
+          if (kDebugMode) {
+            print('Error: $e');
+          }
+        } finally {
+          EasyLoading.dismiss();
         }
-      } catch (e) {
-        EasyLoading.showError('Something went wrong. Please try again.');
-        if (kDebugMode) {
-          print('Error: $e');
-        }
-      } finally {
-        EasyLoading.dismiss();
       }
     } else {
       EasyLoading.showError('Please fill in all required fields.');
