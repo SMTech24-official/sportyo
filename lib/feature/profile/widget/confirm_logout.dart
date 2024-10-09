@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sportyo/feature/authentication/auth_service/auth_service.dart';
-import 'package:sportyo/feature/splash_screen/screen/splash_screen.dart';
 
 import '../../../core/const/app_colors.dart';
 import '../../authentication/log_in/screen/log_in.dart';
@@ -67,7 +65,6 @@ void showConfirmLogoutDialog(BuildContext context) {
                               await SharedPreferences.getInstance();
                           await prefs.remove('token');
                           await prefs.remove('userId');
-                          await prefs.setBool("profileComplete", false);
                           Get.offAll(() => const LogIn());
                         },
                         child: Text(

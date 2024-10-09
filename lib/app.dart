@@ -11,6 +11,8 @@ import 'core/const/app_texts.dart';
 import 'feature/authentication/auth_service/auth_service.dart';
 import 'feature/authentication/log_in/screen/log_in.dart';
 import 'feature/home/screen/home.dart';
+import 'feature/profile/controller/profile_controller.dart';
+import 'feature/profile/screen/profile_edit.dart';
 import 'feature/splash_screen/screen/splash_screen.dart';
 
 class Sprotyo extends StatefulWidget {
@@ -21,6 +23,8 @@ class Sprotyo extends StatefulWidget {
 }
 
 class _SprotyoState extends State<Sprotyo> {
+  final ProfileViewController controllerProfile =
+      Get.put(ProfileViewController());
   @override
   void initState() {
     super.initState();
@@ -32,7 +36,14 @@ class _SprotyoState extends State<Sprotyo> {
     bool hasToken = await AuthService.hasToken();
 
     if (hasToken) {
-      Get.offAll(() => Home());
+      controllerProfile.fetchUserData().then((value) async {
+        if ((controllerProfile.userModel.value.firstName?.isEmpty ?? true) &&
+            (controllerProfile.userModel.value.sportsDetails.isEmpty)) {
+          Get.offAll(() => const ProfileViewScreen());
+        } else {
+          Get.offAll(() => Home());
+        }
+      });
     } else {
       Get.offAll(() => const LogIn());
     }

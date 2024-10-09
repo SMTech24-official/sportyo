@@ -24,13 +24,6 @@ class AuthService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(tokenKey);
     await prefs.remove(idKey);
-    await prefs.setBool("profileComplete", false);
     Get.offAll(() => const LogIn());
-  }
-
-  static Future<bool> profileComplete() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    bool? token = preferences.getBool("profileComplete") ?? false;
-    return token != false;
   }
 }

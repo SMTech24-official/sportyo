@@ -12,14 +12,25 @@ import '../../search/widget/profile_loading.dart';
 import '../widget/confirm_delete_account.dart';
 import 'profile_edit.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
   const ProfileView({
     super.key,
   });
 
   @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  final ProfileViewController controller = Get.put(ProfileViewController());
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchUserData();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final ProfileViewController controller = Get.put(ProfileViewController());
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

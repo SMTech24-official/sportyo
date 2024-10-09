@@ -24,26 +24,22 @@ class _ChatsListScreenState extends State<ChatsListScreen>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
-        .addObserver(this); // Add observer to listen for app lifecycle changes
-    chatsController.startPolling(); // Start polling initially
+    WidgetsBinding.instance.addObserver(this);
+    chatsController.startPolling();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this); // Remove observer on dispose
-    chatsController
-        .onClose(); // Ensure polling stops when the screen is disposed
+    WidgetsBinding.instance.removeObserver(this);
+    chatsController.onClose();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      // Screen is back in focus, start polling again
       chatsController.startPolling();
     } else if (state == AppLifecycleState.paused) {
-      // Screen is out of focus, stop polling
       chatsController.onClose();
     }
   }
@@ -61,162 +57,167 @@ class _ChatsListScreenState extends State<ChatsListScreen>
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Your chats",
-                  style: globalTextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          chatsController.startPolling();
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Your chats",
+                    style: globalTextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Obx(() {
-                if (chatsController.isLoading.value) {
-                  return Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                    child: ListView.builder(
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return Shimmer.fromColors(
-                          baseColor: Colors.grey.shade300,
-                          highlightColor: Colors.grey.shade100,
-                          child: Container(
-                            margin: const EdgeInsets.only(bottom: 10),
-                            height: 85.h,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(5),
+              Expanded(
+                child: Obx(() {
+                  if (chatsController.isLoading.value) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      child: ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              height: 85.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
                             ),
+                          );
+                        },
+                      ),
+                    );
+                  } else if (chatsController.chatUsers.isEmpty) {
+                    return Center(
+                      child: ListView(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 20.h),
+                              Text(
+                                "You don’t have any connection yet.\nStart making connections now.",
+                                textAlign: TextAlign.center,
+                                style: globalTextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Get.to(() => const SearchScreen());
+                                },
+                                child: Text(
+                                  'Find Partners',
+                                  style: globalTextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.whiteColor),
+                                ),
+                              ),
+                              const SizedBox(height: 40),
+                              Text(
+                                "Register for a race and \n find a race partner.",
+                                style: globalTextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Get.to(() => Event());
+                                },
+                                child: Text(
+                                  'Check Events',
+                                  style: globalTextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.whiteColor),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return ListView.separated(
+                      itemCount: chatsController.chatUsers.length,
+                      separatorBuilder: (context, index) => const Divider(
+                        color: Color(0xffe8e8e8),
+                        thickness: 1.0,
+                        indent: 16,
+                        endIndent: 16,
+                      ),
+                      itemBuilder: (context, index) {
+                        var chatUser = chatsController.chatUsers[index];
+                        return SizedBox(
+                          height: 70,
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              radius: 35,
+                              backgroundImage: chatUser.userProfileImage.isEmpty
+                                  ? const AssetImage(ImagePath.profile)
+                                  : NetworkImage(chatUser.userProfileImage)
+                                      as ImageProvider,
+                            ),
+                            title: Text(
+                              '${chatUser.firstName} ${chatUser.lastName}',
+                              style: globalTextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 16),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            subtitle: Text(
+                              chatUser.lastMessageContent.isEmpty
+                                  ? "Start conversation"
+                                  : chatUser.lastMessageContent.length > 30
+                                      ? '${chatUser.lastMessageContent.substring(0, 30)}...'
+                                      : chatUser.isOther
+                                          ? "You: ${chatUser.lastMessageContent}"
+                                          : chatUser.lastMessageContent,
+                              style: globalTextStyle(),
+                            ),
+                            onTap: () {
+                              // Stop polling when navigating to ChatScreen
+                              chatsController.onClose();
+                              Get.to(() => ChatScreen(
+                                        name:
+                                            '${chatUser.firstName} ${chatUser.lastName}',
+                                        image: chatUser.userProfileImage,
+                                        receiverId: chatUser.id,
+                                      ))!
+                                  .then((_) {
+                                // Restart polling when returning back to ChatsListScreen
+                                chatsController.startPolling();
+                              });
+                            },
                           ),
                         );
                       },
-                    ),
-                  );
-                } else if (chatsController.chatUsers.isEmpty) {
-                  return Center(
-                    child: ListView(
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 20.h),
-                            Text(
-                              "You don’t have any connection yet.\nStart making connections now.",
-                              textAlign: TextAlign.center,
-                              style: globalTextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            ElevatedButton(
-                              onPressed: () {
-                                Get.to(() => const SearchScreen());
-                              },
-                              child: Text(
-                                'Find Partners',
-                                style: globalTextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.whiteColor),
-                              ),
-                            ),
-                            const SizedBox(height: 40),
-                            Text(
-                              "Register for a race and \n find a race partner.",
-                              style: globalTextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            ElevatedButton(
-                              onPressed: () {
-                                Get.to(() => Event());
-                              },
-                              child: Text(
-                                'Check Events',
-                                style: globalTextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.whiteColor),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  return ListView.separated(
-                    itemCount: chatsController.chatUsers.length,
-                    separatorBuilder: (context, index) => const Divider(
-                      color: Color(0xffe8e8e8),
-                      thickness: 1.0,
-                      indent: 16,
-                      endIndent: 16,
-                    ),
-                    itemBuilder: (context, index) {
-                      var chatUser = chatsController.chatUsers[index];
-                      return SizedBox(
-                        height: 70,
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            radius: 35,
-                            backgroundImage: chatUser.userProfileImage.isEmpty
-                                ? const AssetImage(ImagePath.profile)
-                                : NetworkImage(chatUser.userProfileImage)
-                                    as ImageProvider,
-                          ),
-                          title: Text(
-                            '${chatUser.firstName} ${chatUser.lastName}',
-                            style: globalTextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 16),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          subtitle: Text(
-                            chatUser.lastMessageContent.isEmpty
-                                ? "Start conversation"
-                                : chatUser.lastMessageContent.length > 30
-                                    ? '${chatUser.lastMessageContent.substring(0, 30)}...'
-                                    : chatUser.isOther
-                                        ? "You: ${chatUser.lastMessageContent}"
-                                        : chatUser.lastMessageContent,
-                            style: globalTextStyle(),
-                          ),
-                          onTap: () {
-                            // Stop polling when navigating to ChatScreen
-                            chatsController.onClose();
-                            Get.to(() => ChatScreen(
-                                      name:
-                                          '${chatUser.firstName} ${chatUser.lastName}',
-                                      image: chatUser.userProfileImage,
-                                      receiverId: chatUser.id,
-                                    ))!
-                                .then((_) {
-                              // Restart polling when returning back to ChatsListScreen
-                              chatsController.startPolling();
-                            });
-                          },
-                        ),
-                      );
-                    },
-                  );
-                }
-              }),
-            ),
-          ],
+                    );
+                  }
+                }),
+              ),
+            ],
+          ),
         ),
       ),
     );

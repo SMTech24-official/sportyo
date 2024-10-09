@@ -1,14 +1,12 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import '../../../core/const/app_colors.dart';
-import '../../authentication/auth_service/auth_service.dart';
+import 'package:sportyo/core/service_class/network_caller/utility/usrls.dart';
 import '../../chat/screen/chats_screen.dart';
-import '../../home/screen/home.dart';
-import '../../profile/widget/global_text_style.dart';
 import '../model/profile_model.dart';
 
 class UsersController extends GetxController {
@@ -73,7 +71,7 @@ class UsersController extends GetxController {
         return;
       }
 
-      String url = 'https://sports-app-alpha.vercel.app/api/v1/users/$userId';
+      String url = '${Urls.baseUrl}/users/$userId';
       var response = await http.get(
         Uri.parse(url),
         headers: {'Authorization': token},
@@ -99,54 +97,14 @@ class UsersController extends GetxController {
           age.value = calculateAge(userModel.value.dateOfBirth);
         }
       } else {
-        print('Failed to load user data: ${response.statusCode}');
+        log('Failed to load user data: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error: $e');
+      log('Error: $e');
     }
   }
 
   void startchat(String name, String image, String id, context) async {
-    bool profileComplete = await AuthService.profileComplete();
-    print(profileComplete);
-    if (profileComplete) {
-      Get.to(() => ChatScreen(name: name, image: image, receiverId: id));
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            backgroundColor: Colors.white,
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "Please fill your documents first",
-                  style: globalTextStyle(),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    Get.offAll(() => Home());
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Text(
-                    "Fill Documents",
-                    style: globalTextStyle(color: AppColors.whiteColor),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    }
+    Get.to(() => ChatScreen(name: name, image: image, receiverId: id));
   }
 }

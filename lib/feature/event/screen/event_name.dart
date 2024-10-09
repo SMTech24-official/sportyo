@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:sportyo/core/const/app_colors.dart';
 import 'package:sportyo/core/const/app_texts.dart';
 import 'package:sportyo/core/const/image_path.dart';
-import 'package:sportyo/feature/authentication/auth_service/auth_service.dart';
 import 'package:sportyo/feature/event/controller/event_details_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../profile/widget/global_text_style.dart';
@@ -214,8 +212,8 @@ class EventName extends StatelessWidget {
                           ),
                           SizedBox(height: 5.h),
                           GestureDetector(
-                            onTap: ()async{
-                              final Uri url = Uri.parse(event.link??'');
+                            onTap: () async {
+                              final Uri url = Uri.parse(event.link ?? '');
 
                               if (await launchUrl(url)) {
                                 // print('launch $url');
@@ -224,37 +222,22 @@ class EventName extends StatelessWidget {
                                 // print('Could not launch $url');
                               }
                             },
-                            child: Text(
-                              'Event URL',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                height: 21.sp/14.sp,
-                                color: AppColors.blackColor,
-                                decoration: TextDecoration.underline,
-                              )
-                            ),
+                            child: Text('Event URL',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  height: 21.sp / 14.sp,
+                                  color: AppColors.blackColor,
+                                  decoration: TextDecoration.underline,
+                                )),
                           ),
                           SizedBox(height: 20.h),
                           Align(
                             alignment: Alignment.center,
                             child: GestureDetector(
-                              onTap: ()async {
-                                // showFinishTimeDialog(
-                                //     context, event.id ?? '', false);
-                                bool hasComplete = await AuthService.profileComplete();
-                                if (!context.mounted) return;
-                                if(hasComplete){
-                                  showFinishTimeDialog(context,event.id??'',false);
-                                }else{
-                                  Get.snackbar(
-                                    'Empty Profile',
-                                    'Please Completed Your Profile.',
-                                    snackPosition: SnackPosition.TOP,
-                                    backgroundColor: AppColors.primaryColor,
-                                    colorText: Colors.white,
-                                  );
-                                }
+                              onTap: () async {
+                                showFinishTimeDialog(
+                                    context, event.id ?? '', false);
                               },
                               child: Container(
                                 alignment: Alignment.center,
@@ -436,8 +419,8 @@ class EventName extends StatelessWidget {
                           ),
                           SizedBox(height: 5.h),
                           GestureDetector(
-                            onTap: ()async{
-                              final Uri url = Uri.parse(event.link??'');
+                            onTap: () async {
+                              final Uri url = Uri.parse(event.link ?? '');
 
                               if (await launchUrl(url)) {
                                 // print('launch $url');
@@ -446,16 +429,14 @@ class EventName extends StatelessWidget {
                                 // print('Could not launch $url');
                               }
                             },
-                            child: Text(
-                                'Event URL',
+                            child: Text('Event URL',
                                 style: GoogleFonts.poppins(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w600,
-                                  height: 21.sp/14.sp,
+                                  height: 21.sp / 14.sp,
                                   color: AppColors.blackColor,
                                   decoration: TextDecoration.underline,
-                                )
-                            ),
+                                )),
                           ),
                           SizedBox(height: 20.h),
                           GestureDetector(
