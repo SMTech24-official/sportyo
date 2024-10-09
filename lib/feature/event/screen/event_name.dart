@@ -235,9 +235,8 @@ class EventName extends StatelessWidget {
                           Align(
                             alignment: Alignment.center,
                             child: GestureDetector(
-                              onTap: () async {
-                                showFinishTimeDialog(
-                                    context, event.id ?? '', false);
+                              onTap: () {
+                                showFinishTimeDialog(context,event.id??'',false);
                               },
                               child: Container(
                                 alignment: Alignment.center,
