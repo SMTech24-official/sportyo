@@ -179,7 +179,7 @@ class _ChatsListScreenState extends State<ChatsListScreen>
                                       as ImageProvider,
                             ),
                             title: Text(
-                              '${chatUser.firstName} ${chatUser.lastName}',
+                              '${chatUser.firstName[0].toUpperCase() + chatUser.firstName.substring(1)} ${chatUser.lastName[0].toUpperCase() + chatUser.lastName.substring(1)}',
                               style: globalTextStyle(
                                   fontWeight: FontWeight.w600, fontSize: 16),
                               maxLines: 1,
