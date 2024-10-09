@@ -22,15 +22,18 @@ Widget buildLanguageField(ProfileController controller) {
               decoration: BoxDecoration(
                 border: Border.all(color: AppColors.blackColor, width: 1.0),
                 borderRadius: BorderRadius.circular(10.0),
+                color: AppColors.whiteColor,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Wrap(
+                    
                     spacing: 8.0,
                     runSpacing: 5.0,
                     children: controller.selectedLanguages.map((language) {
                       return Chip(
+                        backgroundColor: Colors.white,
                         label: Text(
                           language,
                           style: globalTextStyle(),
