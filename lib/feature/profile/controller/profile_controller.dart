@@ -253,4 +253,5 @@ class ProfileViewController extends GetxController {
       log('Error: $e');
     } finally {}
   }
+
 }
