@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -8,8 +6,9 @@ import '../../../core/global_widegts/customTextField.dart';
 import '../../profile/widget/global_text_style.dart';
 import '../controller/event_details_controller.dart';
 
-void showFinishTimeDialog(BuildContext context,String event,bool isEdit) {
-  final EventNameController eventNameController = Get.find<EventNameController>();
+void showFinishTimeDialog(BuildContext context, String event, bool isEdit) {
+  final EventNameController eventNameController =
+      Get.find<EventNameController>();
 
   showDialog(
     context: context,
@@ -50,7 +49,8 @@ void showFinishTimeDialog(BuildContext context,String event,bool isEdit) {
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       lineHeight: 21.sp / 14.sp,
-                      textEditingController: eventNameController.predictedTimeController,
+                      textEditingController:
+                          eventNameController.predictedTimeController,
                     ),
                   ),
                 ],
@@ -60,12 +60,11 @@ void showFinishTimeDialog(BuildContext context,String event,bool isEdit) {
               CustomButtonContainer(
                 text: 'Validate',
                 save: () {
-                  if(!isEdit){
+                  if (!isEdit) {
                     eventNameController.addEventName(event);
-                  }else{
+                  } else {
                     eventNameController.updateData(event);
                   }
-
                 },
                 cancel: () {
                   Get.back();

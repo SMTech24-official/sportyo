@@ -15,11 +15,11 @@ class ChatScreen extends StatelessWidget {
   final String receiverId;
 
   ChatScreen({
-    Key? key,
+    super.key,
     required this.name,
     required this.image,
     required this.receiverId,
-  }) : super(key: key);
+  });
 
   final ChatsController chatsController = Get.put(ChatsController());
 

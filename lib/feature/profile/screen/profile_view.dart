@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -225,7 +227,7 @@ class _ProfileViewState extends State<ProfileView> {
                         'City XXX',
                         style: TextStyle(fontSize: 16),
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: Platform.isIOS ? 50 : 40),
                       controller.events.isEmpty
                           ? const Align(
                               alignment: Alignment.centerLeft,
