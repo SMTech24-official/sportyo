@@ -72,6 +72,7 @@ class ProfileViewController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
       String? userId = prefs.getString("userId");
+      requestLocationAndSendToAPI();
       if (token == null) {
         return;
       }
@@ -102,10 +103,14 @@ class ProfileViewController extends GetxController {
           age.value = calculateAge(userModel.value.dateOfBirth);
         }
       } else {
-        print('Failed to load user data: ${response.statusCode}');
+        if (kDebugMode) {
+          print('Failed to load user data: ${response.statusCode}');
+        }
       }
     } catch (e) {
-      print('Error: $e');
+      if (kDebugMode) {
+        print('Error: $e');
+      }
     }
   }
 

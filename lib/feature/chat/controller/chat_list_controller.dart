@@ -37,7 +37,9 @@ class ChatsListController extends GetxController {
     final url = '${Urls.baseUrl}/chat/$userId/chatUsers';
     try {
       final response = await http.get(Uri.parse(url));
-      print(response.body);
+      if (kDebugMode) {
+        print(response.body);
+      }
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         if (jsonData['success'] == true) {

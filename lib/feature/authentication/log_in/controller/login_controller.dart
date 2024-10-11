@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sportyo/core/const/app_colors.dart';
 import 'package:sportyo/feature/home/screen/home.dart';
 import 'package:sportyo/feature/profile/screen/profile_edit.dart';
