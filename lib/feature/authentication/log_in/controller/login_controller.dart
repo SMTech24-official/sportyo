@@ -8,14 +8,13 @@ import 'package:sportyo/feature/home/screen/home.dart';
 import 'package:sportyo/feature/profile/screen/profile_edit.dart';
 import '../../../../core/service_class/network_caller/repository/network_caller.dart';
 import '../../../../core/service_class/network_caller/utility/usrls.dart';
-import '../../../profile/controller/profile_controller.dart';
+import '../../../splash_screen/controller/splash_screen_controller.dart';
 import '../../auth_service/auth_service.dart';
 
 class LogInController extends GetxController {
   // Form key to manage form validation
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final ProfileViewController controllerProfile =
-      Get.put(ProfileViewController());
+  final SplashController controllerProfile = Get.put(SplashController());
   // Controllers for TextFields
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();

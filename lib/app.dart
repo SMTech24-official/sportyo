@@ -11,8 +11,8 @@ import 'core/const/app_texts.dart';
 import 'feature/authentication/auth_service/auth_service.dart';
 import 'feature/authentication/log_in/screen/log_in.dart';
 import 'feature/home/screen/home.dart';
-import 'feature/profile/controller/profile_controller.dart';
 import 'feature/profile/screen/profile_edit.dart';
+import 'feature/splash_screen/controller/splash_screen_controller.dart';
 import 'feature/splash_screen/screen/splash_screen.dart';
 
 class Sprotyo extends StatefulWidget {
@@ -23,8 +23,7 @@ class Sprotyo extends StatefulWidget {
 }
 
 class _SprotyoState extends State<Sprotyo> {
-  final ProfileViewController controllerProfile =
-      Get.put(ProfileViewController());
+  final SplashController controllerProfile = Get.put(SplashController());
   @override
   void initState() {
     super.initState();
