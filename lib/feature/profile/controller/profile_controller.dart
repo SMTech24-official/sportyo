@@ -48,7 +48,7 @@ class ProfileViewController extends GetxController {
   void onInit() {
     super.onInit();
     fetchUserData();
-    requestLocationAndSendToAPI();
+    //requestLocationAndSendToAPI();
   }
 
   // Method to calculate age
@@ -177,85 +177,95 @@ class ProfileViewController extends GetxController {
   var city = '......'.obs;
   var isLoading = false.obs;
 
+  var isUpdatingLocation = false.obs; // Observable flag
+
   Future<void> requestLocationAndSendToAPI() async {
+    if (isUpdatingLocation.value) {
+      return; // Prevent multiple calls
+    }
+
+    isUpdatingLocation.value = true; // Set flag
     isLoading.value = true;
 
-    // Step 1: Request location permission
     PermissionStatus permission = await Permission.location.request();
 
     if (permission.isGranted) {
       try {
         Position position = await Geolocator.getCurrentPosition(
-            locationSettings:
-                const LocationSettings(accuracy: LocationAccuracy.best));
+          locationSettings:
+              const LocationSettings(accuracy: LocationAccuracy.best),
+        );
 
         latitude.value = position.latitude;
         longitude.value = position.longitude;
+
         List<Placemark> placemarks = await placemarkFromCoordinates(
           latitude.value,
           longitude.value,
         );
 
-        //Extract the city name
         if (placemarks.isNotEmpty) {
           city.value = placemarks.first.locality ?? 'Unknown';
-          log("City: ${city.value}");
         } else {
           city.value = 'Unknown';
         }
 
-        //Send location data to API
         await sendLocationToAPI(latitude.value, longitude.value, city.value);
       } catch (e) {
         log('Error getting location: $e');
       }
+    } else if (permission.isPermanentlyDenied) {
+      bool isOpened = await openAppSettings();
+      if (!isOpened) {
+        log('Failed to open app settings.');
+      }
     } else {
-      requestLocationAndSendToAPI();
       log('Location permission not granted');
     }
+
+    isLoading.value = false;
+    isUpdatingLocation.value = false; // Reset flag
   }
 
-  // Function to send the location data to your API
+  var locationUpdate = 0.obs;
   Future<void> sendLocationToAPI(
       double latitude, double longitude, String city) async {
-    log("long$longitude");
-    log("lat$latitude");
-    log("city$city");
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString("token");
-      var userId = prefs.getString("userId");
-      final url = Uri.parse('${Urls.baseUrl}/users/$userId');
+    if (locationUpdate.value == 0) {
+      try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        var token = prefs.getString("token");
+        var userId = prefs.getString("userId");
+        final url = Uri.parse('${Urls.baseUrl}/users/$userId');
 
-      Map<String, dynamic> requestBody = {
-        "data": jsonEncode({
-          "latitude": latitude,
-          "longitude": longitude,
-          "city": city.toString()
-        }),
-      };
-      // Make the PUT request
-      final response = await http.put(
-        url,
-        headers: {
-          'Authorization': token.toString(),
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(requestBody),
-      );
+        Map<String, dynamic> requestBody = {
+          "data": jsonEncode(
+              {"latitude": latitude, "longitude": longitude, "city": city}),
+        };
 
-      log(response.body);
+        final response = await http.put(
+          url,
+          headers: {
+            'Authorization': token ?? '',
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(requestBody),
+        );
 
-      if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body);
-        if (jsonResponse['success']) {
-          log('update sucessfully');
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString("currentCity", city);
-        } else {}
-      } else {}
-    } catch (e) {
-      log('Error: $e');
-    } finally {}
+        log(response.body);
+
+        if (response.statusCode == 200) {
+          var jsonResponse = jsonDecode(response.body);
+          if (jsonResponse['success']) {
+            log('Location updated successfully');
+            prefs.setString("currentCity", city);
+            locationUpdate.value++;
+          }
+        }
+      } catch (e) {
+        log('Error updating location: $e');
+      }
+    } else {
+      log("Location updated");
+    }
   }
 }

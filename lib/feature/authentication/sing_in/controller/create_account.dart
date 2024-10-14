@@ -11,16 +11,15 @@ import 'package:sportyo/feature/terms_and_condition/screen/terms_and_condition.d
 import '../../../../core/service_class/network_caller/repository/network_caller.dart';
 import '../../../../core/service_class/network_caller/utility/usrls.dart';
 import '../../../home/screen/home.dart';
-import '../../../profile/controller/profile_controller.dart';
 import '../../../profile/screen/profile_edit.dart';
+import '../../../splash_screen/controller/splash_screen_controller.dart';
 import '../../auth_service/auth_service.dart';
 
 class CreateAccountController extends GetxController {
   final LogInController loginController = Get.find<LogInController>();
   final TermsAndConditionController termsAndConditionController =
       Get.find<TermsAndConditionController>();
-  final ProfileViewController controllerProfile =
-      Get.put(ProfileViewController());
+  final SplashController controllerProfile = Get.put(SplashController());
   final GlobalKey<FormState> createAccountKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -34,7 +33,10 @@ class CreateAccountController extends GetxController {
       EasyLoading.showError('Please fill in all fields correctly.');
       return;
     }
-
+    if (passwordController.text.length < 8) {
+      EasyLoading.showError('Password must be at least 8 characters.');
+      return;
+    }
     // Check if password matches confirm password
     if (passwordController.text != confirmPasswordController.text) {
       EasyLoading.showError('Passwords do not match.');

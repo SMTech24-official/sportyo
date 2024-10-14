@@ -26,7 +26,11 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(() => navBody.elementAt(homeController.currentNavIndex.value)),
+      body: PageView(
+        controller: homeController.pageController,
+        onPageChanged: homeController.onPageChanged,
+        children: navBody,
+      ),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           currentIndex: homeController.currentNavIndex.value,
@@ -108,7 +112,8 @@ class Home extends StatelessWidget {
               label: AppTexts.chats,
             ),
           ],
-          onTap: homeController.changeNavIndex,
+          onTap: homeController
+              .changeNavIndex, // Update the page when BottomNavigationBar is tapped
         ),
       ),
     );
