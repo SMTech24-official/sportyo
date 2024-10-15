@@ -1,3 +1,4 @@
+// ignore_for_file: file_names
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
@@ -17,7 +18,6 @@ class SecondNetworkCaller {
         headers: {
           'Authorization': token.toString(),
           'Content-type': 'application/json',
-
         },
       ).timeout(
         Duration(seconds: timeoutDuration),

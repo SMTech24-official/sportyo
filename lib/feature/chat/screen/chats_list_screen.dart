@@ -178,13 +178,16 @@ class _ChatsListScreenState extends State<ChatsListScreen>
                                   : NetworkImage(chatUser.userProfileImage)
                                       as ImageProvider,
                             ),
-                            title: Text(
-                              '${chatUser.firstName[0].toUpperCase() + chatUser.firstName.substring(1)} ${chatUser.lastName[0].toUpperCase() + chatUser.lastName.substring(1)}',
-                              style: globalTextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 16),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                            title: chatUser.firstName.isEmpty
+                                ? const Text('')
+                                : Text(
+                                    '${chatUser.firstName[0].toUpperCase() + chatUser.firstName.substring(1)} ${chatUser.lastName[0].toUpperCase() + chatUser.lastName.substring(1)}',
+                                    style: globalTextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                             subtitle: Text(
                               chatUser.lastMessageContent.isEmpty
                                   ? "Start conversation"

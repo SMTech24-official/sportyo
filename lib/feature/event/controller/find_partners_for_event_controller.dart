@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sportyo/core/service_class/network_caller/repository/second_Network_caller.dart';
+import 'package:sportyo/core/service_class/network_caller/repository/second_network_caller.dart';
 import 'package:sportyo/feature/event/model/user_list_by_id.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/service_class/network_caller/utility/usrls.dart';
@@ -56,10 +56,12 @@ class FindPartnersForEventController extends GetxController {
       );
     }
   }
+
   bool validatePredictedTime(String time) {
     final RegExp timeRegex = RegExp(r'^([01]\d|2[0-3]):([0-5]\d)$');
     return timeRegex.hasMatch(time);
   }
+
   Future<void> filterByPredictedTime(String eventId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
@@ -69,7 +71,8 @@ class FindPartnersForEventController extends GetxController {
       try {
         final response = await SecondNetworkCaller().getRequest(
           Urls.filterByPredictedTime(
-            eventId, predictedTimeController.text.trim(),
+            eventId,
+            predictedTimeController.text.trim(),
           ),
           token: token,
         );
@@ -83,7 +86,7 @@ class FindPartnersForEventController extends GetxController {
           predictedTimeController.clear();
           Get.back();
         } else {
-          EasyLoading.showError( 'No participants present at this time.');
+          EasyLoading.showError('No participants present at this time.');
         }
       } catch (error) {
         EasyLoading.showError('Failed to search event. Please try again.');
@@ -100,15 +103,15 @@ class FindPartnersForEventController extends GetxController {
       );
     }
   }
+
   Future<void> filterByPTimeRange(String eventId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     EasyLoading.show(status: "Loading...");
     try {
       final response = await SecondNetworkCaller().getRequest(
-        Urls.filterByTimeRange(
-          eventId, predictedTimeController.text.trim(),timeRangeTEController.text.trim()
-        ),
+        Urls.filterByTimeRange(eventId, predictedTimeController.text.trim(),
+            timeRangeTEController.text.trim()),
         token: token,
       );
       // Handle response success
@@ -121,7 +124,7 @@ class FindPartnersForEventController extends GetxController {
         timeRangeTEController.clear();
         Get.back();
       } else {
-        EasyLoading.showError( 'No participants present at this time.');
+        EasyLoading.showError('No participants present at this time.');
       }
     } catch (error) {
       EasyLoading.showError('Failed to search event. Please try again.');
@@ -129,7 +132,6 @@ class FindPartnersForEventController extends GetxController {
       EasyLoading.dismiss();
     }
   }
-
 
   @override
   void onClose() {

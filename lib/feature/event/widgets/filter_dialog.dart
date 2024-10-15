@@ -4,14 +4,13 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/app_texts.dart';
-import '../../../core/global_widegts/customTextField.dart';
+import '../../../core/global_widegts/custom_text_field.dart';
 import '../../../core/global_widegts/custom_button_container.dart';
 import '../../profile/widget/global_text_style.dart';
 import '../controller/event_controller.dart';
 
 void showFilterDialog(BuildContext context) {
-  final EventController eventController =
-      Get.find<EventController>();
+  final EventController eventController = Get.find<EventController>();
 
   showDialog(
     context: context,
@@ -209,21 +208,19 @@ void showFilterDialog(BuildContext context) {
               // Save and Cancel buttons
               CustomButtonContainer(
                 save: () {
-                  if( eventController.countryController.text.isNotEmpty){
+                  if (eventController.countryController.text.isNotEmpty) {
                     eventController.filterEventByCountry();
                     Get.back();
-                  }else if( eventController.sportController.text.isNotEmpty){
-                   eventController.filterEventBySport();
-                   Get.back();
-                  }else if( eventController.eventController.text.isNotEmpty){
+                  } else if (eventController.sportController.text.isNotEmpty) {
+                    eventController.filterEventBySport();
+                    Get.back();
+                  } else if (eventController.eventController.text.isNotEmpty) {
                     eventController.filterEventByLevel();
                     Get.back();
-                  }else{
+                  } else {
                     eventController.filterEventByDate();
                     Get.back();
                   }
-
-
                 },
                 cancel: () {
                   Get.back();
@@ -236,5 +233,3 @@ void showFilterDialog(BuildContext context) {
     },
   );
 }
-
-

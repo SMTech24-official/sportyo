@@ -17,6 +17,7 @@ class CustomTextFieldForAuth extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _CustomTextFieldForAuthState createState() => _CustomTextFieldForAuthState();
 }
 
@@ -44,15 +45,15 @@ class _CustomTextFieldForAuthState extends State<CustomTextFieldForAuth> {
         ), // Label color as grey
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: const  BorderSide(color: Color(0xffe6f0fa),width: 2),
+          borderSide: const BorderSide(color: Color(0xffe6f0fa), width: 2),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: const BorderSide(color: Color(0xffe6f0fa),width: 2),
+          borderSide: const BorderSide(color: Color(0xffe6f0fa), width: 2),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: const BorderSide(color: Color(0xffe6f0fa),width: 2),
+          borderSide: const BorderSide(color: Color(0xffe6f0fa), width: 2),
         ),
         suffixIcon: widget.isPasswordField
             ? IconButton(

@@ -112,8 +112,7 @@ class Home extends StatelessWidget {
               label: AppTexts.chats,
             ),
           ],
-          onTap: homeController
-              .changeNavIndex, // Update the page when BottomNavigationBar is tapped
+          onTap: homeController.changeNavIndex,
         ),
       ),
     );

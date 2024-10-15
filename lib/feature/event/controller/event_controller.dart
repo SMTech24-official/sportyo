@@ -2,7 +2,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sportyo/core/service_class/network_caller/repository/second_Network_caller.dart';
+import 'package:sportyo/core/service_class/network_caller/repository/second_network_caller.dart';
 import 'package:sportyo/feature/event/model/event_model_class.dart';
 import '../../../core/service_class/network_caller/utility/usrls.dart';
 
@@ -182,8 +182,12 @@ class EventController extends GetxController {
     try {
       // Construct the URL with the selected country for filtering
       final response = await SecondNetworkCaller().getRequest(
-        Urls.filterEventByDate(countryController.text.trim(),
-            sportController.text.trim(), eventController.text.trim(),dateFromController.text.trim(),dateToController.text.trim()),
+        Urls.filterEventByDate(
+            countryController.text.trim(),
+            sportController.text.trim(),
+            eventController.text.trim(),
+            dateFromController.text.trim(),
+            dateToController.text.trim()),
         token: token,
       );
       // Handle response success
