@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -6,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:sportyo/feature/event/model/event_model_class.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/icons_path.dart';
-import '../../../core/global_widegts/customTextField.dart';
+import '../../../core/global_widegts/custom_text_field.dart';
 import '../../../core/global_widegts/custom_button_container.dart';
 import '../../profile/widget/global_text_style.dart';
 import '../../search/screen/view_profile_page.dart';
@@ -94,7 +93,8 @@ class FindPartnersForEvent extends StatelessWidget {
                   ),
                   SizedBox(width: 10.w),
                   IconButton(
-                    onPressed: () => showFilterParticipants(context,event.id.toString()),
+                    onPressed: () =>
+                        showFilterParticipants(context, event.id.toString()),
                     icon: Image.asset(
                       IconsPath.filter,
                       height: 16.h,
@@ -119,6 +119,7 @@ class FindPartnersForEvent extends StatelessWidget {
                     ),
                   );
                 }
+                // ignore: unused_local_variable
                 final participants = controller.userListById.value.data!;
                 return Expanded(
                   child: ListView.builder(
@@ -148,7 +149,9 @@ class FindPartnersForEvent extends StatelessWidget {
                             SizedBox(width: 10.w),
                             Expanded(
                               child: Text(
-                                toBeginningOfSentenceCase('${participant.firstName}') ?? '',
+                                toBeginningOfSentenceCase(
+                                        '${participant.firstName}') ??
+                                    '',
                                 style: globalTextStyle(
                                   fontSize: 28.sp,
                                   fontWeight: FontWeight.w600,
@@ -209,8 +212,10 @@ class FindPartnersForEvent extends StatelessWidget {
       ),
     );
   }
-  void showFilterParticipants(BuildContext context,String eventId) {
-    final FindPartnersForEventController controller=Get.find<FindPartnersForEventController>();
+
+  void showFilterParticipants(BuildContext context, String eventId) {
+    final FindPartnersForEventController controller =
+        Get.find<FindPartnersForEventController>();
 
     showDialog(
       context: context,
@@ -240,8 +245,7 @@ class FindPartnersForEvent extends StatelessWidget {
                   children: [
                     Text(
                       'Predicted Time',
-                      style: globalTextStyle(
-                      ),
+                      style: globalTextStyle(),
                     ),
                     SizedBox(
                       height: 5.h,
@@ -254,7 +258,8 @@ class FindPartnersForEvent extends StatelessWidget {
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                         lineHeight: 21.sp / 14.sp,
-                        textEditingController:controller.predictedTimeController,
+                        textEditingController:
+                            controller.predictedTimeController,
                       ),
                     ),
                   ],
@@ -267,8 +272,7 @@ class FindPartnersForEvent extends StatelessWidget {
                   children: [
                     Text(
                       'Search Time Range',
-                      style: globalTextStyle(
-                      ),
+                      style: globalTextStyle(),
                     ),
                     SizedBox(
                       height: 5.h,
@@ -281,7 +285,7 @@ class FindPartnersForEvent extends StatelessWidget {
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                         lineHeight: 21.sp / 14.sp,
-                        textEditingController:controller.timeRangeTEController,
+                        textEditingController: controller.timeRangeTEController,
                       ),
                     ),
                   ],
@@ -290,19 +294,18 @@ class FindPartnersForEvent extends StatelessWidget {
                   height: 40.h,
                 ),
                 // Save and Cancel buttons
-                CustomButtonContainer(save: () {
-
-                  if(controller.timeRangeTEController.text.isEmpty){
-                    controller.filterByPredictedTime(eventId);
-                  }else{
-                   controller.filterByPTimeRange(eventId);
-                  }
-
-
-
-                }, cancel: () {
-                  Get.back();
-                },)
+                CustomButtonContainer(
+                  save: () {
+                    if (controller.timeRangeTEController.text.isEmpty) {
+                      controller.filterByPredictedTime(eventId);
+                    } else {
+                      controller.filterByPTimeRange(eventId);
+                    }
+                  },
+                  cancel: () {
+                    Get.back();
+                  },
+                )
               ],
             ),
           ),

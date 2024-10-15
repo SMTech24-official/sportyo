@@ -62,7 +62,9 @@ class SplashController extends GetxController {
         print('Error: $e');
       }
     } finally {
-      print(userModel.value.toString());
+      if (kDebugMode) {
+        print(userModel.value.toString());
+      }
     }
   }
 }

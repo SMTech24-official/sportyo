@@ -9,10 +9,9 @@ class CustomTextField extends StatelessWidget {
     super.key,
     this.hitText,
     required this.textEditingController,
-     this.fontSize,
-     this.fontWeight,
-     this.lineHeight,
-
+    this.fontSize,
+    this.fontWeight,
+    this.lineHeight,
   });
   final String? hitText;
   final double? fontSize;
@@ -27,20 +26,18 @@ class CustomTextField extends StatelessWidget {
       width: 273.w,
       child: TextField(
         controller: textEditingController,
-
         style: GoogleFonts.poppins(
-            fontSize:fontSize?? 16.sp,
-            fontWeight: fontWeight??FontWeight.w400,
-            height:lineHeight?? 24.h / 16.h,
+            fontSize: fontSize ?? 16.sp,
+            fontWeight: fontWeight ?? FontWeight.w400,
+            height: lineHeight ?? 24.h / 16.h,
             color: AppColors.blackColor),
         decoration: InputDecoration(
-          contentPadding:  EdgeInsets.symmetric(
-              vertical: 5.h, horizontal: 10.w),
+          contentPadding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
           hintText: hitText,
           hintStyle: GoogleFonts.poppins(
-              fontSize:fontSize?? 16.sp,
-              fontWeight: fontWeight??FontWeight.w400,
-              height:lineHeight?? 24.h / 16.h,
+              fontSize: fontSize ?? 16.sp,
+              fontWeight: fontWeight ?? FontWeight.w400,
+              height: lineHeight ?? 24.h / 16.h,
               color: AppColors.blackColor),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.r),
@@ -54,7 +51,6 @@ class CustomTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.r),
             borderSide: const BorderSide(color: Color(0xff010101), width: 1),
           ),
-
         ),
       ),
     );

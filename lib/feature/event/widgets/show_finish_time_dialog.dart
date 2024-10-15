@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sportyo/core/global_widegts/custom_button_container.dart';
-import '../../../core/global_widegts/customTextField.dart';
+import '../../../core/global_widegts/custom_text_field.dart';
 import '../../profile/widget/global_text_style.dart';
 import '../controller/event_details_controller.dart';
 

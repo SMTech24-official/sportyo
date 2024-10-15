@@ -8,7 +8,7 @@ import 'package:sportyo/core/const/app_texts.dart';
 import 'package:sportyo/core/const/icons_path.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/image_path.dart';
-import '../../../core/global_widegts/customTextField.dart';
+import '../../../core/global_widegts/custom_text_field.dart';
 import '../../profile/widget/global_text_style.dart';
 import '../controller/event_controller.dart';
 import '../model/event_model_class.dart';

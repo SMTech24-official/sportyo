@@ -43,8 +43,10 @@ class ChatsListController extends GetxController {
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         if (jsonData['success'] == true) {
+          // Filter users where firstName is not null and not empty
           var users = (jsonData['data'] as List)
               .map((user) => ChatUser.fromJson(user))
+              .where((user) => user.firstName.isNotEmpty)
               .toList();
 
           users.sort((a, b) {
