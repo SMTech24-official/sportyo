@@ -12,8 +12,7 @@ import '../../../splash_screen/controller/splash_screen_controller.dart';
 import '../../auth_service/auth_service.dart';
 
 class LogInController extends GetxController {
-  // Form key to manage form validation
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   final SplashController controllerProfile = Get.put(SplashController());
   // Controllers for TextFields
   final TextEditingController emailController = TextEditingController();
@@ -28,7 +27,7 @@ class LogInController extends GetxController {
   }
 
   Future<void> login() async {
-    if (formKey.currentState!.validate()) {
+    if (emailController.text.isNotEmpty&&passwordController.text.isNotEmpty) {
       final Map<String, String> requestBody = {
         'email': emailController.text.trim(),
         'password': passwordController.text.trim(),
@@ -66,12 +65,17 @@ class LogInController extends GetxController {
           }
         } else {
           Get.snackbar(
-            'Login Failed',
-            response.errorMessage,
+            'Login Unsuccessful',
+            'Unable to log in. Please verify your email and password and try again.',
             snackPosition: SnackPosition.TOP,
             backgroundColor: AppColors.primaryColor,
             colorText: Colors.white,
+            icon: const Icon(Icons.error, color: Colors.white),
+            margin: const EdgeInsets.all(16),
+            borderRadius: 8,
+            duration: const Duration(seconds: 2),
           );
+
         }
       } catch (e) {
         log('Login error: $e');
@@ -89,7 +93,8 @@ class LogInController extends GetxController {
       Get.snackbar(
         'Invalid Input',
         'Please fill in all fields correctly.',
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
+        margin: const EdgeInsets.all(10),
         backgroundColor: AppColors.primaryColor,
         colorText: Colors.white,
       );

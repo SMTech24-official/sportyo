@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:sportyo/feature/authentication/forgot_password/controller/otp_verification_controller.dart';
 import 'package:sportyo/feature/authentication/log_in/controller/login_controller.dart';
 import 'package:sportyo/feature/authentication/sing_in/controller/create_account.dart';
 import 'package:sportyo/feature/event/controller/event_controller.dart';
@@ -43,6 +44,10 @@ class ControllerBinder extends Bindings {
     );
     Get.lazyPut<ProfileController>(
       () => ProfileController(),
+      fenix: false,
+    );
+    Get.lazyPut<OtpVerificationController>(
+          () => OtpVerificationController(),
       fenix: false,
     );
   }

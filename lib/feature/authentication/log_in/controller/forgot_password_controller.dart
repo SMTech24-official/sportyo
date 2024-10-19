@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:sportyo/core/service_class/network_caller/repository/network_caller.dart';
 import 'package:sportyo/core/service_class/network_caller/utility/usrls.dart';
+import 'package:sportyo/feature/authentication/forgot_password/screens/otp_verification_screen.dart';
 
 class ForgotPasswordController extends GetxController {
   final TextEditingController emailController = TextEditingController();
@@ -29,9 +30,8 @@ class ForgotPasswordController extends GetxController {
 
       // Handle response success
       if (response.isSuccess) {
-        EasyLoading.showSuccess('Reset email sent successfully');
-        emailController.clear();
-        Get.back();
+        Get.offAll(OtpVerificationScreen(email: email,));
+
       } else {
         EasyLoading.showError('Failed to send reset email. Please try again.');
       }
